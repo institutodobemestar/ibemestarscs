@@ -6,7 +6,8 @@ import tailwindcss from '@tailwindcss/vite';
 
 // https://astro.build/config
 export default defineConfig({
-	site: 'https://www.institutodobemestar.com.br',
+	site: 'https://ibemestarscs.com.br',
+	trailingSlash: 'always',
 	output: 'static',
 	adapter: vercel(),
 	integrations: [
