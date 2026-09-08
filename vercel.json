@@ -1,0 +1,24 @@
+{
+	"redirects": [
+		{ "source": "/acupuntura", "destination": "/servicos/acupuntura", "permanent": true },
+		{ "source": "/hidroterapia", "destination": "/servicos/hidroterapia", "permanent": true },
+		{ "source": "/fisioterapia", "destination": "/servicos/fisioterapia", "permanent": true },
+		{ "source": "/pilates-clinico", "destination": "/servicos/pilates-clinico", "permanent": true },
+		{ "source": "/ozonioterapia", "destination": "/servicos/ozonioterapia", "permanent": true },
+		{ "source": "/microfisioterapia", "destination": "/servicos/microfisioterapia", "permanent": true },
+		{ "source": "/terapias-manuais", "destination": "/servicos/terapias-manuais", "permanent": true },
+		{ "source": "/acupuntura-ibe", "destination": "/servicos/acupuntura", "permanent": true },
+		{ "source": "/acupuntura-para-ansiedade-e-dor", "destination": "/blog/acupuntura-para-ansiedade-e-dor", "permanent": true },
+		{ "source": "/acupuntura-para-dor-nas-costas-em-sao-caetano-do-sul", "destination": "/blog/acupuntura-para-dor-nas-costas-em-sao-caetano-do-sul", "permanent": true },
+		{ "source": "/clinica-de-bem-estar-com-hidroterapia-em-sao-caetano-do-sul", "destination": "/blog/clinica-de-bem-estar-com-hidroterapia-em-sao-caetano-do-sul", "permanent": true },
+		{ "source": "/dormir-com-dor-nas-costas", "destination": "/blog/dormir-com-dor-nas-costas", "permanent": true },
+		{ "source": "/fisioterapia-em-sao-caetano-do-sul", "destination": "/blog/fisioterapia-em-sao-caetano-do-sul", "permanent": true },
+		{ "source": "/fisioterapia-para-idosos-no-abc", "destination": "/blog/fisioterapia-para-idosos-no-abc", "permanent": true },
+		{ "source": "/hidroterapia-ou-fisioterapia-qual-a-melhor-opcao", "destination": "/blog/hidroterapia-ou-fisioterapia-qual-a-melhor-opcao", "permanent": true },
+		{ "source": "/o-que-e-acupuntura", "destination": "/blog/o-que-e-acupuntura", "permanent": true },
+		{ "source": "/o-que-e-microfisioterapia", "destination": "/blog/o-que-e-microfisioterapia", "permanent": true },
+		{ "source": "/o-que-e-ozonioterapia", "destination": "/blog/o-que-e-ozonioterapia", "permanent": true },
+		{ "source": "/pilates-clinico-para-gestantes-em-sao-caetano-do-sul", "destination": "/blog/pilates-clinico-para-gestantes-em-sao-caetano-do-sul", "permanent": true },
+		{ "source": "/recuperacao-pos-operatoria", "destination": "/blog/recuperacao-pos-operatoria", "permanent": true }
+	]
+}
