@@ -1,0 +1,124 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import { resolveContentImage } from '../../lib/content-images';
+import { cleanServiceTitle } from '../../lib/services';
+
+interface Props {
+	services: CollectionEntry<'services'>[];
+	variant?: 'grid' | 'compact';
+}
+
+const { services, variant = 'grid' } = Astro.props;
+const isCompact = variant === 'compact';
+---
+
+<ul class:list={['service-cards', isCompact && 'is-compact']}>
+	{
+		services.map((service) => {
+			const title = cleanServiceTitle(service.data.title);
+			return (
+				<li>
+					<a href={`/servicos/${service.data.slug}`} class="service-card">
+						<Image
+							src={resolveContentImage(service.data.heroImage)}
+							alt={`Ilustração do serviço ${title}`}
+							width={isCompact ? 480 : 800}
+							height={isCompact ? 320 : 520}
+							format="webp"
+							quality="mid"
+							loading="lazy"
+							decoding="async"
+							class="service-image"
+						/>
+						<div class="service-body">
+							<h3>{title}</h3>
+							{!isCompact && <p>{service.data.shortDescription}</p>}
+						</div>
+					</a>
+				</li>
+			);
+		})
+	}
+</ul>
+
+<style>
+	.service-cards {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--space-4);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.service-card {
+		display: block;
+		height: 100%;
+		overflow: hidden;
+		border-radius: var(--radius-lg);
+		background: var(--color-surface);
+		box-shadow: var(--shadow-md);
+		text-decoration: none;
+		color: inherit;
+	}
+
+	.service-image {
+		width: 100%;
+		height: 12rem;
+		object-fit: cover;
+	}
+
+	.service-body {
+		padding: var(--space-4);
+	}
+
+	.service-body h3 {
+		margin: 0;
+		font-size: 1.25rem;
+	}
+
+	.service-body p {
+		margin: var(--space-2) 0 0;
+		font-size: 0.9375rem;
+		color: var(--color-text-muted);
+	}
+
+	.is-compact {
+		gap: var(--space-3);
+	}
+
+	.is-compact .service-image {
+		height: 8rem;
+	}
+
+	.is-compact .service-body {
+		padding: var(--space-3);
+	}
+
+	.is-compact .service-body h3 {
+		font-size: 1.05rem;
+	}
+
+	@media (min-width: 40rem) {
+		.service-cards {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (min-width: 64rem) {
+		.service-cards:not(.is-compact) {
+			grid-template-columns: repeat(3, 1fr);
+		}
+
+		.is-compact {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+
+	@media (min-width: 80rem) {
+		.service-cards:not(.is-compact) {
+			grid-template-columns: repeat(4, 1fr);
+		}
+	}
+</style>

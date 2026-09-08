@@ -1,0 +1,32 @@
+---
+import site from '../../data/site.json';
+
+interface Props {
+	class?: string;
+	width?: number;
+	height?: number;
+}
+
+const { class: className, width = 180, height = 48 } = Astro.props;
+
+const logos = import.meta.glob('../../assets/logo.svg', {
+	eager: true,
+	query: '?url',
+	import: 'default',
+});
+const logoSrc = Object.values(logos)[0] as string | undefined;
+---
+
+{
+	logoSrc ? (
+		<img
+			src={logoSrc}
+			alt={`Logotipo do ${site.name}`}
+			width={width}
+			height={height}
+			class:list={['logo-image', className]}
+		/>
+	) : (
+		<span class:list={['logo-text', className]}>{site.name}</span>
+	)
+}

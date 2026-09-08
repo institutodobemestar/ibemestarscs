@@ -1,0 +1,196 @@
+@import 'tailwindcss';
+
+@import '@fontsource/lora/400.css';
+@import '@fontsource/lora/500.css';
+@import '@fontsource/lora/600.css';
+@import '@fontsource/lora/700.css';
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/inter/700.css';
+
+:root {
+	/* Paleta — clínica de saúde: calma, confiança, convite à ação */
+	--ibe-primary: #0d9488;
+	--ibe-primary-dark: #0f766e;
+	--ibe-primary-soft: #ccfbf1;
+	--ibe-secondary: #1b3a4b;
+	--ibe-secondary-soft: #d6e4ec;
+	--ibe-bg: #f7f4ef;
+	--ibe-bg-alt: #efeae3;
+	--ibe-surface: #fffdf9;
+	--ibe-text: #1c1917;
+	--ibe-text-muted: #57534e;
+	--ibe-border: #e7e0d6;
+	--ibe-accent: #b8503a;
+	--ibe-accent-hover: #9e4331;
+
+	/* Escala de espaçamento (base 8px) */
+	--space-1: 0.5rem;
+	--space-2: 1rem;
+	--space-3: 1.5rem;
+	--space-4: 2rem;
+	--space-5: 2.5rem;
+	--space-6: 3rem;
+	--space-7: 3.5rem;
+	--space-8: 4rem;
+
+	/* Cantos suaves — sem retidão excessiva */
+	--ibe-radius-sm: 0.5rem;
+	--ibe-radius-md: 0.875rem;
+	--ibe-radius-lg: 1.25rem;
+	--ibe-radius-xl: 1.75rem;
+	--ibe-radius-full: 9999px;
+
+	/* Sombras leves — identidade clínica */
+	--ibe-shadow-sm: 0 1px 2px rgb(27 58 75 / 0.05);
+	--ibe-shadow-md: 0 4px 18px rgb(27 58 75 / 0.07);
+	--ibe-shadow-lg: 0 10px 32px rgb(27 58 75 / 0.09);
+
+	/* Tipografia */
+	--ibe-font-serif: 'Lora', ui-serif, Georgia, 'Times New Roman', serif;
+	--ibe-font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+	/* Aliases públicos do design system */
+	--color-primary: var(--ibe-primary);
+	--color-primary-dark: var(--ibe-primary-dark);
+	--color-primary-soft: var(--ibe-primary-soft);
+	--color-secondary: var(--ibe-secondary);
+	--color-secondary-soft: var(--ibe-secondary-soft);
+	--color-bg: var(--ibe-bg);
+	--color-bg-alt: var(--ibe-bg-alt);
+	--color-surface: var(--ibe-surface);
+	--color-text: var(--ibe-text);
+	--color-text-muted: var(--ibe-text-muted);
+	--color-border: var(--ibe-border);
+	--color-accent: var(--ibe-accent);
+	--color-accent-hover: var(--ibe-accent-hover);
+	--radius-sm: var(--ibe-radius-sm);
+	--radius-md: var(--ibe-radius-md);
+	--radius-lg: var(--ibe-radius-lg);
+	--radius-xl: var(--ibe-radius-xl);
+	--radius-full: var(--ibe-radius-full);
+	--shadow-sm: var(--ibe-shadow-sm);
+	--shadow-md: var(--ibe-shadow-md);
+	--shadow-lg: var(--ibe-shadow-lg);
+	--font-serif: var(--ibe-font-serif);
+	--font-sans: var(--ibe-font-sans);
+}
+
+@theme inline {
+	--font-sans: var(--ibe-font-sans);
+	--font-serif: var(--ibe-font-serif);
+	--color-primary: var(--ibe-primary);
+	--color-primary-dark: var(--ibe-primary-dark);
+	--color-primary-soft: var(--ibe-primary-soft);
+	--color-secondary: var(--ibe-secondary);
+	--color-secondary-soft: var(--ibe-secondary-soft);
+	--color-bg: var(--ibe-bg);
+	--color-bg-alt: var(--ibe-bg-alt);
+	--color-surface: var(--ibe-surface);
+	--color-text: var(--ibe-text);
+	--color-text-muted: var(--ibe-text-muted);
+	--color-border: var(--ibe-border);
+	--color-accent: var(--ibe-accent);
+	--color-accent-hover: var(--ibe-accent-hover);
+	--radius-sm: var(--ibe-radius-sm);
+	--radius-md: var(--ibe-radius-md);
+	--radius-lg: var(--ibe-radius-lg);
+	--radius-xl: var(--ibe-radius-xl);
+	--shadow-sm: var(--ibe-shadow-sm);
+	--shadow-md: var(--ibe-shadow-md);
+	--shadow-lg: var(--ibe-shadow-lg);
+}
+
+html {
+	scroll-behavior: smooth;
+}
+
+body {
+	margin: 0;
+	background: var(--color-bg);
+	color: var(--color-text);
+	font-family: var(--font-sans);
+	font-weight: 400;
+	line-height: 1.65;
+	-webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: var(--font-serif);
+	font-weight: 600;
+	line-height: 1.2;
+	color: var(--color-secondary);
+	letter-spacing: -0.02em;
+}
+
+a {
+	color: inherit;
+}
+
+img {
+	max-width: 100%;
+	height: auto;
+}
+
+:focus-visible {
+	outline: 2px solid var(--color-primary);
+	outline-offset: 3px;
+}
+
+.skip-link {
+	position: absolute;
+	left: var(--space-2);
+	top: -4rem;
+	z-index: 100;
+	border-radius: var(--radius-sm);
+	background: var(--color-secondary);
+	color: var(--color-surface);
+	padding: var(--space-1) var(--space-2);
+	text-decoration: none;
+}
+
+.skip-link:focus {
+	top: var(--space-2);
+}
+
+.sr-only,
+.visually-hidden {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}
+
+.article-body {
+	color: var(--color-text-muted);
+}
+
+.article-body h2,
+.article-body h3 {
+	margin: var(--space-5) 0 var(--space-2);
+}
+
+.article-body p + p {
+	margin-top: var(--space-3);
+}
+
+.article-body ul,
+.article-body ol {
+	margin: var(--space-3) 0;
+	padding-left: 1.25rem;
+}
+
+.article-body a {
+	color: var(--color-primary-dark);
+}

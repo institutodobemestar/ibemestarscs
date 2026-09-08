@@ -1,0 +1,292 @@
+---
+import { Image } from 'astro:assets';
+import { render, type CollectionEntry } from 'astro:content';
+import BaseLayout from './BaseLayout.astro';
+import Container from '../components/ui/Container.astro';
+import Breadcrumb from '../components/ui/Breadcrumb.astro';
+import Button from '../components/ui/Button.astro';
+import site from '../data/site.json';
+import { resolveContentImage } from '../lib/content-images';
+import { formatPublishDate } from '../lib/dates';
+
+interface Props {
+	post: CollectionEntry<'blog'>;
+	related?: CollectionEntry<'blog'>[];
+}
+
+const { post, related = [] } = Astro.props;
+const { Content } = await render(post);
+const published = formatPublishDate(post.data.publishDate);
+const heroImage = resolveContentImage(post.data.heroImage);
+const whatsappHref = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(
+	`Olá, li o artigo "${post.data.title}" e gostaria de agendar uma consulta.`,
+)}`;
+
+const blogPosting = {
+	'@context': 'https://schema.org',
+	'@type': 'BlogPosting',
+	headline: post.data.title,
+	description: post.data.description,
+	image: new URL(post.data.heroImage, Astro.site).href,
+	datePublished: post.data.publishDate.toISOString(),
+	mainEntityOfPage: new URL(`/blog/${post.data.slug}`, Astro.site).href,
+	author: {
+		'@type': 'Organization',
+		name: site.name,
+		url: Astro.site?.href,
+	},
+	publisher: {
+		'@type': 'Organization',
+		name: site.name,
+		url: Astro.site?.href,
+		logo: {
+			'@type': 'ImageObject',
+			url: new URL('/favicon.svg', Astro.site).href,
+		},
+	},
+};
+---
+
+<BaseLayout
+	title={`${post.data.title} - Instituto do Bem Estar`}
+	description={post.data.description}
+	ogImage={post.data.heroImage}
+	canonical={`/blog/${post.data.slug}`}
+>
+	<Fragment slot="head">
+		<script type="application/ld+json" set:html={JSON.stringify(blogPosting)} />
+	</Fragment>
+
+	<article>
+		<header class="hero">
+			<Container>
+				<Breadcrumb
+					items={[
+						{ label: 'Home', href: '/' },
+						{ label: 'Blog', href: '/blog' },
+						{ label: post.data.title, href: `/blog/${post.data.slug}` },
+					]}
+				/>
+				<p class="meta">
+					<time datetime={post.data.publishDate.toISOString()}>{published}</time>
+				</p>
+				<h1>{post.data.title}</h1>
+				<p class="lead">{post.data.description}</p>
+				{
+					post.data.tags.length > 0 && (
+						<ul class="tags" aria-label="Tags do artigo">
+							{post.data.tags.map((tag) => (
+								<li>{tag}</li>
+							))}
+						</ul>
+					)
+				}
+				<figure>
+					<Image
+						src={heroImage}
+						alt={`Imagem de capa do artigo: ${post.data.title}`}
+						width={1280}
+						height={720}
+						format="webp"
+						quality="mid"
+						priority
+						loading="eager"
+						fetchpriority="high"
+						decoding="async"
+						class="hero-image"
+					/>
+				</figure>
+			</Container>
+		</header>
+
+		<Container class="body">
+			<div class="article-body">
+				<Content />
+			</div>
+
+			<div class="cta">
+				<h2>Quer conversar sobre o seu caso?</h2>
+				<p>Agende uma avaliação no {site.name}, em {site.city}.</p>
+				<Button href={whatsappHref} variant="accent">
+					Agende sua consulta
+				</Button>
+			</div>
+		</Container>
+	</article>
+
+	{
+		related.length > 0 && (
+			<section class="related" aria-labelledby="relacionados-titulo">
+				<Container>
+					<h2 id="relacionados-titulo">Artigos relacionados</h2>
+					<ul>
+						{related.map((item) => (
+							<li>
+								<a href={`/blog/${item.data.slug}`}>
+									<Image
+										src={resolveContentImage(item.data.heroImage)}
+										alt={`Capa do artigo ${item.data.title}`}
+										width={640}
+										height={360}
+										format="webp"
+										quality="mid"
+										loading="lazy"
+										decoding="async"
+										class="related-image"
+									/>
+									<p>
+										<time datetime={item.data.publishDate.toISOString()}>
+											{formatPublishDate(item.data.publishDate)}
+										</time>
+									</p>
+									<h3>{item.data.title}</h3>
+								</a>
+							</li>
+						))}
+					</ul>
+				</Container>
+			</section>
+		)
+	}
+</BaseLayout>
+
+<style>
+	.hero {
+		background: var(--color-bg-alt);
+		padding-block: var(--space-6);
+	}
+
+	.meta {
+		margin: 0;
+		font-size: 0.875rem;
+		font-weight: 600;
+		color: var(--color-primary-dark);
+	}
+
+	.hero h1 {
+		margin: var(--space-2) 0 0;
+		max-width: 48rem;
+		font-size: clamp(2rem, 4vw, 3rem);
+	}
+
+	.lead {
+		margin: var(--space-3) 0 0;
+		max-width: 40rem;
+		font-size: 1.125rem;
+		color: var(--color-text-muted);
+	}
+
+	.tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-1);
+		margin: var(--space-3) 0 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.tags li {
+		border-radius: var(--radius-full);
+		background: var(--color-primary-soft);
+		color: var(--color-primary-dark);
+		font-size: 0.8125rem;
+		font-weight: 600;
+		padding: 0.25rem 0.75rem;
+	}
+
+	.hero figure {
+		margin: var(--space-5) 0 0;
+		overflow: hidden;
+		border-radius: var(--radius-xl);
+		box-shadow: var(--shadow-md);
+	}
+
+	.hero-image {
+		display: block;
+		width: 100%;
+		height: auto;
+		object-fit: cover;
+	}
+
+	.body {
+		padding-block: var(--space-7);
+	}
+
+	.article-body {
+		max-width: 48rem;
+	}
+
+	.cta {
+		max-width: 48rem;
+		margin-top: var(--space-8);
+		padding: var(--space-5);
+		border-radius: var(--radius-lg);
+		background: var(--color-bg-alt);
+	}
+
+	.cta h2 {
+		margin: 0;
+		font-size: 1.5rem;
+	}
+
+	.cta p {
+		margin: var(--space-2) 0 var(--space-3);
+		color: var(--color-text-muted);
+	}
+
+	.related {
+		padding-block: 0 var(--space-8);
+	}
+
+	.related h2 {
+		margin: 0 0 var(--space-4);
+		font-size: 1.75rem;
+	}
+
+	.related ul {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--space-4);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.related a {
+		display: block;
+		overflow: hidden;
+		border-radius: var(--radius-lg);
+		background: var(--color-surface);
+		box-shadow: var(--shadow-sm);
+		text-decoration: none;
+		color: inherit;
+	}
+
+	.related-image {
+		width: 100%;
+		height: 9rem;
+		object-fit: cover;
+	}
+
+	.related p,
+	.related h3 {
+		padding-inline: var(--space-3);
+	}
+
+	.related p {
+		margin: var(--space-3) 0 0;
+		font-size: 0.8125rem;
+		color: var(--color-text-muted);
+	}
+
+	.related h3 {
+		margin: var(--space-1) 0 var(--space-3);
+		font-size: 1.05rem;
+	}
+
+	@media (min-width: 48rem) {
+		.related ul {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+</style>

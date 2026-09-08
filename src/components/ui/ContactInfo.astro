@@ -1,0 +1,130 @@
+---
+import site from '../../data/site.json';
+
+interface Props {
+	variant?: 'footer' | 'page';
+}
+
+const { variant = 'page' } = Astro.props;
+const whatsappHref = `https://wa.me/${site.whatsapp}`;
+---
+
+<address class:list={['contact-info', `is-${variant}`]}>
+	<p>
+		<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 10.8c1.4 2.7 3.9 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1.1-.2 1.2.4 2.5.6 3.8.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.6 21 3 13.4 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.6.6 3.8.1.4 0 .8-.3 1.1L6.6 10.8Z" /></svg>
+		<a href={`tel:+${site.phoneRaw}`}>{site.phone}</a>
+	</p>
+	<p>
+		<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5A8.5 8.5 0 1 1 8.7 4.3L4 3l1.2 4.6A8.5 8.5 0 0 1 20 11.5Zm-3.2 4.3c-.3-.1-1.6-.8-1.8-.9-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.6.1-1.3-.5-2.5-1.4-3.4-2.6-.3-.3-.6-.7-.8-1.1-.1-.3 0-.4.1-.6l.6-.7c.1-.2.1-.4 0-.6l-.8-1.8c-.2-.4-.4-.4-.6-.4h-.5c-.2 0-.5.1-.7.3-.8.8-1.1 2-.7 3.1.7 2 2.2 3.8 4.1 5.1 1.9 1.3 3.8 1.8 5.2 1.8 1 0 2-.4 2.7-1.2.4-.5.5-1.1.4-1.7 0-.2-.2-.3-.4-.4Z" /></svg>
+		<a href={whatsappHref}>WhatsApp</a>
+	</p>
+	<p>
+		<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Zm8 6.8L4.8 7.4h14.4L12 12.8Zm0-1.6 7.2-5.2H4.8L12 11.2Z" /></svg>
+		<a href={`mailto:${site.email}`}>{site.email}</a>
+	</p>
+	<p>
+		<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 1 7 7c0 5.25-7 13-7 13S5 14.25 5 9a7 7 0 0 1 7-7Zm0 9.5A2.5 2.5 0 1 0 12 6a2.5 2.5 0 0 0 0 5.5Z" /></svg>
+		<span>{site.address}</span>
+	</p>
+	<dl class="hours" aria-label="Horário de funcionamento">
+		<div>
+			<dt>Segunda a sexta</dt>
+			<dd>{site.hours.segSex}</dd>
+		</div>
+		<div>
+			<dt>Sábado</dt>
+			<dd>{site.hours.sabado}</dd>
+		</div>
+		<div>
+			<dt>Domingo</dt>
+			<dd>{site.hours.domingo}</dd>
+		</div>
+	</dl>
+</address>
+
+<style>
+	.contact-info {
+		margin: 0;
+		font-style: normal;
+		display: grid;
+		gap: var(--space-2);
+	}
+
+	.contact-info p {
+		display: flex;
+		align-items: flex-start;
+		gap: 0.6rem;
+		margin: 0;
+		line-height: 1.6;
+	}
+
+	.contact-info svg {
+		flex: 0 0 1.1rem;
+		width: 1.1rem;
+		height: 1.1rem;
+		margin-top: 0.15rem;
+		fill: currentColor;
+	}
+
+	.contact-info a {
+		text-decoration: none;
+		color: inherit;
+	}
+
+	.hours {
+		display: grid;
+		gap: var(--space-1);
+		margin: var(--space-2) 0 0;
+	}
+
+	.hours dt {
+		font-size: 0.75rem;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+	}
+
+	.hours dd {
+		margin: 0.15rem 0 0;
+	}
+
+	.is-footer {
+		color: inherit;
+	}
+
+	.is-footer .hours {
+		margin-top: var(--space-3);
+	}
+
+	.is-page {
+		gap: var(--space-3);
+		color: var(--color-text);
+	}
+
+	.is-page a {
+		color: var(--color-primary-dark);
+		font-weight: 600;
+	}
+
+	.is-page a:hover {
+		text-decoration: underline;
+	}
+
+	.is-page .hours {
+		grid-template-columns: 1fr;
+		gap: var(--space-3);
+		margin-top: var(--space-4);
+		padding-top: var(--space-3);
+		border-top: 1px solid var(--color-border);
+	}
+
+	.is-page .hours dt {
+		color: var(--color-text-muted);
+	}
+
+	@media (min-width: 40rem) {
+		.is-page .hours {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+</style>

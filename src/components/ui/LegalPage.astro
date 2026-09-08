@@ -1,0 +1,63 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from './Container.astro';
+import Breadcrumb from './Breadcrumb.astro';
+
+interface Props {
+	title: string;
+	description: string;
+	canonical: string;
+	heading: string;
+}
+
+const { title, description, canonical, heading } = Astro.props;
+---
+
+<BaseLayout title={title} description={description} canonical={canonical}>
+	<Fragment slot="head">
+		<meta name="robots" content="noindex, follow" />
+	</Fragment>
+
+	<section class="page" aria-labelledby="legal-titulo">
+		<Container>
+			<Breadcrumb
+				items={[
+					{ label: 'Home', href: '/' },
+					{ label: heading, href: canonical },
+				]}
+			/>
+			<h1 id="legal-titulo">{heading}</h1>
+			<div class="legal-body article-body">
+				<slot />
+			</div>
+		</Container>
+	</section>
+</BaseLayout>
+
+<style>
+	.page {
+		padding-block: var(--space-7);
+	}
+
+	.page h1 {
+		margin: 0 0 var(--space-5);
+		font-size: clamp(2rem, 4vw, 2.75rem);
+	}
+
+	.legal-body {
+		max-width: 72ch;
+	}
+
+	.legal-body :global(h2:first-child) {
+		margin-top: 0;
+	}
+
+	.legal-body :global(p) {
+		margin: 0 0 var(--space-3);
+	}
+
+	.legal-body :global(strong) {
+		color: var(--color-text);
+		font-weight: 600;
+	}
+</style>
