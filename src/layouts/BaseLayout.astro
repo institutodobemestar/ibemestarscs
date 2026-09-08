@@ -14,7 +14,10 @@ interface Props {
 
 const { title, description, ogImage = site.ogImage, canonical = Astro.url } = Astro.props;
 const pageTitle = title === site.name || title.includes(site.name) ? title : `${title} | ${site.name}`;
-const canonicalUrl = canonical instanceof URL ? canonical : new URL(canonical, Astro.site);
+const canonicalUrl = canonical instanceof URL ? new URL(canonical.href) : new URL(canonical, Astro.site);
+if (!canonicalUrl.pathname.endsWith('/')) {
+	canonicalUrl.pathname = `${canonicalUrl.pathname}/`;
+}
 const ogImageUrl = new URL(ogImage, Astro.site);
 const organization = {
 	'@context': 'https://schema.org',
