@@ -1,0 +1,190 @@
+---
+import Logo from '../ui/Logo.astro';
+import ContactInfo from '../ui/ContactInfo.astro';
+import site from '../../data/site.json';
+
+const year = new Date().getFullYear();
+
+const localBusiness = {
+	'@context': 'https://schema.org',
+	'@type': 'LocalBusiness',
+	name: site.name,
+	image: new URL(site.ogImage, Astro.site).href,
+	url: Astro.site?.href,
+	telephone: site.phone,
+	email: site.email,
+	address: {
+		'@type': 'PostalAddress',
+		streetAddress: site.address,
+		addressLocality: site.city,
+		addressRegion: site.state,
+		addressCountry: 'BR',
+	},
+	openingHoursSpecification: [
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+			opens: '07:30',
+			closes: '21:00',
+		},
+		{
+			'@type': 'OpeningHoursSpecification',
+			dayOfWeek: 'Saturday',
+			opens: '08:00',
+			closes: '12:00',
+		},
+	],
+	sameAs: [site.socials.facebook, site.socials.youtube],
+	geo: {
+		'@type': 'GeoCoordinates',
+		latitude: site.geo.latitude,
+		longitude: site.geo.longitude,
+	},
+};
+---
+
+<footer class="site-footer">
+	<div class="footer-grid">
+		<div>
+			<a href="/" class="footer-brand" aria-label={`${site.name} — página inicial`}>
+				<Logo width={180} height={48} class="footer-logo" />
+			</a>
+			<p class="footer-copy">{site.tagline}.</p>
+		</div>
+
+		<nav aria-label="Links rápidos">
+			<p class="footer-heading">Links rápidos</p>
+			<ul>
+				<li><a href="/">Home</a></li>
+				<li><a href="/sobre-nos">Sobre Nós</a></li>
+				<li><a href="/contato">Contato</a></li>
+			</ul>
+		</nav>
+
+		<nav aria-label="Links legais">
+			<p class="footer-heading">Legal</p>
+			<ul>
+				<li><a href="/politica-de-privacidade">Política de Privacidade</a></li>
+				<li><a href="/termos-de-uso">Termos de Uso</a></li>
+			</ul>
+		</nav>
+
+		<div>
+			<p class="footer-heading">Contato</p>
+			<ContactInfo variant="footer" />
+
+			<p class="footer-heading footer-heading-spaced">Redes sociais</p>
+			<p class="footer-socials">
+				<a href={site.socials.facebook}>Facebook</a>
+				<a href={site.socials.youtube}>YouTube</a>
+			</p>
+		</div>
+	</div>
+
+	<p class="footer-legal">© {year} {site.name}. Todos os direitos reservados.</p>
+</footer>
+
+<script type="application/ld+json" set:html={JSON.stringify(localBusiness)} />
+
+<style>
+	.site-footer {
+		margin-top: var(--space-8);
+		background: var(--color-secondary);
+		color: var(--color-secondary-soft);
+	}
+
+	.footer-grid {
+		display: grid;
+		gap: var(--space-5);
+		max-width: 72rem;
+		margin-inline: auto;
+		padding: var(--space-8) var(--space-3);
+	}
+
+	.footer-brand {
+		display: inline-block;
+		margin: 0;
+		text-decoration: none;
+		color: var(--color-surface);
+	}
+
+	.footer-brand :global(.logo-image) {
+		display: block;
+		width: auto;
+		height: 2.75rem;
+	}
+
+	.footer-brand :global(.logo-text) {
+		font-family: var(--font-serif);
+		font-size: 1.25rem;
+		font-weight: 600;
+		color: var(--color-surface);
+	}
+
+	.footer-copy,
+	.footer-grid p {
+		margin: 0;
+		line-height: 1.6;
+	}
+
+	.footer-copy {
+		margin-top: var(--space-2);
+		max-width: 22rem;
+	}
+
+	.footer-heading {
+		margin: 0 0 var(--space-2);
+		font-size: 0.8rem;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--color-surface);
+	}
+
+	.footer-heading-spaced {
+		margin-top: var(--space-4);
+	}
+
+	.footer-grid ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		gap: var(--space-1);
+	}
+
+	.footer-grid a {
+		color: var(--color-secondary-soft);
+		text-decoration: none;
+	}
+
+	.footer-grid a:hover {
+		color: var(--color-surface);
+	}
+
+	.footer-socials {
+		display: flex;
+		gap: var(--space-2);
+	}
+
+	.footer-legal {
+		margin: 0;
+		border-top: 1px solid rgb(255 255 255 / 0.1);
+		padding: var(--space-3);
+		text-align: center;
+		font-size: 0.75rem;
+	}
+
+	@media (min-width: 48rem) {
+		.footer-grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			padding-inline: var(--space-4);
+		}
+	}
+
+	@media (min-width: 64rem) {
+		.footer-grid {
+			grid-template-columns: 1.4fr 1fr 1fr 1.4fr;
+		}
+	}
+</style>
