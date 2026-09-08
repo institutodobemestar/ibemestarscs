@@ -30,3 +30,6 @@ _archive/
 
 # jetbrains setting folder
 .idea/
+
+# editor settings
+.vscode/
