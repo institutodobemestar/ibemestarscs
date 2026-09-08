@@ -1,0 +1,111 @@
+---
+import { Image } from 'astro:assets';
+import Container from '../ui/Container.astro';
+import Button from '../ui/Button.astro';
+import site from '../../data/site.json';
+import heroImage from '../../assets/pages/sobre-nos.png';
+
+const whatsappHref = `https://wa.me/${site.whatsapp}`;
+---
+
+<section class="hero" aria-labelledby="hero-titulo">
+	<Container class="hero-grid">
+		<div class="hero-copy">
+			<p class="hero-eyebrow">{site.city}, {site.state}</p>
+			<h1 id="hero-titulo">Recupere sua saúde com o Instituto do Bem Estar</h1>
+			<p class="hero-lead">
+				Desde 2007, o Instituto do Bem Estar oferece tratamentos de reabilitação de alta qualidade,
+				com atendimento personalizado. Já são mais de 10.000 pacientes acompanhados.
+			</p>
+			<div class="hero-actions">
+				<Button href={whatsappHref} variant="accent">
+					Agende pelo WhatsApp
+				</Button>
+				<Button href="#servicos" variant="ghost">Conheça os serviços</Button>
+			</div>
+		</div>
+		<figure class="hero-figure">
+			<!--
+				LCP: sobre-nos.png é foto real de atendimento (não o placeholder de cor).
+				O recorte em fundo preto fica no painel secondary para integrar ao hero.
+			-->
+			<Image
+				src={heroImage}
+				alt="Fisioterapeuta do Instituto do Bem Estar conduzindo alongamento de ombro com paciente, em atendimento individualizado"
+				width={heroImage.width}
+				height={heroImage.height}
+				format="webp"
+				quality="mid"
+				priority
+				loading="eager"
+				fetchpriority="high"
+				decoding="async"
+				class="hero-image"
+			/>
+		</figure>
+	</Container>
+</section>
+
+<style>
+	.hero {
+		background: var(--color-bg-alt);
+	}
+
+	.hero-grid {
+		display: grid;
+		align-items: center;
+		gap: var(--space-6);
+		padding-block: var(--space-7);
+	}
+
+	.hero-eyebrow {
+		margin: 0;
+		font-size: 0.875rem;
+		font-weight: 600;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--color-primary-dark);
+	}
+
+	.hero-copy h1 {
+		margin: var(--space-2) 0 0;
+		font-size: clamp(2rem, 4vw, 3.15rem);
+	}
+
+	.hero-lead {
+		margin: var(--space-3) 0 0;
+		max-width: 36rem;
+		font-size: 1.125rem;
+		color: var(--color-text-muted);
+	}
+
+	.hero-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-2);
+		margin-top: var(--space-4);
+	}
+
+	.hero-figure {
+		margin: 0;
+		overflow: hidden;
+		border-radius: var(--radius-xl);
+		background: var(--color-secondary);
+		box-shadow: var(--shadow-lg);
+	}
+
+	.hero-image {
+		display: block;
+		width: 100%;
+		height: auto;
+		object-fit: cover;
+		object-position: center 20%;
+	}
+
+	@media (min-width: 48rem) {
+		.hero-grid {
+			grid-template-columns: 1fr 1fr;
+			padding-block: var(--space-8);
+		}
+	}
+</style>

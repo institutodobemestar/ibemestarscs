@@ -1,0 +1,100 @@
+---
+import Container from '../ui/Container.astro';
+import Button from '../ui/Button.astro';
+import site from '../../data/site.json';
+
+const whatsappHref = `https://wa.me/${site.whatsapp}`;
+---
+
+<section class="cta" aria-labelledby="cta-titulo">
+	<Container>
+		<div class="cta-panel">
+			<h2 id="cta-titulo">Pronto para começar a sua reabilitação?</h2>
+			<p>
+				Fale com a recepção do {site.name} e agende uma avaliação em {site.city}.
+			</p>
+			<dl class="hours">
+				<div>
+					<dt>Segunda a sexta</dt>
+					<dd>{site.hours.segSex}</dd>
+				</div>
+				<div>
+					<dt>Sábado</dt>
+					<dd>{site.hours.sabado}</dd>
+				</div>
+				<div>
+					<dt>Domingo</dt>
+					<dd>{site.hours.domingo}</dd>
+				</div>
+			</dl>
+			<Button href={whatsappHref} variant="accent" size="lg">
+				Agende pelo WhatsApp
+			</Button>
+		</div>
+	</Container>
+</section>
+
+<style>
+	.cta {
+		padding-block: var(--space-8);
+	}
+
+	.cta-panel {
+		display: grid;
+		justify-items: center;
+		padding: var(--space-6) var(--space-4);
+		border-radius: var(--radius-xl);
+		background: var(--color-secondary);
+		color: var(--color-secondary-soft);
+		text-align: center;
+		box-shadow: var(--shadow-md);
+	}
+
+	.cta-panel h2 {
+		margin: 0;
+		max-width: 28rem;
+		font-size: clamp(1.75rem, 4vw, 2.25rem);
+		color: var(--color-surface);
+	}
+
+	.cta-panel > p {
+		margin: var(--space-2) 0 0;
+		max-width: 32rem;
+	}
+
+	.cta-panel :global(a) {
+		color: var(--color-surface);
+	}
+
+	.hours {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--space-3);
+		width: min(100%, 36rem);
+		margin: var(--space-5) 0;
+	}
+
+	.hours dt {
+		font-size: 0.75rem;
+		font-weight: 600;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: var(--color-primary-soft);
+	}
+
+	.hours dd {
+		margin: 0.2rem 0 0;
+		font-weight: 600;
+		color: var(--color-surface);
+	}
+
+	@media (min-width: 40rem) {
+		.cta-panel {
+			padding: var(--space-7) var(--space-8);
+		}
+
+		.hours {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+</style>

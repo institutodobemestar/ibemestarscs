@@ -1,0 +1,25 @@
+---
+import Container from '../ui/Container.astro';
+import Button from '../ui/Button.astro';
+import site from '../../data/site.json';
+---
+
+<section class="py-[var(--space-8)]" aria-labelledby="cta-titulo">
+	<Container>
+		<div
+			class="rounded-[var(--radius-xl)] bg-secondary px-[var(--space-5)] py-[var(--space-6)] text-center text-secondary-soft shadow-[var(--shadow-md)] md:px-[var(--space-8)]"
+		>
+			<h2 id="cta-titulo" class="text-3xl text-surface md:text-4xl">
+				Pronto para começar a sua reabilitação?
+			</h2>
+			<p class="mx-auto mt-[var(--space-2)] max-w-xl">
+				Fale com a recepção do {site.name} e agende uma avaliação em {site.city}.
+			</p>
+			<div class="mt-[var(--space-4)]">
+				<Button href={`https://wa.me/${site.whatsapp}`} variant="accent">
+					Chamar no WhatsApp
+				</Button>
+			</div>
+		</div>
+	</Container>
+</section>

@@ -1,0 +1,27 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/sections/Hero.astro';
+import ServicesGrid from '../components/sections/ServicesGrid.astro';
+import Stats from '../components/sections/Stats.astro';
+import Testimonials from '../components/sections/Testimonials.astro';
+import TeamPreview from '../components/sections/TeamPreview.astro';
+import CTASection from '../components/sections/CTASection.astro';
+
+const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
+const team = await getCollection('team');
+const testimonials = await getCollection('testimonials');
+---
+
+<BaseLayout
+	title="Instituto do Bem Estar - Fisioterapia, Acupuntura e Reabilitação em São Caetano do Sul"
+	description="Recupere sua saúde com o Instituto do Bem Estar em São Caetano do Sul. Especialistas em Fisioterapia, Acupuntura, Hidroterapia e Reabilitação."
+	canonical="/"
+>
+	<Hero />
+	<ServicesGrid services={services} />
+	<Stats />
+	<Testimonials testimonials={testimonials} />
+	<TeamPreview team={team} />
+	<CTASection />
+</BaseLayout>

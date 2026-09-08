@@ -1,0 +1,309 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/ui/Container.astro';
+import Breadcrumb from '../components/ui/Breadcrumb.astro';
+import CTASection from '../components/sections/CTASection.astro';
+import heroImage from '../assets/pages/sobre-nos.png';
+
+const differentials = [
+	{
+		title: 'Experiência Comprovada',
+		text: 'Desde 2007, o Instituto do Bem Estar tem se dedicado a oferecer tratamentos de reabilitação de alta qualidade, atendendo mais de 10.000 pacientes ao longo dos anos.',
+	},
+	{
+		title: 'Atendimento Personalizado',
+		text: 'Nosso diferencial está no atendimento individualizado, garantindo que cada paciente receba um tratamento adaptado às suas necessidades específicas.',
+	},
+	{
+		title: 'Infraestrutura de Ponta',
+		text: 'Contamos com uma infraestrutura moderna e individualizada, projetada para proporcionar o máximo conforto e eficácia nos tratamentos.',
+	},
+	{
+		title: 'Equipe Especializada',
+		text: 'Nosso corpo técnico possui vasta experiência e formação, assegurando um atendimento de excelência em todas as áreas de reabilitação.',
+	},
+];
+
+const principles = [
+	{
+		title: 'Abordagem por Projetos',
+		text: 'Uma vez definido o PROJETO DE ATENDIMENTO do paciente, devemos seguir o planejamento, ajustes de rotas por vezes serão necessários, mas mudanças radicais não devem ser realizadas.',
+	},
+	{
+		title: 'Foco em Resultados',
+		text: 'QUEM TEM DOR TEM PRESSA, promover o melhor resultado possível no menor espaço de tempo.',
+	},
+	{
+		title: 'Sintonia e Comunicação',
+		text: 'Promover um DIAGNÓSTICO PRECISO E ALINHADO com todos os profissionais envolvidos na reabilitação do paciente garantido que os objetivos previstos possam ser alcançados.',
+	},
+	{
+		title: 'Confiança',
+		text: 'Somos orientados pelo EXCESSO DE ZELO, garantindo um tratamento seguro e eficaz que faça valer a confiança recebida de todos os nossos pacientes e parceiros.',
+	},
+	{
+		title: 'Respeito Mútuo',
+		text: 'Valorizamos o conhecimento e experiência de cada colaborador e parceiro, porém sempre o APRENDIZADO COLETIVO deverá orientar nossas decisões.',
+	},
+	{
+		title: 'Segurança Clínica',
+		text: 'Devemos respeitar cada fase do projeto de reabilitação, pois acreditamos que DOR NÃO COMBINA COM EXERCÍCIOS.',
+	},
+	{
+		title: 'Acolhimento',
+		text: 'Devemos acolher fraternalmente todos os nossos pacientes, respeitando o ADERCO e demais PROCESSOS do Instituto do Bem Estar.',
+	},
+];
+
+const commitments = [
+	{
+		title: 'Excelência no Atendimento',
+		text: 'Nosso compromisso é oferecer o mais alto padrão de atendimento, combinando experiência, tecnologia e cuidado personalizado.',
+	},
+	{
+		title: 'Resultados Sustentáveis',
+		text: 'Focamos em proporcionar resultados duradouros, ajudando nossos pacientes a alcançarem uma melhor qualidade de vida a longo prazo.',
+	},
+	{
+		title: 'Inovação Constante',
+		text: 'Estamos sempre em busca de novas técnicas e tecnologias para aprimorar nossos tratamentos e oferecer o melhor para nossos pacientes.',
+	},
+	{
+		title: 'Cuidado Integral',
+		text: 'Acreditamos no cuidado integral do ser humano, considerando aspectos físicos, mentais e emocionais em todos os nossos tratamentos.',
+	},
+];
+---
+
+<BaseLayout
+	title="Sobre Nós - Instituto do Bem Estar"
+	description="Desde 2007, o Instituto do Bem Estar oferece reabilitação de alta qualidade em São Caetano do Sul, com atendimento personalizado e mais de 10.000 pacientes atendidos."
+	canonical="/sobre-nos"
+>
+	<section class="page" aria-labelledby="sobre-titulo">
+		<Container>
+			<Breadcrumb
+				items={[
+					{ label: 'Home', href: '/' },
+					{ label: 'Sobre Nós', href: '/sobre-nos' },
+				]}
+			/>
+			<div class="intro-grid">
+				<div>
+					<h1 id="sobre-titulo">Sobre Nós</h1>
+					<p>
+						Desde 2007, o Instituto do Bem Estar tem se dedicado a oferecer tratamentos de
+						reabilitação de alta qualidade, atendendo mais de 10.000 pacientes ao longo dos anos.
+					</p>
+				</div>
+				<figure>
+					<Image
+						src={heroImage}
+						alt="Fisioterapeuta do Instituto do Bem Estar em atendimento individualizado com paciente"
+						width={heroImage.width}
+						height={heroImage.height}
+						format="webp"
+						quality="mid"
+						priority
+						loading="eager"
+						fetchpriority="high"
+						decoding="async"
+						class="intro-image"
+					/>
+				</figure>
+			</div>
+		</Container>
+	</section>
+
+	<section class="block" aria-labelledby="diferenciais-titulo">
+		<Container>
+			<h2 id="diferenciais-titulo">O que nos diferencia</h2>
+			<ul class="cards">
+				{
+					differentials.map((item) => (
+						<li>
+							<h3>{item.title}</h3>
+							<p>{item.text}</p>
+						</li>
+					))
+				}
+			</ul>
+		</Container>
+	</section>
+
+	<section class="block alt" aria-labelledby="principios-titulo">
+		<Container>
+			<h2 id="principios-titulo">Nossos Princípios</h2>
+			<ul class="principles">
+				{
+					principles.map((item) => (
+						<li>
+							<h3>{item.title}</h3>
+							<p>{item.text}</p>
+						</li>
+					))
+				}
+			</ul>
+		</Container>
+	</section>
+
+	<section class="block" aria-labelledby="vmv-titulo">
+		<Container>
+			<h2 id="vmv-titulo">Nossa Visão, Missão e Valores</h2>
+			<p class="lead">
+				Este texto reflete o compromisso do Instituto do Bem Estar em ser uma organização que
+				promove o bem-estar de maneira holística e inclusiva.
+			</p>
+			<ul class="vmv">
+				<li>
+					<h3>Visão</h3>
+					<p>
+						Levar para todos que nos procuram bem estar e qualidade de vida. Praticando terapias
+						integrativas para reestabelecer a saúde física, mental e espiritual.
+					</p>
+				</li>
+				<li>
+					<h3>Missão</h3>
+					<p>
+						Construir e realizar projetos integrativos de reabilitação entregando com excelência
+						resultados sustentáveis e duradouros.
+					</p>
+				</li>
+				<li>
+					<h3>Valores</h3>
+					<p>Competência, Respeito, Ética, Compaixão e Amor.</p>
+				</li>
+			</ul>
+		</Container>
+	</section>
+
+	<section class="block alt" aria-labelledby="compromisso-titulo">
+		<Container>
+			<h2 id="compromisso-titulo">Compromisso com o Bem-Estar</h2>
+			<ul class="cards">
+				{
+					commitments.map((item) => (
+						<li>
+							<h3>{item.title}</h3>
+							<p>{item.text}</p>
+						</li>
+					))
+				}
+			</ul>
+		</Container>
+	</section>
+
+	<CTASection />
+</BaseLayout>
+
+<style>
+	.page {
+		padding-block: var(--space-7) var(--space-6);
+	}
+
+	.intro-grid {
+		display: grid;
+		align-items: center;
+		gap: var(--space-5);
+	}
+
+	.page h1 {
+		margin: 0;
+		font-size: clamp(2rem, 4vw, 2.75rem);
+	}
+
+	.intro-grid p {
+		margin: var(--space-3) 0 0;
+		max-width: 36rem;
+		font-size: 1.125rem;
+		color: var(--color-text-muted);
+	}
+
+	.intro-grid figure {
+		margin: 0;
+		overflow: hidden;
+		border-radius: var(--radius-xl);
+		background: var(--color-secondary);
+		box-shadow: var(--shadow-lg);
+	}
+
+	.intro-image {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+
+	.block {
+		padding-block: var(--space-7);
+	}
+
+	.block.alt {
+		background: var(--color-bg-alt);
+	}
+
+	.block h2 {
+		margin: 0 0 var(--space-5);
+		font-size: clamp(1.75rem, 3vw, 2.25rem);
+	}
+
+	.lead {
+		margin: calc(var(--space-5) * -1) 0 var(--space-5);
+		max-width: 40rem;
+		color: var(--color-text-muted);
+	}
+
+	.cards,
+	.principles,
+	.vmv {
+		display: grid;
+		gap: var(--space-4);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.cards li,
+	.principles li,
+	.vmv li {
+		padding: var(--space-4);
+		border-radius: var(--radius-lg);
+		background: var(--color-surface);
+		box-shadow: var(--shadow-sm);
+	}
+
+	.cards h3,
+	.principles h3,
+	.vmv h3 {
+		margin: 0 0 var(--space-2);
+		font-size: 1.25rem;
+	}
+
+	.cards p,
+	.principles p,
+	.vmv p {
+		margin: 0;
+		color: var(--color-text-muted);
+	}
+
+	@media (min-width: 48rem) {
+		.intro-grid {
+			grid-template-columns: 1fr 1fr;
+		}
+
+		.cards,
+		.vmv {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+
+	@media (min-width: 64rem) {
+		.principles {
+			grid-template-columns: repeat(2, 1fr);
+		}
+
+		.vmv {
+			grid-template-columns: repeat(3, 1fr);
+		}
+	}
+</style>

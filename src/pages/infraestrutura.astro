@@ -1,0 +1,160 @@
+---
+import { Image } from 'astro:assets';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/ui/Container.astro';
+import Breadcrumb from '../components/ui/Breadcrumb.astro';
+import CTASection from '../components/sections/CTASection.astro';
+import spaceImage from '../assets/pages/infraestrutura.jpg';
+---
+
+<BaseLayout
+	title="Infraestrutura - Instituto do Bem Estar"
+	description="Conheça o prédio de 580m² do Instituto do Bem Estar em São Caetano do Sul, planejado para reabilitação, com acessibilidade, piscina aquecida e estacionamento."
+	canonical="/infraestrutura"
+>
+	<section class="page" aria-labelledby="infra-titulo">
+		<Container>
+			<Breadcrumb
+				items={[
+					{ label: 'Home', href: '/' },
+					{ label: 'Infraestrutura', href: '/infraestrutura' },
+				]}
+			/>
+			<div class="layout">
+				<div>
+					<h1 id="infra-titulo">Infraestrutura</h1>
+					<p class="lead">
+						Nossos diferenciais consistem em um atendimento personalizado, uma infraestrutura
+						individualizada, corpo técnico com vasta experiência e formação, equipamentos e recursos
+						modernos e processos estruturados, possibilitando assim o alcance de resultados com
+						rapidez e um acompanhamento clínico personalizado.
+					</p>
+					<h2>Prédio planejado</h2>
+					<p>
+						Um prédio planejado para a reabilitação com acessibilidade, elevador panorâmico, piscina
+						aquecida e estacionamento. Tecnologia e conforto à sua disposição.
+					</p>
+					<h2>Acompanhamento individualizado</h2>
+					<p>
+						No Instituto do Bem Estar, oferecemos um atendimento personalizado, adaptado às
+						necessidades de cada pessoa. Nosso acompanhamento individualizado visa proporcionar
+						cuidados específicos e eficazes, com foco no seu bem-estar físico e emocional. Porque
+						cada pessoa é única, nosso compromisso é garantir que você receba o apoio necessário
+						para alcançar os melhores resultados.
+					</p>
+					<ul>
+						<li>
+							<strong>Piscina aquecida</strong>
+							<span>Piscina aquecida com 30 m² e 40.000 litros para hidroterapia.</span>
+						</li>
+						<li>
+							<strong>Studio Pilates</strong>
+							<span>Equipamentos de alta performance com foco em ergonomia.</span>
+						</li>
+					</ul>
+				</div>
+				<figure>
+					<Image
+						src={spaceImage}
+						alt="Sala de reabilitação do Instituto do Bem Estar com aparelhos de fisioterapia, Pilates e espaço amplo para atendimento"
+						width={spaceImage.width}
+						height={spaceImage.height}
+						format="webp"
+						quality="mid"
+						priority
+						loading="eager"
+						fetchpriority="high"
+						decoding="async"
+						class="space-image"
+					/>
+				</figure>
+			</div>
+		</Container>
+	</section>
+	<CTASection />
+</BaseLayout>
+
+<style>
+	.page {
+		padding-block: var(--space-7);
+	}
+
+	.layout {
+		display: grid;
+		align-items: start;
+		gap: var(--space-5);
+	}
+
+	.page h1 {
+		margin: 0;
+		font-size: clamp(2rem, 4vw, 2.75rem);
+	}
+
+	.lead,
+	.layout p {
+		color: var(--color-text-muted);
+	}
+
+	.lead {
+		margin: var(--space-3) 0 0;
+		font-size: 1.125rem;
+	}
+
+	.layout h2 {
+		margin: var(--space-5) 0 var(--space-2);
+		font-size: 1.5rem;
+	}
+
+	.layout p {
+		margin: 0;
+	}
+
+	.layout ul {
+		display: grid;
+		gap: var(--space-3);
+		margin: var(--space-5) 0 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.layout li {
+		padding: var(--space-3);
+		border-radius: var(--radius-md);
+		background: var(--color-bg-alt);
+	}
+
+	.layout strong {
+		display: block;
+		margin-bottom: 0.35rem;
+		color: var(--color-secondary);
+	}
+
+	.layout span {
+		color: var(--color-text-muted);
+	}
+
+	.layout figure {
+		margin: 0;
+		overflow: hidden;
+		border-radius: var(--radius-xl);
+		box-shadow: var(--shadow-lg);
+	}
+
+	.space-image {
+		display: block;
+		width: 100%;
+		height: auto;
+		object-fit: cover;
+	}
+
+	@media (min-width: 48rem) {
+		.layout {
+			grid-template-columns: 1.1fr 0.9fr;
+		}
+
+		.layout figure {
+			position: sticky;
+			top: 6rem;
+		}
+	}
+</style>

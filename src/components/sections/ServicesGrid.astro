@@ -1,0 +1,36 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import ServiceCards from '../ui/ServiceCards.astro';
+
+interface Props {
+	services: CollectionEntry<'services'>[];
+}
+
+const { services } = Astro.props;
+---
+
+<section id="servicos" class="services" aria-labelledby="servicos-titulo">
+	<Container>
+		<SectionHeading
+			id="servicos-titulo"
+			eyebrow="O que fazemos"
+			title="Serviços de fisioterapia e reabilitação"
+			description="Atendimento personalizado em Fisioterapia, Acupuntura, Hidroterapia e terapias integrativas."
+		/>
+		<div class="services-cards">
+			<ServiceCards services={services} />
+		</div>
+	</Container>
+</section>
+
+<style>
+	.services {
+		padding-block: var(--space-8);
+	}
+
+	.services-cards {
+		margin-top: var(--space-6);
+	}
+</style>

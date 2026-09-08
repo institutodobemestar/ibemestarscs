@@ -1,0 +1,49 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import { resolveContentImage } from '../../lib/content-images';
+
+interface Props {
+	services: CollectionEntry<'services'>[];
+}
+
+const { services } = Astro.props;
+---
+
+<section class="py-[var(--space-8)]" aria-labelledby="servicos-titulo">
+	<Container>
+		<SectionHeading
+			id="servicos-titulo"
+			eyebrow="O que fazemos"
+			title="Serviços de fisioterapia e reabilitação"
+			description="Planos individuais para dor, pós-operatório, reabilitação neurológica e postura."
+		/>
+		<ul class="mt-[var(--space-6)] grid gap-[var(--space-4)] md:grid-cols-3">
+			{
+				services.map((service) => (
+					<li class="overflow-hidden rounded-[var(--radius-lg)] bg-surface shadow-[var(--shadow-md)]">
+						<a href={`/servicos/${service.data.slug}`} class="block no-underline">
+							<Image
+								src={resolveContentImage(service.data.heroImage)}
+								alt={`Ilustração do serviço ${service.data.title}`}
+								width={800}
+								height={520}
+								format="webp"
+								quality="mid"
+								class="h-48 w-full object-cover"
+							/>
+							<div class="p-[var(--space-4)]">
+								<h3 class="text-xl">{service.data.title}</h3>
+								<p class="mt-[var(--space-2)] text-sm text-text-muted">
+									{service.data.shortDescription}
+								</p>
+							</div>
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</Container>
+</section>

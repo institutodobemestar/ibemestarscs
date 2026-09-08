@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/ui/Container.astro';
+import Breadcrumb from '../../components/ui/Breadcrumb.astro';
+import { getCollection } from 'astro:content';
+import ServiceCards from '../../components/ui/ServiceCards.astro';
+
+const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
+const titles = services.map((service) => service.data.title.replace(/\u200b/g, '').trim());
+const description = `${titles.slice(0, -1).join(', ')} e ${titles.at(-1)} no Instituto do Bem Estar, em São Caetano do Sul.`;
+---
+
+<BaseLayout
+	title="Nossos Serviços - Instituto do Bem Estar"
+	description={description}
+	canonical="/servicos"
+>
+	<section class="page" aria-labelledby="servicos-pagina">
+		<Container>
+			<Breadcrumb
+				items={[
+					{ label: 'Home', href: '/' },
+					{ label: 'Serviços', href: '/servicos' },
+				]}
+			/>
+			<h1 id="servicos-pagina">Nossos Serviços</h1>
+			<p class="intro">
+				Nosso diferencial está no atendimento individualizado: cada paciente recebe um tratamento
+				adaptado às suas necessidades específicas, com equipe especializada em todas as áreas de
+				reabilitação.
+			</p>
+			<ServiceCards services={services} />
+		</Container>
+	</section>
+</BaseLayout>
+
+<style>
+	.page {
+		padding-block: var(--space-7);
+	}
+
+	.page h1 {
+		margin: 0;
+		font-size: clamp(2rem, 4vw, 2.75rem);
+	}
+
+	.intro {
+		max-width: 42rem;
+		margin: var(--space-3) 0 var(--space-6);
+		font-size: 1.125rem;
+		color: var(--color-text-muted);
+	}
+</style>

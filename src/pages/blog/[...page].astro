@@ -1,0 +1,193 @@
+---
+import { Image } from 'astro:assets';
+import type { Page } from 'astro';
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Container from '../../components/ui/Container.astro';
+import Breadcrumb from '../../components/ui/Breadcrumb.astro';
+import { resolveContentImage } from '../../lib/content-images';
+import { getPublishedPosts } from '../../lib/blog';
+import { formatPublishDate } from '../../lib/dates';
+
+export async function getStaticPaths({ paginate }) {
+	const posts = await getPublishedPosts();
+	return paginate(posts, { pageSize: 12 });
+}
+
+interface Props {
+	page: Page<CollectionEntry<'blog'>>;
+}
+
+const { page } = Astro.props;
+const canonical = page.currentPage === 1 ? '/blog' : `/blog/${page.currentPage}`;
+---
+
+<BaseLayout
+	title="Blog - Instituto do Bem Estar"
+	description="Artigos sobre saúde, bem-estar, fisioterapia e reabilitação escritos pela equipe do Instituto do Bem Estar em São Caetano do Sul."
+	canonical={canonical}
+>
+	<section class="page" aria-labelledby="blog-titulo">
+		<Container>
+			<Breadcrumb
+				items={[
+					{ label: 'Home', href: '/' },
+					{ label: 'Blog', href: '/blog' },
+				]}
+			/>
+			<h1 id="blog-titulo">Blog</h1>
+			<ul class="post-grid">
+				{
+					page.data.map((post, index) => {
+						const isLcpCandidate = page.currentPage === 1 && index === 0;
+						return (
+							<li>
+								<a href={`/blog/${post.data.slug}`} class="post-card">
+									<Image
+										src={resolveContentImage(post.data.heroImage)}
+										alt={`Capa do artigo ${post.data.title}`}
+										width={960}
+										height={540}
+										format="webp"
+										quality="mid"
+										loading={isLcpCandidate ? 'eager' : 'lazy'}
+										fetchpriority={isLcpCandidate ? 'high' : 'auto'}
+										decoding="async"
+										class="post-image"
+									/>
+									<div class="post-body">
+										<p>
+											<time datetime={post.data.publishDate.toISOString()}>
+												{formatPublishDate(post.data.publishDate)}
+											</time>
+										</p>
+										<h2>{post.data.title}</h2>
+										<p>{post.data.description}</p>
+										{post.data.tags.length > 0 && (
+											<ul class="tags" aria-label="Tags do artigo">
+												{post.data.tags.map((tag) => (
+													<li>{tag}</li>
+												))}
+											</ul>
+										)}
+									</div>
+								</a>
+							</li>
+						);
+					})
+				}
+			</ul>
+			{
+				page.lastPage > 1 && (
+					<nav class="pagination" aria-label="Paginação do blog">
+						{page.url.prev ? (
+							<a href={page.url.prev}>Página anterior</a>
+						) : (
+							<span aria-hidden="true" />
+						)}
+						<p>
+							Página {page.currentPage} de {page.lastPage}
+						</p>
+						{page.url.next ? <a href={page.url.next}>Próxima página</a> : <span aria-hidden="true" />}
+					</nav>
+				)
+			}
+		</Container>
+	</section>
+</BaseLayout>
+
+<style>
+	.page {
+		padding-block: var(--space-7);
+	}
+
+	.page h1 {
+		margin: 0 0 var(--space-6);
+		font-size: clamp(2rem, 4vw, 2.75rem);
+	}
+
+	.post-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--space-4);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.post-card {
+		display: block;
+		height: 100%;
+		overflow: hidden;
+		border-radius: var(--radius-lg);
+		background: var(--color-surface);
+		box-shadow: var(--shadow-md);
+		text-decoration: none;
+		color: inherit;
+	}
+
+	.post-image {
+		width: 100%;
+		height: 13rem;
+		object-fit: cover;
+	}
+
+	.post-body {
+		padding: var(--space-4);
+	}
+
+	.post-body time {
+		font-size: 0.875rem;
+		color: var(--color-text-muted);
+	}
+
+	.post-body h2 {
+		margin: var(--space-1) 0 0;
+		font-size: 1.35rem;
+	}
+
+	.post-body p {
+		margin: var(--space-2) 0 0;
+		font-size: 0.9375rem;
+		color: var(--color-text-muted);
+	}
+
+	.tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-1);
+		margin: var(--space-3) 0 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.tags li {
+		border-radius: var(--radius-full);
+		background: var(--color-primary-soft);
+		color: var(--color-primary-dark);
+		font-size: 0.75rem;
+		font-weight: 600;
+		padding: 0.2rem 0.65rem;
+	}
+
+	.pagination {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-3);
+		margin-top: var(--space-6);
+		font-size: 0.9375rem;
+	}
+
+	.pagination a {
+		color: var(--color-primary-dark);
+		font-weight: 600;
+		text-decoration: none;
+	}
+
+	@media (min-width: 48rem) {
+		.post-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+</style>

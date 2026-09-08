@@ -1,0 +1,119 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+
+interface Props {
+	team: CollectionEntry<'team'>[];
+}
+
+const { team } = Astro.props;
+---
+
+<section class="team" aria-labelledby="equipe-titulo">
+	<Container>
+		<SectionHeading
+			id="equipe-titulo"
+			eyebrow="Quem cuida de você"
+			title="Equipe de fisioterapia"
+			description="Profissionais registrados no CREFITO."
+		/>
+		<ul class="team-grid">
+			{
+				team.map((member) => (
+					<li class="team-card">
+						<Image
+							src={member.data.photo}
+							alt={`Retrato de ${member.data.name}`}
+							width={160}
+							height={160}
+							format="webp"
+							quality="mid"
+							loading="lazy"
+							decoding="async"
+							class="team-photo"
+						/>
+						<div>
+							<h3>{member.data.name}</h3>
+							<p class="team-crefito">CREFITO {member.data.crefito}</p>
+							<p class="team-specialties">{member.data.specialties.join(' · ')}</p>
+						</div>
+					</li>
+				))
+			}
+		</ul>
+		<p class="team-more">
+			<a href="/equipe">Conheça toda a equipe</a>
+		</p>
+	</Container>
+</section>
+
+<style>
+	.team {
+		padding-block: var(--space-8);
+	}
+
+	.team-grid {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: var(--space-4);
+		margin: var(--space-6) 0 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.team-card {
+		display: flex;
+		gap: var(--space-3);
+		padding: var(--space-4);
+		border-radius: var(--radius-lg);
+		background: var(--color-surface);
+		box-shadow: var(--shadow-sm);
+	}
+
+	.team-photo {
+		width: 6rem;
+		height: 6rem;
+		flex-shrink: 0;
+		border-radius: var(--radius-md);
+		object-fit: cover;
+	}
+
+	.team-card h3 {
+		margin: 0;
+		font-size: 1.25rem;
+	}
+
+	.team-crefito {
+		margin: 0.25rem 0 0;
+		font-size: 0.875rem;
+		color: var(--color-text-muted);
+	}
+
+	.team-specialties {
+		margin: var(--space-1) 0 0;
+		font-size: 0.875rem;
+		color: var(--color-primary-dark);
+	}
+
+	.team-more {
+		margin: var(--space-5) 0 0;
+	}
+
+	.team-more a {
+		font-weight: 600;
+		color: var(--color-primary-dark);
+		text-decoration: none;
+	}
+
+	.team-more a:hover {
+		text-decoration: underline;
+	}
+
+	@media (min-width: 48rem) {
+		.team-grid {
+			grid-template-columns: repeat(2, 1fr);
+		}
+	}
+</style>

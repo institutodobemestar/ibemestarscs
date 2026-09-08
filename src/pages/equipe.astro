@@ -1,0 +1,224 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Container from '../components/ui/Container.astro';
+import Breadcrumb from '../components/ui/Breadcrumb.astro';
+import site from '../data/site.json';
+
+const team = (await getCollection('team')).sort((a, b) => {
+	const order = (id: string) => (id.includes('ricardo') ? 0 : id.includes('daniele') ? 1 : 2);
+	return order(a.id) - order(b.id);
+});
+
+const description = `Conheça ${team
+	.map((member) => `${member.data.name} (${member.data.specialties.join(', ')})`)
+	.join(' e ')} no Instituto do Bem Estar, em São Caetano do Sul.`;
+
+const people = {
+	'@context': 'https://schema.org',
+	'@graph': team.map((member) => ({
+		'@type': 'Person',
+		name: member.data.name,
+		jobTitle: 'Fisioterapeuta',
+		description: member.data.bio,
+		image: new URL(member.data.photo.src, Astro.site).href,
+		worksFor: {
+			'@type': 'Organization',
+			name: site.name,
+			url: Astro.site?.href,
+		},
+		sameAs: [member.data.socials?.facebook, member.data.socials?.youtube].filter(Boolean),
+	})),
+};
+---
+
+<BaseLayout title="Nossa Equipe - Instituto do Bem Estar" description={description} canonical="/equipe">
+	<Fragment slot="head">
+		<script type="application/ld+json" set:html={JSON.stringify(people)} />
+	</Fragment>
+
+	<section class="page" aria-labelledby="equipe-pagina">
+		<Container>
+			<Breadcrumb
+				items={[
+					{ label: 'Home', href: '/' },
+					{ label: 'Equipe', href: '/equipe' },
+				]}
+			/>
+			<h1 id="equipe-pagina">Nossa Equipe</h1>
+			<ul class="team-list">
+				{
+					team.map((member, index) => (
+						<li class="member">
+							<Image
+								src={member.data.photo}
+								alt={`Retrato profissional de ${member.data.name}`}
+								width={400}
+								height={400}
+								format="webp"
+								quality="mid"
+								loading={index === 0 ? 'eager' : 'lazy'}
+								fetchpriority={index === 0 ? 'high' : 'auto'}
+								decoding="async"
+								class="member-photo"
+							/>
+							<div>
+								<h2>{member.data.name}</h2>
+								<p class="crefito">CREFITO {member.data.crefito}</p>
+								<ul class="specialties" aria-label={`Especialidades de ${member.data.name}`}>
+									{member.data.specialties.map((specialty) => (
+										<li>{specialty}</li>
+									))}
+								</ul>
+								<p class="bio">{member.data.bio}</p>
+								{(member.data.socials?.facebook || member.data.socials?.youtube) && (
+									<ul class="socials">
+										{member.data.socials.facebook && (
+											<li>
+												<a
+													href={member.data.socials.facebook}
+													target="_blank"
+													rel="noopener noreferrer"
+													aria-label={`Facebook de ${member.data.name}`}
+												>
+													<svg viewBox="0 0 24 24" aria-hidden="true">
+														<path d="M14 9h3V6h-3c-1.7 0-3 1.3-3 3v2H9v3h2v7h3v-7h3l1-3h-4V9c0-.6.4-1 1-1Z" />
+													</svg>
+												</a>
+											</li>
+										)}
+										{member.data.socials.youtube && (
+											<li>
+												<a
+													href={member.data.socials.youtube}
+													target="_blank"
+													rel="noopener noreferrer"
+													aria-label={`YouTube de ${member.data.name}`}
+												>
+													<svg viewBox="0 0 24 24" aria-hidden="true">
+														<path d="M23 12.2s0-3.2-.4-4.6c-.2-.9-.9-1.6-1.8-1.8C19.2 5.4 12 5.4 12 5.4s-7.2 0-8.8.4c-.9.2-1.6.9-1.8 1.8C1 9 1 12.2 1 12.2s0 3.2.4 4.6c.2.9.9 1.6 1.8 1.8 1.6.4 8.8.4 8.8.4s7.2 0 8.8-.4c.9-.2 1.6-.9 1.8-1.8.4-1.4.4-4.6.4-4.6ZM9.8 15.5v-6.7l6 3.4-6 3.3Z" />
+													</svg>
+												</a>
+											</li>
+										)}
+									</ul>
+								)}
+							</div>
+						</li>
+					))
+				}
+			</ul>
+		</Container>
+	</section>
+</BaseLayout>
+
+<style>
+	.page {
+		padding-block: var(--space-7);
+	}
+
+	.page h1 {
+		margin: 0 0 var(--space-6);
+		font-size: clamp(2rem, 4vw, 2.75rem);
+	}
+
+	.team-list {
+		display: grid;
+		gap: var(--space-5);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.member {
+		display: grid;
+		gap: var(--space-4);
+		padding: var(--space-4);
+		border-radius: var(--radius-xl);
+		background: var(--color-surface);
+		box-shadow: var(--shadow-md);
+	}
+
+	.member-photo {
+		width: 100%;
+		height: 16rem;
+		border-radius: var(--radius-lg);
+		object-fit: cover;
+	}
+
+	.member h2 {
+		margin: 0;
+		font-size: 1.75rem;
+	}
+
+	.crefito {
+		margin: 0.35rem 0 0;
+		font-size: 0.875rem;
+		color: var(--color-text-muted);
+	}
+
+	.specialties {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-1);
+		margin: var(--space-3) 0 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.specialties li {
+		border-radius: var(--radius-full);
+		background: var(--color-primary-soft);
+		color: var(--color-primary-dark);
+		font-size: 0.8125rem;
+		font-weight: 600;
+		padding: 0.25rem 0.75rem;
+	}
+
+	.bio {
+		margin: var(--space-3) 0 0;
+		color: var(--color-text-muted);
+	}
+
+	.socials {
+		display: flex;
+		gap: var(--space-2);
+		margin: var(--space-3) 0 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.socials a {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.5rem;
+		height: 2.5rem;
+		border-radius: var(--radius-full);
+		background: var(--color-secondary);
+		color: var(--color-surface);
+	}
+
+	.socials svg {
+		width: 1.15rem;
+		height: 1.15rem;
+		fill: currentColor;
+	}
+
+	.socials a:hover {
+		background: var(--color-primary-dark);
+	}
+
+	@media (min-width: 48rem) {
+		.member {
+			grid-template-columns: 220px 1fr;
+			align-items: start;
+		}
+
+		.member-photo {
+			height: 100%;
+			min-height: 16rem;
+		}
+	}
+</style>

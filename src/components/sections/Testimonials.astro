@@ -1,0 +1,129 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+
+interface Props {
+	testimonials: CollectionEntry<'testimonials'>[];
+}
+
+const { testimonials } = Astro.props;
+const starPath =
+	'M12 2.2 14.7 8l6.4.9-4.6 4.5 1.1 6.4L12 16.8 6.4 19.8 7.5 13.4 2.9 8.9 9.3 8 12 2.2Z';
+---
+
+<section class="testimonials" aria-labelledby="depoimentos-titulo">
+	<Container>
+		<SectionHeading
+			id="depoimentos-titulo"
+			eyebrow="Histórias reais"
+			title="O que nossos pacientes dizem"
+			description="Relatos de quem passou pela reabilitação no Instituto do Bem Estar."
+		/>
+		<div class="carousel" role="region" aria-label="Carrossel de depoimentos">
+			<ul class="carousel-track">
+				{
+					testimonials.map((item) => (
+						<li class="carousel-slide">
+							<figure class="testimonial-card">
+								<div class="stars" role="img" aria-label={`Avaliação ${item.data.rating} de 5`}>
+									{Array.from({ length: 5 }, (_, index) => (
+										<svg
+											viewBox="0 0 24 24"
+											class:list={['star', index < item.data.rating && 'is-filled']}
+											aria-hidden="true"
+										>
+											<path d={starPath} />
+										</svg>
+									))}
+								</div>
+								<blockquote>
+									<p>“{item.data.quote}”</p>
+								</blockquote>
+								<figcaption>{item.data.name}</figcaption>
+							</figure>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</Container>
+</section>
+
+<style>
+	.testimonials {
+		background: var(--color-bg-alt);
+		padding-block: var(--space-8);
+	}
+
+	.carousel {
+		margin-top: var(--space-6);
+	}
+
+	.carousel-track {
+		display: flex;
+		gap: var(--space-4);
+		margin: 0;
+		padding: 0 var(--space-1) var(--space-2);
+		list-style: none;
+		overflow-x: auto;
+		scroll-snap-type: x mandatory;
+		scroll-padding-inline: var(--space-1);
+		-webkit-overflow-scrolling: touch;
+	}
+
+	.carousel-slide {
+		flex: 0 0 min(100%, 22rem);
+		scroll-snap-align: start;
+	}
+
+	.testimonial-card {
+		height: 100%;
+		margin: 0;
+		padding: var(--space-4);
+		border-radius: var(--radius-lg);
+		background: var(--color-surface);
+		box-shadow: var(--shadow-sm);
+	}
+
+	.stars {
+		display: flex;
+		gap: 0.2rem;
+	}
+
+	.star {
+		width: 1.1rem;
+		height: 1.1rem;
+		fill: transparent;
+		stroke: var(--color-accent);
+		stroke-width: 1.4;
+	}
+
+	.star.is-filled {
+		fill: var(--color-accent);
+		stroke: var(--color-accent);
+	}
+
+	blockquote {
+		margin: var(--space-3) 0 0;
+	}
+
+	blockquote p {
+		margin: 0;
+		font-family: var(--font-serif);
+		font-size: 1.05rem;
+		color: var(--color-secondary);
+	}
+
+	figcaption {
+		margin-top: var(--space-3);
+		font-weight: 600;
+		color: var(--color-text);
+	}
+
+	@media (min-width: 64rem) {
+		.carousel-slide {
+			flex-basis: min(100%, 26rem);
+		}
+	}
+</style>
