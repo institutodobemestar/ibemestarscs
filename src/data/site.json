@@ -21,8 +21,8 @@
 	},
 	"ogImage": "/images/hero-clinica.png",
 	"geo": {
-		"latitude": "-23.XXXXXX",
-		"longitude": "-46.XXXXXX",
-		"comment": "aguardando confirmação exata via Google Maps"
+		"latitude": -23.6155204,
+		"longitude": -46.5738900,
+		"comment": "aproximado (nível de rua) - confirmar coordenada exata do prédio no Google Maps e atualizar"
 	}
 }
