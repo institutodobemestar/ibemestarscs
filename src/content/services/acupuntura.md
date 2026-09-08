@@ -3,7 +3,36 @@ title: Acupuntura
 slug: acupuntura
 shortDescription: Acupuntura é um recurso extraído da sistemática de cura da Medicina Tradicional Chinesa (MTC), logo se trata de uma técnica, que se utiliza de um processo de
 heroImage: /images/services/acupuntura.jpg
-indications: [] # preencher manualmente a partir do conteúdo abaixo
+indications:
+  - Dores agudas ou crônicas de diversas naturezas
+  - Coluna, joelhos, ombros, quadris, tornozelos (dores articulares)
+  - Ciatalgia
+  - Cefaleias, enxaquecas
+  - Artroses, artrite reumatoide, gota (doenças reumáticas)
+  - Gastrite, esofagite, amidalite (inflamações de ordem gástricas)
+  - Rinite, sinusite, bronquite (inflamações do sistema respiratório)
+  - Tendinites, bursite (inflamações do sistema locomotor)
+  - Acidente vascular encefálico (AVE / derrame), hemiplegias
+  - Síndromes neurológicas
+  - Traumatismo craniano
+  - Lesão medular
+  - Esclerose múltipla
+  - Paralisias facial
+  - Obesidade
+  - Anorexia
+  - Constipação
+  - Resfriado / gripe
+  - Asma
+  - Tosse e bronquite
+  - Rinite e sinusite
+  - Afecções de garganta e perda de voz
+  - Depressão
+  - Síndrome de ansiedade
+  - Síndrome do pânico
+  - Hiperatividade e déficit de atenção
+  - Síndrome de euforia
+  - Labilidade emocional
+  - Controle do medo, angústia, raiva, ira, cólera, preocupação, tristeza, choque, estado pensativo ou reflexivo
 order: 1
 ---
 ## Acupuntura

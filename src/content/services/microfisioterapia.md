@@ -3,7 +3,10 @@ title: Microfisioterapia​
 slug: microfisioterapia
 shortDescription: A microfisioterapia é uma terapia manual que busca identificar e tratar as causas de desequilíbrios no organismo, promovendo a autocura e a regeneração.
 heroImage: /images/services/microfisioterapia.png
-indications: []
+indications:
+  - Dores crônicas
+  - Distúrbios emocionais e estresse
+  - Condições funcionais e pós-operatórias
 order: 6
 ---
 ## Microfisioterapia​
