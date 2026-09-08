@@ -1,0 +1,28 @@
+{
+	"name": "Instituto do Bem Estar",
+	"legalName": "Instituto do Bem Estar — Clínica de Reabilitação",
+	"tagline": "Reabilitação e fisioterapia em São Caetano do Sul",
+	"description": "Clínica de fisioterapia e reabilitação em São Caetano do Sul, SP. Cuidado individualizado para dor, pós-operatório, reabilitação neurológica e bem-estar funcional.",
+	"city": "São Caetano do Sul",
+	"state": "SP",
+	"address": "Av. Senador Roberto Simonsen 482 - Santo Antônio, São Caetano do Sul - SP",
+	"phone": "(11) 4228-1155",
+	"phoneRaw": "551142281155",
+	"whatsapp": "5511934491001",
+	"email": "ibemestar@ibemestar.com.br",
+	"hours": {
+		"segSex": "7:30 às 21:00",
+		"sabado": "8:00 às 12:00",
+		"domingo": "Fechado"
+	},
+	"socials": {
+		"facebook": "https://www.facebook.com/clinicaibe/",
+		"youtube": "https://www.youtube.com/channel/UCefvgyaxwNjEYOMkp4dK7Gw"
+	},
+	"ogImage": "/images/hero-clinica.png",
+	"geo": {
+		"latitude": "-23.XXXXXX",
+		"longitude": "-46.XXXXXX",
+		"comment": "aguardando confirmação exata via Google Maps"
+	}
+}

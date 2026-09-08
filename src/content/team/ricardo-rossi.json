@@ -1,0 +1,16 @@
+{
+	"name": "Dr. Ricardo Rossi",
+	"crefito": "37.728-3",
+	"specialties": [
+		"Fisioterapia",
+		"Hidroterapia",
+		"Neurologia",
+		"Acupuntura - Medicina Tradicional Chinesa"
+	],
+	"bio": "Fisioterapeuta, Especialista em Hidroterapia, Pós-Graduado em Neurologia, Acupunturista com especialização Internacional pela WFCMS, WFAS e Tianjin University of TCM em Medicina Tradicional Chinesa. Experiência de 20 anos em Reabilitação e Diretor do Instituto do Bem Estar.",
+	"photo": "../../assets/team/ricardo-rossi.png",
+	"socials": {
+		"facebook": "https://www.facebook.com/clinicaibe/",
+		"youtube": "https://www.youtube.com/channel/UCefvgyaxwNjEYOMkp4dK7Gw"
+	}
+}

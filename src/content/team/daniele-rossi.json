@@ -1,0 +1,17 @@
+{
+	"name": "Dra. Daniele Michieli Rossi",
+	"crefito": "36.500-3",
+	"specialties": [
+		"Fisioterapia",
+		"Hidroterapia",
+		"Neuropediatria",
+		"Reeducação Postural Global",
+		"Acupuntura"
+	],
+	"bio": "Fisioterapeuta, Especialista em Hidroterapia, Pós-Graduada em Neuropediatria, Especialista em Reeducação Postural Global e Acupunturista. Experiência de 19 anos em Reabilitação e Diretora do Instituto do Bem Estar.",
+	"photo": "../../assets/team/daniele-rossi.png",
+	"socials": {
+		"facebook": "https://www.facebook.com/clinicaibe/",
+		"youtube": "https://www.youtube.com/channel/UCefvgyaxwNjEYOMkp4dK7Gw"
+	}
+}
