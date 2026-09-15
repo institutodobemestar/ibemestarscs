@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import Button from '../ui/Button.astro';
 import Container from '../ui/Container.astro';
 import SectionHeading from '../ui/SectionHeading.astro';
-import spaceImage from '../../assets/pages/infraestrutura.jpg';
+import videoPoster from '../../assets/pages/recepcao.jpg';
 
 const videoId = '9qqhLwahRsA';
 const videoTitle = 'Vídeo institucional do Instituto do Bem Estar';
@@ -45,10 +45,10 @@ const videoTitle = 'Vídeo institucional do Instituto do Bem Estar';
 			<figure class="about-figure" data-about-video data-video-id={videoId} data-video-title={videoTitle}>
 				<button type="button" class="about-play" aria-label={`Reproduzir ${videoTitle}`}>
 					<Image
-						src={spaceImage}
-						alt="Sala de reabilitação do Instituto do Bem Estar, com equipamentos de fisioterapia e Pilates"
-						width={spaceImage.width}
-						height={spaceImage.height}
+						src={videoPoster}
+						alt="Recepção do Instituto do Bem Estar, com sofá, iluminação e acesso à escada"
+						width={videoPoster.width}
+						height={videoPoster.height}
 						format="webp"
 						quality="mid"
 						loading="lazy"
