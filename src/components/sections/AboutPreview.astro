@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import Button from '../ui/Button.astro';
 import Container from '../ui/Container.astro';
 import SectionHeading from '../ui/SectionHeading.astro';
-import videoPoster from '../../assets/pages/video-institucional.jpg';
+import spaceImage from '../../assets/pages/infraestrutura.jpg';
 
 const videoId = '9qqhLwahRsA';
 const videoTitle = 'Vídeo institucional do Instituto do Bem Estar';
@@ -11,31 +11,14 @@ const videoTitle = 'Vídeo institucional do Instituto do Bem Estar';
 
 <section class="about" aria-labelledby="sobre-titulo">
 	<Container>
-		<SectionHeading
-			id="sobre-titulo"
-			align="center"
-			eyebrow="Sobre nós"
-			title="Cuidado clínico com expertise e acolhimento"
-			description="Desde 2007, o Instituto do Bem Estar oferece reabilitação de alta qualidade em São Caetano do Sul, com atendimento personalizado e mais de 10.000 pacientes acompanhados."
-		/>
-		<div class="about-stack">
-			<figure class="about-figure" data-about-video data-video-id={videoId} data-video-title={videoTitle}>
-				<button type="button" class="about-play" aria-label={`Reproduzir ${videoTitle}`}>
-					<Image
-						src={videoPoster}
-						alt={videoTitle}
-						width={videoPoster.width}
-						height={videoPoster.height}
-						format="webp"
-						quality="mid"
-						loading="lazy"
-						decoding="async"
-						class="about-poster"
-					/>
-					<span class="about-play-icon" aria-hidden="true">▶</span>
-				</button>
-			</figure>
+		<div class="about-grid">
 			<div class="about-body">
+				<SectionHeading
+					id="sobre-titulo"
+					eyebrow="Sobre nós"
+					title="Cuidado clínico com expertise e acolhimento"
+					description="Desde 2007, o Instituto do Bem Estar oferece reabilitação de alta qualidade em São Caetano do Sul, com atendimento personalizado e mais de 10.000 pacientes acompanhados."
+				/>
 				<blockquote>
 					<p>
 						“Quem tem dor tem pressa: promover o melhor resultado possível no menor espaço de
@@ -59,6 +42,22 @@ const videoTitle = 'Vídeo institucional do Instituto do Bem Estar';
 					</Button>
 				</div>
 			</div>
+			<figure class="about-figure" data-about-video data-video-id={videoId} data-video-title={videoTitle}>
+				<button type="button" class="about-play" aria-label={`Reproduzir ${videoTitle}`}>
+					<Image
+						src={spaceImage}
+						alt="Sala de reabilitação do Instituto do Bem Estar, com equipamentos de fisioterapia e Pilates"
+						width={spaceImage.width}
+						height={spaceImage.height}
+						format="webp"
+						quality="mid"
+						loading="lazy"
+						decoding="async"
+						class="about-poster"
+					/>
+					<span class="about-play-icon" aria-hidden="true">▶</span>
+				</button>
+			</figure>
 		</div>
 	</Container>
 </section>
@@ -69,28 +68,30 @@ const videoTitle = 'Vídeo institucional do Instituto do Bem Estar';
 		background: var(--ibe-surface);
 	}
 
-	.about :global(.section-heading) {
-		margin-bottom: var(--space-5);
-	}
-
-	.about :global(.section-heading-copy) {
-		max-width: 46rem;
-	}
-
-	.about-stack {
+	.about-grid {
 		display: grid;
 		gap: var(--space-5);
+		align-items: center;
+	}
+
+	.about-body {
+		display: grid;
+		gap: var(--space-4);
+	}
+
+	.about :global(.section-heading) {
+		margin: 0;
 	}
 
 	.about-figure {
 		position: relative;
 		width: 100%;
-		max-width: 56rem;
-		margin: 0 auto;
+		margin: 0;
 		overflow: hidden;
 		border-radius: var(--radius-xl);
-		background: var(--ibe-bg-alt);
-		aspect-ratio: 16 / 9;
+		background: var(--ibe-navy-deep);
+		aspect-ratio: 4 / 3;
+		box-shadow: var(--ibe-shadow-lg);
 	}
 
 	.about-play {
@@ -112,12 +113,20 @@ const videoTitle = 'Vídeo institucional do Instituto do Bem Estar';
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
-		transform: scale(1.35);
+		object-position: center;
+	}
+
+	.about-play::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		z-index: 1;
+		background: rgb(42 49 64 / 0.42);
 	}
 
 	.about-play-icon {
 		position: relative;
-		z-index: 1;
+		z-index: 2;
 		display: grid;
 		place-items: center;
 		width: 4.5rem;
@@ -126,6 +135,7 @@ const videoTitle = 'Vídeo institucional do Instituto do Bem Estar';
 		background: var(--ibe-sage-deep);
 		color: #fff;
 		font-size: 1.25rem;
+		box-shadow: 0 0 0 8px rgb(205 224 160 / 0.28);
 	}
 
 	.about-play:hover .about-play-icon,
@@ -140,13 +150,6 @@ const videoTitle = 'Vídeo institucional do Instituto do Bem Estar';
 		width: 100%;
 		height: 100%;
 		border: 0;
-	}
-
-	.about-body {
-		display: grid;
-		gap: var(--space-4);
-		max-width: 46rem;
-		margin-inline: auto;
 	}
 
 	blockquote {
@@ -186,7 +189,12 @@ const videoTitle = 'Vídeo institucional do Instituto do Bem Estar';
 		margin: 0;
 	}
 
-	@media (min-width: 48rem) {
+	@media (min-width: 64rem) {
+		.about-grid {
+			grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+			gap: var(--space-7);
+		}
+
 		ul {
 			grid-template-columns: 1fr 1fr;
 			gap: var(--space-4);
