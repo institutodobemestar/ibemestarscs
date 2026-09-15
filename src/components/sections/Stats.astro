@@ -1,87 +1,76 @@
 ---
-import Container from '../ui/Container.astro';
+import site from '../../data/site.json';
 
-/**
- * Números apenas do conteúdo extraído (sobre-nos, contato, infraestrutura).
- * Não inventar totais ou percentuais.
- */
-const stats = [
-	{
-		value: '2007',
-		label: 'Desde este ano em reabilitação de alta qualidade',
-	},
-	{
-		value: '10.000+',
-		label: 'Pacientes atendidos ao longo dos anos',
-	},
-	{
-		value: '580 m²',
-		label: 'Prédio planejado para conforto e acessibilidade',
-	},
-	{
-		value: '30 m²',
-		label: 'Piscina aquecida para hidroterapia',
-	},
+const items = [
+	{ label: 'Prédio planejado', value: '580 m²' },
+	{ label: 'Piscina aquecida', value: '30 m²' },
+	{ label: 'Desde', value: '2007' },
+	{ label: 'Segunda a sexta', value: site.hours.segSex },
 ];
 ---
 
-<section class="stats" aria-labelledby="stats-titulo">
-	<Container>
-		<h2 id="stats-titulo" class="sr-only">Números do Instituto do Bem Estar</h2>
-		<ul class="stats-grid">
-			{
-				stats.map((stat) => (
-					<li>
-						<p class="stats-value">{stat.value}</p>
-						<p class="stats-label">{stat.label}</p>
-					</li>
-				))
-			}
-		</ul>
-	</Container>
+<section class="strip" aria-labelledby="infra-numeros">
+	<h2 id="infra-numeros" class="sr-only">Números da infraestrutura</h2>
+	<ul>
+		{
+			items.map((item) => (
+				<li>
+					<p class="strip-value">{item.value}</p>
+					<p class="strip-label">{item.label}</p>
+				</li>
+			))
+		}
+	</ul>
 </section>
 
 <style>
-	.stats {
-		background: var(--color-secondary);
-		padding-block: var(--space-6);
-		color: var(--color-secondary-soft);
+	.strip {
+		background: var(--ibe-navy-deep);
+		color: #fff;
 	}
 
-	.stats-grid {
+	ul {
 		display: grid;
-		grid-template-columns: 1fr;
-		gap: var(--space-4);
-		margin: 0;
-		padding: 0;
+		grid-template-columns: 1fr 1fr;
+		gap: 0;
+		max-width: 72rem;
+		margin: 0 auto;
+		padding: var(--space-5) var(--space-3);
 		list-style: none;
 	}
 
-	.stats-value {
+	li {
+		padding: var(--space-3);
+		text-align: center;
+	}
+
+	li + li {
+		border-top: 1px solid rgb(255 255 255 / 0.08);
+	}
+
+	.strip-value {
 		margin: 0;
 		font-family: var(--font-serif);
-		font-size: clamp(2rem, 4vw, 2.75rem);
+		font-size: 1.35rem;
 		font-weight: 600;
-		line-height: 1.1;
-		color: var(--color-surface);
+		color: var(--ibe-sage);
 	}
 
-	.stats-label {
-		margin: var(--space-1) 0 0;
-		max-width: 16rem;
-		font-size: 0.9375rem;
+	.strip-label {
+		margin: 0.35rem 0 0;
+		font-size: 0.875rem;
+		color: rgb(255 255 255 / 0.78);
 	}
 
-	@media (min-width: 40rem) {
-		.stats-grid {
-			grid-template-columns: repeat(2, 1fr);
+	@media (min-width: 48rem) {
+		ul {
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+			padding-inline: var(--space-4);
 		}
-	}
 
-	@media (min-width: 64rem) {
-		.stats-grid {
-			grid-template-columns: repeat(4, 1fr);
-			gap: var(--space-5);
+		li + li {
+			border-top: 0;
+			border-left: 1px solid rgb(255 255 255 / 0.08);
 		}
 	}
 </style>

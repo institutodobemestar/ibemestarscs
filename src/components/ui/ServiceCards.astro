@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
 import { resolveContentImage } from '../../lib/content-images';
-import { cleanServiceTitle } from '../../lib/services';
+import { cleanServiceTitle, getServiceIcon } from '../../lib/services';
 
 interface Props {
 	services: CollectionEntry<'services'>[];
@@ -13,25 +13,30 @@ const { services, variant = 'grid' } = Astro.props;
 const isCompact = variant === 'compact';
 ---
 
-<ul class:list={['service-cards', isCompact && 'is-compact']}>
+<ul class:list={['service-list', isCompact && 'is-compact']}>
 	{
 		services.map((service) => {
 			const title = cleanServiceTitle(service.data.title);
 			return (
 				<li>
-					<a href={`/servicos/${service.data.slug}`} class="service-card">
-						<Image
-							src={resolveContentImage(service.data.heroImage)}
-							alt={`Ilustração do serviço ${title}`}
-							width={isCompact ? 480 : 800}
-							height={isCompact ? 320 : 520}
-							format="webp"
-							quality="mid"
-							loading="lazy"
-							decoding="async"
-							class="service-image"
-						/>
-						<div class="service-body">
+					<a href={`/servicos/${service.data.slug}/`} class="service-card">
+						<div class="service-media">
+							<Image
+								src={resolveContentImage(service.data.heroImage)}
+								alt={`Ilustração do serviço ${title}`}
+								width={640}
+								height={420}
+								format="webp"
+								quality="mid"
+								loading="lazy"
+								decoding="async"
+								class="service-thumb"
+							/>
+							{!isCompact && (
+								<span class="service-icon" aria-hidden="true" set:html={getServiceIcon(service.data.slug)} />
+							)}
+						</div>
+						<div class="service-copy">
 							<h3>{title}</h3>
 							{!isCompact && <p>{service.data.shortDescription}</p>}
 						</div>
@@ -43,7 +48,7 @@ const isCompact = variant === 'compact';
 </ul>
 
 <style>
-	.service-cards {
+	.service-list {
 		display: grid;
 		grid-template-columns: 1fr;
 		gap: var(--space-4);
@@ -53,72 +58,109 @@ const isCompact = variant === 'compact';
 	}
 
 	.service-card {
-		display: block;
+		display: flex;
+		flex-direction: column;
 		height: 100%;
+		padding: 0.85rem;
 		overflow: hidden;
-		border-radius: var(--radius-lg);
-		background: var(--color-surface);
+		border-radius: var(--radius-xl);
+		background: var(--ibe-surface);
 		box-shadow: var(--shadow-md);
 		text-decoration: none;
 		color: inherit;
 	}
 
-	.service-image {
+	.service-card:hover {
+		box-shadow: var(--shadow-lg);
+	}
+
+	.service-media {
+		position: relative;
+		overflow: hidden;
+		border-radius: var(--radius-lg);
+		background: var(--ibe-bg-alt);
+	}
+
+	.service-thumb {
+		display: block;
 		width: 100%;
-		height: 12rem;
+		height: 13.5rem;
 		object-fit: cover;
 	}
 
-	.service-body {
-		padding: var(--space-4);
+	.service-icon {
+		position: absolute;
+		top: 0.85rem;
+		right: 0.85rem;
+		display: grid;
+		place-items: center;
+		width: 2.75rem;
+		height: 2.75rem;
+		border-radius: var(--radius-full);
+		background: rgb(255 255 255 / 0.94);
+		color: var(--ibe-navy);
 	}
 
-	.service-body h3 {
+	.service-icon :global(svg) {
+		display: block;
+		width: 1.35rem;
+		height: 1.35rem;
+	}
+
+	.service-copy {
+		display: flex;
+		flex: 1;
+		flex-direction: column;
+		padding: var(--space-3) 0.35rem 0.35rem;
+	}
+
+	.service-copy h3 {
 		margin: 0;
 		font-size: 1.25rem;
 	}
 
-	.service-body p {
-		margin: var(--space-2) 0 0;
-		font-size: 0.9375rem;
+	.service-copy p {
+		display: -webkit-box;
+		margin: 0.5rem 0 0;
+		overflow: hidden;
 		color: var(--color-text-muted);
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 3;
 	}
 
-	.is-compact {
-		gap: var(--space-3);
+	.service-card:hover h3 {
+		color: var(--ibe-sage-deep);
 	}
 
-	.is-compact .service-image {
-		height: 8rem;
+	.is-compact .service-card {
+		display: grid;
+		grid-template-columns: 7rem minmax(0, 1fr);
+		align-items: center;
+		padding: 0;
 	}
 
-	.is-compact .service-body {
-		padding: var(--space-3);
+	.is-compact .service-thumb {
+		height: 100%;
+		min-height: 5.5rem;
 	}
 
-	.is-compact .service-body h3 {
+	.is-compact .service-copy h3 {
 		font-size: 1.05rem;
 	}
 
-	@media (min-width: 40rem) {
-		.service-cards {
-			grid-template-columns: repeat(2, 1fr);
+	@media (min-width: 48rem) {
+		.service-list:not(.is-compact) {
+			grid-template-columns: 1fr 1fr;
+		}
+
+		.is-compact {
+			grid-template-columns: 1fr 1fr;
 		}
 	}
 
 	@media (min-width: 64rem) {
-		.service-cards:not(.is-compact) {
-			grid-template-columns: repeat(3, 1fr);
-		}
-
-		.is-compact {
-			grid-template-columns: repeat(3, 1fr);
-		}
-	}
-
-	@media (min-width: 80rem) {
-		.service-cards:not(.is-compact) {
-			grid-template-columns: repeat(4, 1fr);
+		.service-list:not(.is-compact) {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
 		}
 	}
 </style>

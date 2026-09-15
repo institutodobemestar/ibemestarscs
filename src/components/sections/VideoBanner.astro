@@ -1,0 +1,125 @@
+---
+import { Image } from 'astro:assets';
+import site from '../../data/site.json';
+import spaceImage from '../../assets/pages/infraestrutura.jpg';
+
+interface Props {
+	title?: string;
+}
+
+const { title = 'Infraestrutura pensada para a reabilitação' } = Astro.props;
+---
+
+<section class="banner" aria-labelledby="banner-titulo">
+	<Image
+		src={spaceImage}
+		alt="Sala de reabilitação do Instituto do Bem Estar com aparelhos de fisioterapia, Pilates e espaço amplo para atendimento"
+		width={spaceImage.width}
+		height={spaceImage.height}
+		format="webp"
+		quality="mid"
+		loading="lazy"
+		decoding="async"
+		class="banner-image"
+	/>
+	<div class="banner-overlay">
+		<a
+			class="banner-play"
+			href={site.socials.youtube}
+			target="_blank"
+			rel="noopener noreferrer"
+			aria-label="Assistir vídeos do Instituto do Bem Estar no YouTube"
+		>
+			<span class="banner-play-label" aria-hidden="true">Assistir no YouTube</span>
+			<span class="banner-play-icon" aria-hidden="true">▶</span>
+		</a>
+		<div class="banner-copy">
+			<h2 id="banner-titulo">{title}</h2>
+			<p>
+				<a href="/infraestrutura/">Conheça o prédio de 580 m²</a>
+			</p>
+		</div>
+	</div>
+</section>
+
+<style>
+	.banner {
+		position: relative;
+		isolation: isolate;
+		min-height: 22rem;
+		overflow: hidden;
+		background: var(--ibe-navy-deep);
+	}
+
+	.banner-image {
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+
+	.banner-overlay {
+		position: relative;
+		z-index: 1;
+		display: grid;
+		place-items: center;
+		min-height: 22rem;
+		padding: var(--space-8) var(--space-3);
+		background: rgb(42 49 64 / 0.55);
+		text-align: center;
+	}
+
+	.banner-play {
+		position: relative;
+		display: grid;
+		place-items: center;
+		width: 7.5rem;
+		height: 7.5rem;
+		border-radius: 50%;
+		background: var(--ibe-sage-deep);
+		color: #fff;
+		text-decoration: none;
+	}
+
+	.banner-play-label {
+		position: absolute;
+		width: 6.4rem;
+		height: 6.4rem;
+		border: 1px dashed rgb(255 255 255 / 0.45);
+		border-radius: 50%;
+		font-size: 0;
+	}
+
+	.banner-play-icon {
+		font-size: 1.25rem;
+	}
+
+	.banner-copy {
+		margin-top: var(--space-5);
+		max-width: 28rem;
+	}
+
+	.banner-copy h2 {
+		margin: 0;
+		color: #fff;
+	}
+
+	.banner-copy p {
+		margin: var(--space-2) 0 0;
+	}
+
+	.banner-copy a {
+		color: var(--ibe-sage);
+		font-weight: 600;
+	}
+
+	@media (min-width: 48rem) {
+		.banner,
+		.banner-overlay {
+			min-height: 28rem;
+		}
+	}
+</style>

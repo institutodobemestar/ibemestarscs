@@ -4,19 +4,76 @@ interface Props {
 	eyebrow?: string;
 	title: string;
 	description?: string;
+	align?: 'left' | 'center';
 }
 
-const { id, eyebrow, title, description } = Astro.props;
+const { id, eyebrow, title, description, align = 'left' } = Astro.props;
 ---
 
-<div class="max-w-2xl">
+<div class:list={['section-heading', align === 'center' && 'is-center']}>
+	<div class="section-heading-copy">
+		{
+			eyebrow && (
+				<p class="section-chip">
+					{eyebrow}
+				</p>
+			)
+		}
+		<h2 id={id}>{title}</h2>
+		{description && <p class="section-desc">{description}</p>}
+	</div>
 	{
-		eyebrow && (
-			<p class="mb-[var(--space-1)] text-sm font-semibold uppercase tracking-wide text-primary-dark">
-				{eyebrow}
-			</p>
+		Astro.slots.has('action') && (
+			<div class="section-heading-action">
+				<slot name="action" />
+			</div>
 		)
 	}
-	<h2 id={id} class="text-3xl md:text-4xl">{title}</h2>
-	{description && <p class="mt-[var(--space-2)] text-text-muted">{description}</p>}
 </div>
+
+<style>
+	.section-heading {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: flex-end;
+		justify-content: space-between;
+		gap: var(--space-3);
+	}
+
+	.section-heading.is-center {
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+	}
+
+	.section-heading-copy {
+		max-width: 40rem;
+	}
+
+	.is-center .section-heading-copy {
+		max-width: 42rem;
+	}
+
+	.section-chip {
+		display: inline-flex;
+		align-items: center;
+		margin: 0 0 var(--space-2);
+		padding: 0.35rem 0.85rem;
+		border: 1px solid var(--ibe-border);
+		border-radius: var(--radius-full);
+		background: var(--ibe-surface);
+		color: var(--ibe-navy);
+		font-family: var(--font-sans);
+		font-size: 0.8125rem;
+		font-weight: 600;
+	}
+
+	.section-heading h2 {
+		margin: 0;
+	}
+
+	.section-desc {
+		margin: var(--space-2) 0 0;
+		color: var(--color-text-muted);
+	}
+</style>

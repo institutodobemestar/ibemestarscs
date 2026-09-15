@@ -15,36 +15,37 @@ const { team } = Astro.props;
 	<Container>
 		<SectionHeading
 			id="equipe-titulo"
-			eyebrow="Quem cuida de você"
-			title="Equipe de fisioterapia"
+			align="center"
+			eyebrow="Nossa equipe"
+			title="Profissionais de fisioterapia"
 			description="Profissionais registrados no CREFITO."
 		/>
-		<ul class="team-grid">
+		<ul class="team-list">
 			{
 				team.map((member) => (
-					<li class="team-card">
+					<li class="member">
 						<Image
 							src={member.data.photo}
 							alt={`Retrato de ${member.data.name}`}
-							width={160}
-							height={160}
+							width={480}
+							height={640}
 							format="webp"
 							quality="mid"
 							loading="lazy"
 							decoding="async"
-							class="team-photo"
+							class="member-photo"
 						/>
-						<div>
+						<div class="member-copy">
 							<h3>{member.data.name}</h3>
-							<p class="team-crefito">CREFITO {member.data.crefito}</p>
-							<p class="team-specialties">{member.data.specialties.join(' · ')}</p>
+							<p class="member-meta">CREFITO {member.data.crefito}</p>
+							<p class="member-meta">{member.data.specialties.join(' · ')}</p>
 						</div>
 					</li>
 				))
 			}
 		</ul>
 		<p class="team-more">
-			<a href="/equipe">Conheça toda a equipe</a>
+			<a href="/equipe/">Conheça toda a equipe</a>
 		</p>
 	</Container>
 </section>
@@ -52,68 +53,70 @@ const { team } = Astro.props;
 <style>
 	.team {
 		padding-block: var(--space-8);
+		background: var(--ibe-surface);
 	}
 
-	.team-grid {
+	.team-list {
 		display: grid;
 		grid-template-columns: 1fr;
-		gap: var(--space-4);
+		gap: var(--space-5);
 		margin: var(--space-6) 0 0;
 		padding: 0;
 		list-style: none;
 	}
 
-	.team-card {
-		display: flex;
-		gap: var(--space-3);
-		padding: var(--space-4);
-		border-radius: var(--radius-lg);
-		background: var(--color-surface);
-		box-shadow: var(--shadow-sm);
+	.member {
+		overflow: hidden;
+		border-radius: var(--radius-xl);
+		background: var(--ibe-bg-alt);
 	}
 
-	.team-photo {
-		width: 6rem;
-		height: 6rem;
-		flex-shrink: 0;
-		border-radius: var(--radius-md);
+	.member-photo {
+		display: block;
+		width: 100%;
+		aspect-ratio: 4 / 5;
 		object-fit: cover;
+		object-position: center top;
 	}
 
-	.team-card h3 {
+	.member-copy {
+		padding: var(--space-3);
+	}
+
+	.member h3 {
 		margin: 0;
-		font-size: 1.25rem;
+		font-size: 1.35rem;
 	}
 
-	.team-crefito {
-		margin: 0.25rem 0 0;
+	.member-meta {
+		margin: 0.35rem 0 0;
 		font-size: 0.875rem;
+		line-height: 1.5;
 		color: var(--color-text-muted);
-	}
-
-	.team-specialties {
-		margin: var(--space-1) 0 0;
-		font-size: 0.875rem;
-		color: var(--color-primary-dark);
 	}
 
 	.team-more {
 		margin: var(--space-5) 0 0;
+		text-align: center;
 	}
 
 	.team-more a {
+		color: var(--ibe-sage-deep);
 		font-weight: 600;
-		color: var(--color-primary-dark);
 		text-decoration: none;
 	}
 
-	.team-more a:hover {
+	.team-more a:hover,
+	.team-more a:focus-visible {
 		text-decoration: underline;
 	}
 
 	@media (min-width: 48rem) {
-		.team-grid {
-			grid-template-columns: repeat(2, 1fr);
+		.team-list {
+			grid-template-columns: 1fr 1fr;
+			gap: var(--space-6);
+			max-width: 52rem;
+			margin-inline: auto;
 		}
 	}
 </style>

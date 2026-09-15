@@ -10,20 +10,31 @@
 @import '@fontsource/inter/700.css';
 
 :root {
-	/* Paleta — clínica de saúde: calma, confiança, convite à ação */
-	--ibe-primary: #0d9488;
-	--ibe-primary-dark: #0f766e;
-	--ibe-primary-soft: #ccfbf1;
-	--ibe-secondary: #1b3a4b;
-	--ibe-secondary-soft: #d6e4ec;
-	--ibe-bg: #f7f4ef;
-	--ibe-bg-alt: #efeae3;
-	--ibe-surface: #fffdf9;
-	--ibe-text: #1c1917;
-	--ibe-text-muted: #57534e;
-	--ibe-border: #e7e0d6;
-	--ibe-accent: #b8503a;
-	--ibe-accent-hover: #9e4331;
+	/* Paleta da logo — Instituto do Bem Estar */
+	--ibe-sage: #cde0a0;
+	--ibe-sage-deep: #5f7a2e;
+	--ibe-sage-hover: #4e6625;
+	--ibe-mist: #b5bdca;
+	--ibe-navy: #3a4352;
+	--ibe-navy-deep: #2a3140;
+	--ibe-cream: #fcfff1;
+	--ibe-ink: #3a4352;
+
+	/* Aliases de componente */
+	--ibe-primary: var(--ibe-sage-deep);
+	--ibe-primary-dark: var(--ibe-sage-hover);
+	--ibe-primary-soft: #eef5d8;
+	--ibe-secondary: var(--ibe-navy);
+	--ibe-secondary-soft: #e8ebf0;
+	--ibe-bg: var(--ibe-cream);
+	--ibe-bg-alt: #f3f6ea;
+	--ibe-surface: #ffffff;
+	--ibe-text: var(--ibe-navy);
+	--ibe-text-muted: #5c6573;
+	--ibe-border: #d5d9e0;
+	--ibe-line: var(--ibe-border);
+	--ibe-accent: var(--ibe-sage-deep);
+	--ibe-accent-hover: var(--ibe-sage-hover);
 
 	/* Escala de espaçamento (base 8px) */
 	--space-1: 0.5rem;
@@ -35,23 +46,19 @@
 	--space-7: 3.5rem;
 	--space-8: 4rem;
 
-	/* Cantos suaves — sem retidão excessiva */
 	--ibe-radius-sm: 0.5rem;
 	--ibe-radius-md: 0.875rem;
 	--ibe-radius-lg: 1.25rem;
 	--ibe-radius-xl: 1.75rem;
 	--ibe-radius-full: 9999px;
 
-	/* Sombras leves — identidade clínica */
-	--ibe-shadow-sm: 0 1px 2px rgb(27 58 75 / 0.05);
-	--ibe-shadow-md: 0 4px 18px rgb(27 58 75 / 0.07);
-	--ibe-shadow-lg: 0 10px 32px rgb(27 58 75 / 0.09);
+	--ibe-shadow-sm: 0 1px 2px rgb(42 49 64 / 0.06);
+	--ibe-shadow-md: 0 8px 28px rgb(42 49 64 / 0.08);
+	--ibe-shadow-lg: 0 16px 40px rgb(42 49 64 / 0.12);
 
-	/* Tipografia */
 	--ibe-font-serif: 'Lora', ui-serif, Georgia, 'Times New Roman', serif;
 	--ibe-font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
 
-	/* Aliases públicos do design system */
 	--color-primary: var(--ibe-primary);
 	--color-primary-dark: var(--ibe-primary-dark);
 	--color-primary-soft: var(--ibe-primary-soft);
@@ -65,6 +72,10 @@
 	--color-border: var(--ibe-border);
 	--color-accent: var(--ibe-accent);
 	--color-accent-hover: var(--ibe-accent-hover);
+	--color-line: var(--ibe-line);
+	--color-sage: var(--ibe-sage);
+	--color-mist: var(--ibe-mist);
+	--color-navy-deep: var(--ibe-navy-deep);
 	--radius-sm: var(--ibe-radius-sm);
 	--radius-md: var(--ibe-radius-md);
 	--radius-lg: var(--ibe-radius-lg);
@@ -93,6 +104,10 @@
 	--color-border: var(--ibe-border);
 	--color-accent: var(--ibe-accent);
 	--color-accent-hover: var(--ibe-accent-hover);
+	--color-line: var(--ibe-line);
+	--color-sage: var(--ibe-sage);
+	--color-mist: var(--ibe-mist);
+	--color-navy-deep: var(--ibe-navy-deep);
 	--radius-sm: var(--ibe-radius-sm);
 	--radius-md: var(--ibe-radius-md);
 	--radius-lg: var(--ibe-radius-lg);
@@ -111,6 +126,7 @@ body {
 	background: var(--color-bg);
 	color: var(--color-text);
 	font-family: var(--font-sans);
+	font-size: 1.0625rem;
 	font-weight: 400;
 	line-height: 1.65;
 	-webkit-font-smoothing: antialiased;
@@ -124,9 +140,27 @@ h5,
 h6 {
 	font-family: var(--font-serif);
 	font-weight: 600;
-	line-height: 1.2;
 	color: var(--color-secondary);
-	letter-spacing: -0.02em;
+}
+
+h1 {
+	font-size: clamp(2.25rem, 4vw + 1rem, 3.5rem);
+	line-height: 1.05;
+	letter-spacing: -0.01em;
+}
+
+h2 {
+	font-size: clamp(1.75rem, 2.5vw + 1rem, 2.5rem);
+	line-height: 1.1;
+	letter-spacing: -0.01em;
+}
+
+h3,
+h4,
+h5,
+h6 {
+	line-height: 1.2;
+	letter-spacing: -0.01em;
 }
 
 a {
@@ -149,7 +183,7 @@ img {
 	top: -4rem;
 	z-index: 100;
 	border-radius: var(--radius-sm);
-	background: var(--color-secondary);
+	background: var(--ibe-navy-deep);
 	color: var(--color-surface);
 	padding: var(--space-1) var(--space-2);
 	text-decoration: none;

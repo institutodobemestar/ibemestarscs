@@ -1,0 +1,184 @@
+{
+	"acupuntura": {
+		"benefitsTitle": "Benefícios da Acupuntura",
+		"benefitsLead": "Técnica da Medicina Tradicional Chinesa para alívio de dores, relaxamento e equilíbrio do organismo.",
+		"benefits": [
+			"Alívio de dores agudas e crônicas",
+			"Cuidado em dores articulares e ciatalgia",
+			"Apoio em enxaquecas e cefaleias",
+			"Equilíbrio em ansiedade e tensão emocional"
+		],
+		"highlightsTitle": "Como é a sessão",
+		"highlightsLead": "Avaliação física e energética, com técnicas da medicina chinesa escolhidas para o seu caso.",
+		"highlights": [
+			{
+				"title": "Avaliação inicial",
+				"text": "Cerca de 1h30 na primeira consulta, com diagnóstico físico e energético."
+			},
+			{
+				"title": "Sessões seguintes",
+				"text": "Duração de cerca de 1 hora, com o protocolo definido na avaliação."
+			},
+			{
+				"title": "Ambiente de cuidado",
+				"text": "Cromoterapia, musicoterapia e aromaterapia para um espaço mais tranquilo."
+			}
+		]
+	},
+	"hidroterapia": {
+		"benefitsTitle": "Benefícios da Hidroterapia",
+		"benefitsLead": "Reabilitação em piscina terapêutica aquecida, com alívio de dores e mais liberdade de movimento.",
+		"benefits": [
+			"Alívio das dores",
+			"Ganho de amplitude de movimento",
+			"Descompressão articular",
+			"Reabilitação em água aquecida"
+		],
+		"highlightsTitle": "Como é a sessão",
+		"highlightsLead": "Atendimento personalizado, com avaliação em solo e na água.",
+		"highlights": [
+			{
+				"title": "Duração",
+				"text": "Sessão de cerca de 50 minutos."
+			},
+			{
+				"title": "Atendimento individual",
+				"text": "Acompanhamento personalizado em cada sessão."
+			},
+			{
+				"title": "Estrutura",
+				"text": "Piscina aquecida e ambiente climatizado."
+			}
+		]
+	},
+	"fisioterapia": {
+		"benefitsTitle": "Benefícios da Fisioterapia",
+		"benefitsLead": "Tratamento baseado em evidências, com projeto clínico para dor, pós-operatório e reabilitação funcional.",
+		"benefits": [
+			"Conduta baseada em evidências científicas",
+			"Cuidado ortopédico e músculo-esquelético",
+			"Reabilitação neurológica",
+			"Apoio em condições reumatológicas"
+		],
+		"highlightsTitle": "Como é a sessão",
+		"highlightsLead": "Metodologia ADERCO para avaliar, tratar e orientar o seu projeto de reabilitação.",
+		"highlights": [
+			{
+				"title": "Duração",
+				"text": "Sessão de cerca de 50 minutos."
+			},
+			{
+				"title": "Método ADERCO",
+				"text": "Fluxo clínico de avaliação, tratamento e orientação."
+			},
+			{
+				"title": "Projeto individual",
+				"text": "Plano de reabilitação definido para o seu caso."
+			}
+		]
+	},
+	"pilates-clinico": {
+		"benefitsTitle": "Benefícios do Pilates clínico",
+		"benefitsLead": "Prática conduzida por fisioterapeutas, da reabilitação ao condicionamento, com controle e respiração.",
+		"benefits": [
+			"Trabalho conjunto de mente e corpo",
+			"Princípios de concentração, controle e respiração",
+			"Conduta para reabilitação ou fitness",
+			"Acompanhamento por fisioterapeutas"
+		],
+		"highlightsTitle": "Como é a sessão",
+		"highlightsLead": "Exercícios definidos a partir do objetivo de cada pessoa.",
+		"highlights": [
+			{
+				"title": "Duração",
+				"text": "Sessão de cerca de 50 minutos."
+			},
+			{
+				"title": "Atendimento individual",
+				"text": "Acompanhamento personalizado em cada aula."
+			},
+			{
+				"title": "Objetivo clínico",
+				"text": "Evolução com foco em reabilitação ou condicionamento."
+			}
+		]
+	},
+	"ozonioterapia": {
+		"benefitsTitle": "Benefícios da Ozonioterapia",
+		"benefitsLead": "Prática com mistura de oxigênio e ozônio, aplicada com rigor clínico no Instituto do Bem Estar.",
+		"benefits": [
+			"Propriedades anti-inflamatórias",
+			"Efeito analgésico no protocolo clínico",
+			"Apoio em quadros crônicos e agudos",
+			"Aplicação dentro da janela terapêutica de segurança"
+		],
+		"highlightsTitle": "Como é a sessão",
+		"highlightsLead": "Técnica com mistura de gás ozônio e oxigênio para fins medicinais.",
+		"highlights": [
+			{
+				"title": "Duração",
+				"text": "Sessão de cerca de 60 minutos."
+			},
+			{
+				"title": "Segurança",
+				"text": "Composição com 5% de ozônio na janela terapêutica."
+			},
+			{
+				"title": "Conduta clínica",
+				"text": "Aplicação pautada em estudos e protocolo da clínica."
+			}
+		]
+	},
+	"microfisioterapia": {
+		"benefitsTitle": "Benefícios da Microfisioterapia",
+		"benefitsLead": "Terapia manual que busca identificar e tratar causas de desequilíbrio, estimulando a autorregulação do corpo.",
+		"benefits": [
+			"Apoio em dores crônicas",
+			"Cuidado em distúrbios emocionais e estresse",
+			"Uso em condições funcionais",
+			"Acompanhamento no pós-operatório"
+		],
+		"highlightsTitle": "Como é a sessão",
+		"highlightsLead": "Toque sutil para localizar áreas de baixa vitalidade e estimular a correção pelo próprio organismo.",
+		"highlights": [
+			{
+				"title": "Duração",
+				"text": "Sessão de cerca de 60 minutos."
+			},
+			{
+				"title": "Avaliação pelo toque",
+				"text": "Leitura do corpo para identificar desequilíbrios."
+			},
+			{
+				"title": "Autorregulação",
+				"text": "O organismo é estimulado a retomar o ritmo fisiológico."
+			}
+		]
+	},
+	"terapias-manuais": {
+		"benefitsTitle": "Benefícios das Terapias manuais",
+		"benefitsLead": "Técnicas de toque e manipulação para aliviar dores, melhorar a mobilidade e promover bem-estar.",
+		"benefits": [
+			"Alívio de dores e tensões musculares",
+			"Melhora da mobilidade articular",
+			"Apoio em edemas com drenagem linfática",
+			"Relaxamento e bem-estar"
+		],
+		"highlightsTitle": "Como é a sessão",
+		"highlightsLead": "Massagem relaxante, drenagem linfática e outras condutas manuais conforme a avaliação.",
+		"highlights": [
+			{
+				"title": "Duração",
+				"text": "Sessões de cerca de 60 minutos."
+			},
+			{
+				"title": "Massagem terapêutica",
+				"text": "Relaxamento muscular e alívio das tensões."
+			},
+			{
+				"title": "Drenagem linfática",
+				"text": "Estímulo à circulação linfática e redução de edemas."
+			}
+		]
+	}
+}

@@ -2,15 +2,25 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/sections/Hero.astro';
+import AboutPreview from '../components/sections/AboutPreview.astro';
 import ServicesGrid from '../components/sections/ServicesGrid.astro';
+import WhyChoose from '../components/sections/WhyChoose.astro';
+import VideoBanner from '../components/sections/VideoBanner.astro';
 import Stats from '../components/sections/Stats.astro';
+import AppointmentForm from '../components/sections/AppointmentForm.astro';
 import Testimonials from '../components/sections/Testimonials.astro';
-import TeamPreview from '../components/sections/TeamPreview.astro';
-import CTASection from '../components/sections/CTASection.astro';
+import FaqSection from '../components/sections/FaqSection.astro';
+import BlogPreview from '../components/sections/BlogPreview.astro';
+import { getPublishedPosts } from '../lib/blog';
 
 const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
+const featuredSlugs = ['fisioterapia', 'acupuntura', 'hidroterapia'];
+const featuredServices = featuredSlugs
+	.map((slug) => services.find((service) => service.data.slug === slug))
+	.filter((service): service is (typeof services)[number] => Boolean(service));
 const team = await getCollection('team');
 const testimonials = await getCollection('testimonials');
+const posts = (await getPublishedPosts()).slice(0, 3);
 ---
 
 <BaseLayout
@@ -19,9 +29,13 @@ const testimonials = await getCollection('testimonials');
 	canonical="/"
 >
 	<Hero />
-	<ServicesGrid services={services} />
+	<AboutPreview />
+	<ServicesGrid services={featuredServices} />
+	<WhyChoose team={team} />
+	<VideoBanner />
 	<Stats />
 	<Testimonials testimonials={testimonials} />
-	<TeamPreview team={team} />
-	<CTASection />
+	<AppointmentForm services={services} />
+	<FaqSection />
+	<BlogPreview posts={posts} />
 </BaseLayout>

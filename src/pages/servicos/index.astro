@@ -1,53 +1,197 @@
 ---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Container from '../../components/ui/Container.astro';
 import Breadcrumb from '../../components/ui/Breadcrumb.astro';
-import { getCollection } from 'astro:content';
+import PageHero from '../../components/ui/PageHero.astro';
+import Button from '../../components/ui/Button.astro';
+import SectionHeading from '../../components/ui/SectionHeading.astro';
 import ServiceCards from '../../components/ui/ServiceCards.astro';
+import VideoBanner from '../../components/sections/VideoBanner.astro';
+import FaqSection from '../../components/sections/FaqSection.astro';
+import Testimonials from '../../components/sections/Testimonials.astro';
+import { cleanServiceTitle } from '../../lib/services';
+import trustImage from '../../assets/pages/sobre-nos.png';
 
 const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
-const titles = services.map((service) => service.data.title.replace(/\u200b/g, '').trim());
+const testimonials = (await getCollection('testimonials')).slice(0, 3);
+const titles = services.map((service) => cleanServiceTitle(service.data.title));
 const description = `${titles.slice(0, -1).join(', ')} e ${titles.at(-1)} no Instituto do Bem Estar, em São Caetano do Sul.`;
+
+const checks = [
+	{
+		title: 'Atendimento personalizado',
+		text: 'Cada paciente recebe um projeto de reabilitação adaptado às suas necessidades.',
+	},
+	{
+		title: 'Equipe especializada',
+		text: 'Profissionais registrados no CREFITO, com formação em fisioterapia, hidroterapia e acupuntura.',
+	},
+];
 ---
 
 <BaseLayout
 	title="Nossos Serviços - Instituto do Bem Estar"
 	description={description}
-	canonical="/servicos"
+	canonical="/servicos/"
 >
-	<section class="page" aria-labelledby="servicos-pagina">
+	<PageHero id="servicos-pagina" title="Nossos Serviços" tone="dark">
+		<Breadcrumb
+			slot="breadcrumb"
+			items={[
+				{ label: 'Home', href: '/' },
+				{ label: 'Serviços', href: '/servicos/' },
+			]}
+		/>
+	</PageHero>
+
+	<section class="page" aria-label="Lista de serviços">
 		<Container>
-			<Breadcrumb
-				items={[
-					{ label: 'Home', href: '/' },
-					{ label: 'Serviços', href: '/servicos' },
-				]}
-			/>
-			<h1 id="servicos-pagina">Nossos Serviços</h1>
-			<p class="intro">
-				Nosso diferencial está no atendimento individualizado: cada paciente recebe um tratamento
-				adaptado às suas necessidades específicas, com equipe especializada em todas as áreas de
-				reabilitação.
-			</p>
 			<ServiceCards services={services} />
 		</Container>
 	</section>
+
+	<VideoBanner title="Reabilitação com estrutura e cuidado em cada detalhe" />
+
+	<section class="trust" aria-labelledby="confianca-titulo">
+		<Container>
+			<div class="trust-grid">
+				<div class="trust-copy">
+					<SectionHeading
+						id="confianca-titulo"
+						eyebrow="Por que nos escolher"
+						title="Cuidado especializado em que você pode confiar"
+						description="Reabilitação com equipe experiente, processos estruturados e infraestrutura pensada para o seu conforto."
+					/>
+					<ul>
+						{
+							checks.map((item) => (
+								<li>
+									<span class="check" aria-hidden="true">
+										<svg viewBox="0 0 24 24">
+											<path d="M9.2 16.6 4.8 12.2l1.4-1.4 3 3 8.6-8.6 1.4 1.4-10 10Z" />
+										</svg>
+									</span>
+									<div>
+										<strong>{item.title}</strong>
+										<p>{item.text}</p>
+									</div>
+								</li>
+							))
+						}
+					</ul>
+					<Button href="/sobre-nos/" variant="primary">
+						Conheça o Instituto
+						<span aria-hidden="true">→</span>
+					</Button>
+				</div>
+				<figure class="trust-media">
+					<Image
+						src={trustImage}
+						alt="Atendimento individualizado no Instituto do Bem Estar"
+						width={trustImage.width}
+						height={trustImage.height}
+						format="webp"
+						quality="mid"
+						loading="lazy"
+						decoding="async"
+						class="trust-photo"
+					/>
+				</figure>
+			</div>
+		</Container>
+	</section>
+
+	<FaqSection
+		variant="centered"
+		eyebrow="Perguntas frequentes"
+		title="Tudo o que você precisa saber sobre nós"
+	/>
+
+	<Testimonials testimonials={testimonials} />
 </BaseLayout>
 
 <style>
 	.page {
-		padding-block: var(--space-7);
+		padding-block: var(--space-7) var(--space-8);
+		background: var(--ibe-surface);
 	}
 
-	.page h1 {
-		margin: 0;
-		font-size: clamp(2rem, 4vw, 2.75rem);
+	.trust {
+		padding-block: var(--space-8);
+		background: var(--ibe-surface);
 	}
 
-	.intro {
-		max-width: 42rem;
-		margin: var(--space-3) 0 var(--space-6);
-		font-size: 1.125rem;
+	.trust-grid {
+		display: grid;
+		gap: var(--space-6);
+		align-items: center;
+	}
+
+	.trust-copy ul {
+		display: grid;
+		gap: var(--space-3);
+		margin: var(--space-4) 0 var(--space-4);
+		padding: 0;
+		list-style: none;
+	}
+
+	.trust-copy li {
+		display: flex;
+		align-items: flex-start;
+		gap: 0.85rem;
+	}
+
+	.check {
+		display: grid;
+		flex-shrink: 0;
+		place-items: center;
+		width: 1.75rem;
+		height: 1.75rem;
+		margin-top: 0.15rem;
+		border-radius: var(--radius-full);
+		background: var(--ibe-sage-deep);
+	}
+
+	.check svg {
+		width: 0.95rem;
+		height: 0.95rem;
+		fill: #fff;
+	}
+
+	.trust-copy strong {
+		color: var(--ibe-navy);
+	}
+
+	.trust-copy p {
+		margin: 0.25rem 0 0;
 		color: var(--color-text-muted);
+	}
+
+	.trust-media {
+		margin: 0;
+		overflow: hidden;
+		border-radius: var(--radius-xl);
+		background: var(--ibe-sage-deep);
+	}
+
+	.trust-photo {
+		display: block;
+		width: 100%;
+		height: 22rem;
+		object-fit: cover;
+		object-position: center 18%;
+	}
+
+	@media (min-width: 64rem) {
+		.trust-grid {
+			grid-template-columns: 1fr 1fr;
+			gap: var(--space-8);
+		}
+
+		.trust-photo {
+			height: 28rem;
+		}
 	}
 </style>

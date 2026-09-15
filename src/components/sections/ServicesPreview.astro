@@ -24,7 +24,7 @@ const { services } = Astro.props;
 			{
 				services.map((service) => (
 					<li class="overflow-hidden rounded-[var(--radius-lg)] bg-surface shadow-[var(--shadow-md)]">
-						<a href={`/servicos/${service.data.slug}`} class="block no-underline">
+						<a href={`/servicos/${service.data.slug}/`} class="block no-underline">
 							<Image
 								src={resolveContentImage(service.data.heroImage)}
 								alt={`Ilustração do serviço ${service.data.title}`}

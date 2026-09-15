@@ -1,309 +1,523 @@
 ---
 import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Container from '../components/ui/Container.astro';
 import Breadcrumb from '../components/ui/Breadcrumb.astro';
-import CTASection from '../components/sections/CTASection.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import Button from '../components/ui/Button.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
+import VideoBanner from '../components/sections/VideoBanner.astro';
+import FaqSection from '../components/sections/FaqSection.astro';
+import Testimonials from '../components/sections/Testimonials.astro';
+import site from '../data/site.json';
 import heroImage from '../assets/pages/sobre-nos.png';
+import spaceImage from '../assets/pages/infraestrutura.jpg';
 
-const differentials = [
+const team = await getCollection('team');
+const testimonials = (await getCollection('testimonials')).slice(0, 3);
+const director = team.find((member) => member.id.includes('daniele')) ?? team[0];
+const whatsappHref = `https://wa.me/${site.whatsapp}`;
+
+const checks = [
 	{
-		title: 'Experiência Comprovada',
-		text: 'Desde 2007, o Instituto do Bem Estar tem se dedicado a oferecer tratamentos de reabilitação de alta qualidade, atendendo mais de 10.000 pacientes ao longo dos anos.',
+		title: 'Atendimento personalizado',
+		text: 'Cada paciente recebe um tratamento adaptado às suas necessidades específicas.',
 	},
 	{
-		title: 'Atendimento Personalizado',
-		text: 'Nosso diferencial está no atendimento individualizado, garantindo que cada paciente receba um tratamento adaptado às suas necessidades específicas.',
-	},
-	{
-		title: 'Infraestrutura de Ponta',
-		text: 'Contamos com uma infraestrutura moderna e individualizada, projetada para proporcionar o máximo conforto e eficácia nos tratamentos.',
-	},
-	{
-		title: 'Equipe Especializada',
-		text: 'Nosso corpo técnico possui vasta experiência e formação, assegurando um atendimento de excelência em todas as áreas de reabilitação.',
+		title: 'Infraestrutura de ponta',
+		text: 'Prédio de 580 m² planejado para conforto, acessibilidade e eficácia clínica.',
 	},
 ];
 
-const principles = [
+const pillars = [
 	{
-		title: 'Abordagem por Projetos',
-		text: 'Uma vez definido o PROJETO DE ATENDIMENTO do paciente, devemos seguir o planejamento, ajustes de rotas por vezes serão necessários, mas mudanças radicais não devem ser realizadas.',
+		title: 'Missão',
+		text: 'Construir e realizar projetos integrativos de reabilitação, entregando com excelência resultados sustentáveis e duradouros.',
 	},
 	{
-		title: 'Foco em Resultados',
-		text: 'QUEM TEM DOR TEM PRESSA, promover o melhor resultado possível no menor espaço de tempo.',
-	},
-	{
-		title: 'Sintonia e Comunicação',
-		text: 'Promover um DIAGNÓSTICO PRECISO E ALINHADO com todos os profissionais envolvidos na reabilitação do paciente garantido que os objetivos previstos possam ser alcançados.',
-	},
-	{
-		title: 'Confiança',
-		text: 'Somos orientados pelo EXCESSO DE ZELO, garantindo um tratamento seguro e eficaz que faça valer a confiança recebida de todos os nossos pacientes e parceiros.',
-	},
-	{
-		title: 'Respeito Mútuo',
-		text: 'Valorizamos o conhecimento e experiência de cada colaborador e parceiro, porém sempre o APRENDIZADO COLETIVO deverá orientar nossas decisões.',
-	},
-	{
-		title: 'Segurança Clínica',
-		text: 'Devemos respeitar cada fase do projeto de reabilitação, pois acreditamos que DOR NÃO COMBINA COM EXERCÍCIOS.',
-	},
-	{
-		title: 'Acolhimento',
-		text: 'Devemos acolher fraternalmente todos os nossos pacientes, respeitando o ADERCO e demais PROCESSOS do Instituto do Bem Estar.',
+		title: 'Visão',
+		text: 'Levar bem-estar e qualidade de vida a todos que nos procuram, com terapias integrativas para a saúde física, mental e espiritual.',
 	},
 ];
 
-const commitments = [
-	{
-		title: 'Excelência no Atendimento',
-		text: 'Nosso compromisso é oferecer o mais alto padrão de atendimento, combinando experiência, tecnologia e cuidado personalizado.',
-	},
-	{
-		title: 'Resultados Sustentáveis',
-		text: 'Focamos em proporcionar resultados duradouros, ajudando nossos pacientes a alcançarem uma melhor qualidade de vida a longo prazo.',
-	},
-	{
-		title: 'Inovação Constante',
-		text: 'Estamos sempre em busca de novas técnicas e tecnologias para aprimorar nossos tratamentos e oferecer o melhor para nossos pacientes.',
-	},
-	{
-		title: 'Cuidado Integral',
-		text: 'Acreditamos no cuidado integral do ser humano, considerando aspectos físicos, mentais e emocionais em todos os nossos tratamentos.',
-	},
+const facts = [
+	{ value: '2007', label: 'Ano de fundação' },
+	{ value: '+10.000', label: 'Pacientes atendidos' },
+	{ value: '580 m²', label: 'Prédio planejado' },
+	{ value: '30 m²', label: 'Piscina aquecida' },
 ];
 ---
 
 <BaseLayout
 	title="Sobre Nós - Instituto do Bem Estar"
 	description="Desde 2007, o Instituto do Bem Estar oferece reabilitação de alta qualidade em São Caetano do Sul, com atendimento personalizado e mais de 10.000 pacientes atendidos."
-	canonical="/sobre-nos"
+	canonical="/sobre-nos/"
 >
-	<section class="page" aria-labelledby="sobre-titulo">
+	<PageHero id="sobre-titulo" title="Sobre Nós" tone="dark">
+		<Breadcrumb
+			slot="breadcrumb"
+			items={[
+				{ label: 'Home', href: '/' },
+				{ label: 'Sobre Nós', href: '/sobre-nos/' },
+			]}
+		/>
+	</PageHero>
+
+	<section class="intro" aria-labelledby="intro-titulo">
 		<Container>
-			<Breadcrumb
-				items={[
-					{ label: 'Home', href: '/' },
-					{ label: 'Sobre Nós', href: '/sobre-nos' },
-				]}
-			/>
 			<div class="intro-grid">
-				<div>
-					<h1 id="sobre-titulo">Sobre Nós</h1>
-					<p>
-						Desde 2007, o Instituto do Bem Estar tem se dedicado a oferecer tratamentos de
-						reabilitação de alta qualidade, atendendo mais de 10.000 pacientes ao longo dos anos.
+				<div class="intro-media">
+					<figure class="intro-main">
+						<Image
+							src={heroImage}
+							alt="Fisioterapeuta do Instituto do Bem Estar em atendimento individualizado com paciente"
+							width={heroImage.width}
+							height={heroImage.height}
+							format="webp"
+							quality="mid"
+							priority
+							loading="eager"
+							fetchpriority="high"
+							decoding="async"
+							class="intro-photo"
+						/>
+					</figure>
+					<figure class="intro-secondary">
+						<Image
+							src={spaceImage}
+							alt="Sala de reabilitação do Instituto do Bem Estar"
+							width={spaceImage.width}
+							height={spaceImage.height}
+							format="webp"
+							quality="mid"
+							loading="lazy"
+							decoding="async"
+							class="intro-photo"
+						/>
+					</figure>
+					<p class="intro-badge">
+						<strong>Desde 2007</strong>
+						<span>Reabilitação em São Caetano do Sul</span>
 					</p>
 				</div>
-				<figure>
-					<Image
-						src={heroImage}
-						alt="Fisioterapeuta do Instituto do Bem Estar em atendimento individualizado com paciente"
-						width={heroImage.width}
-						height={heroImage.height}
-						format="webp"
-						quality="mid"
-						priority
-						loading="eager"
-						fetchpriority="high"
-						decoding="async"
-						class="intro-image"
+
+				<div class="intro-copy">
+					<SectionHeading
+						id="intro-titulo"
+						eyebrow="Instituto do Bem Estar"
+						title="Cuidado clínico com expertise e acolhimento"
+						description="Desde 2007, o Instituto do Bem Estar oferece tratamentos de reabilitação de alta qualidade, com atendimento personalizado e mais de 10.000 pacientes acompanhados."
 					/>
-				</figure>
+					<ul class="intro-checks">
+						{
+							checks.map((item) => (
+								<li>
+									<span class="check" aria-hidden="true">
+										<svg viewBox="0 0 24 24">
+											<path d="M9.2 16.6 4.8 12.2l1.4-1.4 3 3 8.6-8.6 1.4 1.4-10 10Z" />
+										</svg>
+									</span>
+									<div>
+										<strong>{item.title}</strong>
+										<p>{item.text}</p>
+									</div>
+								</li>
+							))
+						}
+					</ul>
+					{
+						director && (
+							<div class="intro-director">
+								<Image
+									src={director.data.photo}
+									alt={`Retrato de ${director.data.name}`}
+									width={120}
+									height={120}
+									format="webp"
+									quality="mid"
+									loading="lazy"
+									decoding="async"
+									class="director-photo"
+								/>
+								<div>
+									<p class="director-name">{director.data.name}</p>
+									<p class="director-meta">Diretora · CREFITO {director.data.crefito}</p>
+								</div>
+							</div>
+						)
+					}
+					<Button href="/equipe/" variant="primary">
+						Conheça a equipe
+						<span aria-hidden="true">→</span>
+					</Button>
+				</div>
 			</div>
 		</Container>
 	</section>
 
-	<section class="block" aria-labelledby="diferenciais-titulo">
+	<section class="pillars" aria-labelledby="pilares-titulo">
 		<Container>
-			<h2 id="diferenciais-titulo">O que nos diferencia</h2>
-			<ul class="cards">
+			<SectionHeading
+				id="pilares-titulo"
+				align="center"
+				eyebrow="Quem somos"
+				title="Reabilitação para qualidade de vida"
+				description="Valores que orientam o Instituto: competência, respeito, ética, compaixão e amor."
+			/>
+			<div class="pillars-grid">
 				{
-					differentials.map((item) => (
-						<li>
+					pillars.map((item) => (
+						<article class="pillar-card">
 							<h3>{item.title}</h3>
 							<p>{item.text}</p>
-						</li>
+						</article>
 					))
 				}
-			</ul>
-		</Container>
-	</section>
-
-	<section class="block alt" aria-labelledby="principios-titulo">
-		<Container>
-			<h2 id="principios-titulo">Nossos Princípios</h2>
-			<ul class="principles">
-				{
-					principles.map((item) => (
-						<li>
-							<h3>{item.title}</h3>
-							<p>{item.text}</p>
-						</li>
-					))
-				}
-			</ul>
-		</Container>
-	</section>
-
-	<section class="block" aria-labelledby="vmv-titulo">
-		<Container>
-			<h2 id="vmv-titulo">Nossa Visão, Missão e Valores</h2>
-			<p class="lead">
-				Este texto reflete o compromisso do Instituto do Bem Estar em ser uma organização que
-				promove o bem-estar de maneira holística e inclusiva.
-			</p>
-			<ul class="vmv">
-				<li>
-					<h3>Visão</h3>
+				<article class="pillar-panel">
+					<p class="panel-eyebrow">Agende uma avaliação</p>
+					<h3>Fale com a recepção</h3>
 					<p>
-						Levar para todos que nos procuram bem estar e qualidade de vida. Praticando terapias
-						integrativas para reestabelecer a saúde física, mental e espiritual.
+						Segunda a sexta, {site.hours.segSex}. Sábado, {site.hours.sabado}.
 					</p>
-				</li>
-				<li>
-					<h3>Missão</h3>
-					<p>
-						Construir e realizar projetos integrativos de reabilitação entregando com excelência
-						resultados sustentáveis e duradouros.
-					</p>
-				</li>
-				<li>
-					<h3>Valores</h3>
-					<p>Competência, Respeito, Ética, Compaixão e Amor.</p>
-				</li>
-			</ul>
+					<a class="panel-phone" href={`tel:+${site.phoneRaw}`}>
+						{site.phone}
+					</a>
+					<Button href={whatsappHref} variant="primary">
+						WhatsApp
+						<span aria-hidden="true">→</span>
+					</Button>
+				</article>
+			</div>
 		</Container>
 	</section>
 
-	<section class="block alt" aria-labelledby="compromisso-titulo">
+	<section class="facts" aria-labelledby="numeros-titulo">
 		<Container>
-			<h2 id="compromisso-titulo">Compromisso com o Bem-Estar</h2>
-			<ul class="cards">
-				{
-					commitments.map((item) => (
-						<li>
-							<h3>{item.title}</h3>
-							<p>{item.text}</p>
-						</li>
-					))
-				}
-			</ul>
+			<div class="facts-grid">
+				<figure class="facts-media">
+					<Image
+						src={spaceImage}
+						alt="Estrutura de reabilitação do Instituto do Bem Estar em São Caetano do Sul"
+						width={spaceImage.width}
+						height={spaceImage.height}
+						format="webp"
+						quality="mid"
+						loading="lazy"
+						decoding="async"
+						class="facts-photo"
+					/>
+				</figure>
+				<div>
+					<SectionHeading
+						id="numeros-titulo"
+						eyebrow="Nossa estrutura"
+						title="Números da clínica"
+						description="Dados reais da infraestrutura e da trajetória do Instituto do Bem Estar."
+					/>
+					<ul class="facts-list">
+						{
+							facts.map((item) => (
+								<li>
+									<p class="facts-value">{item.value}</p>
+									<p class="facts-label">{item.label}</p>
+								</li>
+							))
+						}
+					</ul>
+					<Button href="/infraestrutura/" variant="primary">
+						Conheça a infraestrutura
+						<span aria-hidden="true">→</span>
+					</Button>
+				</div>
+			</div>
 		</Container>
 	</section>
 
-	<CTASection />
+	<VideoBanner title="Reabilitação com estrutura e cuidado em cada detalhe" />
+
+	<FaqSection
+		variant="centered"
+		eyebrow="Perguntas frequentes"
+		title="Tudo o que você precisa saber sobre nós"
+	/>
+
+	<Testimonials testimonials={testimonials} />
 </BaseLayout>
 
 <style>
-	.page {
-		padding-block: var(--space-7) var(--space-6);
+	.intro,
+	.pillars,
+	.facts {
+		padding-block: var(--space-8);
 	}
 
-	.intro-grid {
+	.intro,
+	.facts {
+		background: var(--ibe-surface);
+	}
+
+	.pillars {
+		background: var(--ibe-bg-alt);
+	}
+
+	.intro-grid,
+	.facts-grid,
+	.pillars-grid {
 		display: grid;
-		align-items: center;
-		gap: var(--space-5);
+		gap: var(--space-6);
 	}
 
-	.page h1 {
-		margin: 0;
-		font-size: clamp(2rem, 4vw, 2.75rem);
+	.intro-media {
+		position: relative;
+		min-height: 22rem;
 	}
 
-	.intro-grid p {
-		margin: var(--space-3) 0 0;
-		max-width: 36rem;
-		font-size: 1.125rem;
-		color: var(--color-text-muted);
-	}
-
-	.intro-grid figure {
+	.intro-main,
+	.intro-secondary,
+	.facts-media {
 		margin: 0;
 		overflow: hidden;
 		border-radius: var(--radius-xl);
-		background: var(--color-secondary);
-		box-shadow: var(--shadow-lg);
 	}
 
-	.intro-image {
+	.intro-main {
+		width: min(100%, 28rem);
+		margin-left: auto;
+	}
+
+	.intro-photo,
+	.facts-photo {
 		display: block;
 		width: 100%;
-		height: auto;
+		height: 100%;
+		object-fit: cover;
 	}
 
-	.block {
-		padding-block: var(--space-7);
+	.intro-main .intro-photo {
+		aspect-ratio: 4 / 5;
+		object-position: center 18%;
 	}
 
-	.block.alt {
-		background: var(--color-bg-alt);
+	.intro-secondary {
+		display: none;
 	}
 
-	.block h2 {
-		margin: 0 0 var(--space-5);
-		font-size: clamp(1.75rem, 3vw, 2.25rem);
-	}
-
-	.lead {
-		margin: calc(var(--space-5) * -1) 0 var(--space-5);
-		max-width: 40rem;
-		color: var(--color-text-muted);
-	}
-
-	.cards,
-	.principles,
-	.vmv {
+	.intro-badge {
+		position: absolute;
+		left: 0;
+		bottom: 1.25rem;
+		z-index: 1;
 		display: grid;
-		gap: var(--space-4);
+		width: min(100%, 14rem);
 		margin: 0;
+		padding: var(--space-3);
+		border-radius: var(--radius-lg);
+		background: var(--ibe-surface);
+		box-shadow: var(--shadow-md);
+	}
+
+	.intro-badge strong {
+		color: var(--ibe-sage-deep);
+		font-size: 1.35rem;
+	}
+
+	.intro-badge span {
+		color: var(--color-text-muted);
+		font-size: 0.875rem;
+	}
+
+	.intro-checks {
+		display: grid;
+		gap: var(--space-3);
+		margin: var(--space-4) 0;
 		padding: 0;
 		list-style: none;
 	}
 
-	.cards li,
-	.principles li,
-	.vmv li {
-		padding: var(--space-4);
-		border-radius: var(--radius-lg);
-		background: var(--color-surface);
-		box-shadow: var(--shadow-sm);
+	.intro-checks li {
+		display: flex;
+		align-items: flex-start;
+		gap: 0.85rem;
 	}
 
-	.cards h3,
-	.principles h3,
-	.vmv h3 {
-		margin: 0 0 var(--space-2);
-		font-size: 1.25rem;
+	.check {
+		display: grid;
+		flex-shrink: 0;
+		place-items: center;
+		width: 1.75rem;
+		height: 1.75rem;
+		margin-top: 0.1rem;
+		border-radius: var(--radius-full);
+		background: var(--ibe-sage-deep);
 	}
 
-	.cards p,
-	.principles p,
-	.vmv p {
-		margin: 0;
+	.check svg {
+		width: 0.95rem;
+		height: 0.95rem;
+		fill: #fff;
+	}
+
+	.intro-checks strong {
+		color: var(--ibe-navy);
+	}
+
+	.intro-checks p {
+		margin: 0.2rem 0 0;
 		color: var(--color-text-muted);
 	}
 
-	@media (min-width: 48rem) {
-		.intro-grid {
-			grid-template-columns: 1fr 1fr;
-		}
+	.intro-director {
+		display: flex;
+		align-items: center;
+		gap: var(--space-2);
+		margin: 0 0 var(--space-4);
+	}
 
-		.cards,
-		.vmv {
-			grid-template-columns: repeat(2, 1fr);
-		}
+	.director-photo {
+		width: 3.5rem;
+		height: 3.5rem;
+		border-radius: var(--radius-full);
+		object-fit: cover;
+		object-position: center 12%;
+	}
+
+	.director-name {
+		margin: 0;
+		font-weight: 700;
+		color: var(--ibe-navy);
+	}
+
+	.director-meta {
+		margin: 0.2rem 0 0;
+		font-size: 0.875rem;
+		color: var(--color-text-muted);
+	}
+
+	.pillar-card,
+	.pillar-panel {
+		padding: var(--space-5);
+		border-radius: var(--radius-xl);
+	}
+
+	.pillar-card {
+		background: var(--ibe-surface);
+		box-shadow: var(--shadow-sm);
+	}
+
+	.pillar-card h3,
+	.pillar-panel h3 {
+		margin: 0;
+		font-size: 1.5rem;
+	}
+
+	.pillar-card p,
+	.pillar-panel p {
+		margin: var(--space-2) 0 0;
+	}
+
+	.pillar-card p {
+		color: var(--color-text-muted);
+	}
+
+	.pillar-panel {
+		display: grid;
+		align-content: start;
+		background: var(--ibe-sage-deep);
+		color: #fff;
+	}
+
+	.panel-eyebrow {
+		margin: 0;
+		font-size: 0.8125rem;
+		font-weight: 700;
+		letter-spacing: 0.04em;
+		text-transform: uppercase;
+		color: rgb(255 255 255 / 0.84);
+	}
+
+	.panel-phone {
+		margin: var(--space-3) 0;
+		color: #fff;
+		font-family: var(--font-serif);
+		font-size: 1.75rem;
+		font-weight: 600;
+		text-decoration: none;
+	}
+
+	.pillar-panel :global(.ibe-btn) {
+		background: #fff;
+		color: var(--ibe-sage-deep);
+	}
+
+	.pillar-panel :global(.ibe-btn:hover) {
+		background: var(--ibe-cream);
+		color: var(--ibe-sage-hover);
+	}
+
+	.facts-photo {
+		aspect-ratio: 4 / 3;
+	}
+
+	.facts-list {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: var(--space-4);
+		margin: var(--space-5) 0 var(--space-4);
+		padding: 0;
+		list-style: none;
+	}
+
+	.facts-value {
+		margin: 0;
+		font-family: var(--font-serif);
+		font-size: clamp(1.75rem, 3vw, 2.25rem);
+		color: var(--ibe-sage-deep);
+	}
+
+	.facts-label {
+		margin: 0.25rem 0 0;
+		color: var(--color-text-muted);
 	}
 
 	@media (min-width: 64rem) {
-		.principles {
-			grid-template-columns: repeat(2, 1fr);
+		.intro-grid,
+		.facts-grid {
+			grid-template-columns: 1fr 1fr;
+			align-items: center;
+			gap: var(--space-8);
 		}
 
-		.vmv {
-			grid-template-columns: repeat(3, 1fr);
+		.pillars-grid {
+			grid-template-columns: 1fr 1fr 1fr;
+			align-items: stretch;
+		}
+
+		.intro-media {
+			min-height: 34rem;
+		}
+
+		.intro-main {
+			width: 78%;
+			margin-right: 0;
+		}
+
+		.intro-secondary {
+			display: block;
+			position: absolute;
+			left: 0;
+			bottom: 2.5rem;
+			width: 42%;
+			box-shadow: var(--shadow-lg);
+		}
+
+		.intro-secondary .intro-photo {
+			aspect-ratio: 4 / 3;
+		}
+
+		.intro-badge {
+			left: 38%;
+			bottom: 1rem;
 		}
 	}
 </style>

@@ -1,111 +1,143 @@
 ---
 import { Image } from 'astro:assets';
-import Container from '../ui/Container.astro';
 import Button from '../ui/Button.astro';
 import site from '../../data/site.json';
 import heroImage from '../../assets/pages/sobre-nos.png';
-
-const whatsappHref = `https://wa.me/${site.whatsapp}`;
 ---
 
 <section class="hero" aria-labelledby="hero-titulo">
-	<Container class="hero-grid">
+	<Image
+		src={heroImage}
+		alt="Fisioterapeuta do Instituto do Bem Estar conduzindo alongamento de ombro com paciente, em atendimento individualizado"
+		width={heroImage.width}
+		height={heroImage.height}
+		format="webp"
+		quality="mid"
+		priority
+		loading="eager"
+		fetchpriority="high"
+		decoding="async"
+		class="hero-image"
+	/>
+	<div class="hero-overlay">
 		<div class="hero-copy">
-			<p class="hero-eyebrow">{site.city}, {site.state}</p>
-			<h1 id="hero-titulo">Recupere sua saúde com o Instituto do Bem Estar</h1>
+			<p class="hero-badge">Reabilitação em {site.city}</p>
+			<h1 id="hero-titulo">
+				Recupere sua saúde com o Instituto do
+				<span>Bem Estar</span>
+			</h1>
 			<p class="hero-lead">
-				Desde 2007, o Instituto do Bem Estar oferece tratamentos de reabilitação de alta qualidade,
-				com atendimento personalizado. Já são mais de 10.000 pacientes acompanhados.
+				Desde 2007, atendimento personalizado em fisioterapia, acupuntura, hidroterapia e
+				reabilitação. Já são mais de 10.000 pacientes acompanhados.
 			</p>
 			<div class="hero-actions">
-				<Button href={whatsappHref} variant="accent">
-					Agende pelo WhatsApp
+				<Button href="#servicos" variant="primary" size="lg">
+					Conheça os serviços
+					<span aria-hidden="true">→</span>
 				</Button>
-				<Button href="#servicos" variant="ghost">Conheça os serviços</Button>
+				<p class="hero-proof">
+					<strong>10.000+</strong>
+					pacientes atendidos desde 2007
+				</p>
 			</div>
 		</div>
-		<figure class="hero-figure">
-			<!--
-				LCP: sobre-nos.png é foto real de atendimento (não o placeholder de cor).
-				O recorte em fundo preto fica no painel secondary para integrar ao hero.
-			-->
-			<Image
-				src={heroImage}
-				alt="Fisioterapeuta do Instituto do Bem Estar conduzindo alongamento de ombro com paciente, em atendimento individualizado"
-				width={heroImage.width}
-				height={heroImage.height}
-				format="webp"
-				quality="mid"
-				priority
-				loading="eager"
-				fetchpriority="high"
-				decoding="async"
-				class="hero-image"
-			/>
-		</figure>
-	</Container>
+	</div>
 </section>
 
 <style>
 	.hero {
-		background: var(--color-bg-alt);
+		position: relative;
+		isolation: isolate;
+		min-height: 36rem;
+		overflow: hidden;
+		background: var(--ibe-navy-deep);
 	}
 
-	.hero-grid {
-		display: grid;
-		align-items: center;
-		gap: var(--space-6);
-		padding-block: var(--space-7);
+	.hero-image {
+		position: absolute;
+		inset: 0;
+		z-index: 0;
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center 18%;
 	}
 
-	.hero-eyebrow {
+	.hero-overlay {
+		position: relative;
+		z-index: 1;
+		display: flex;
+		align-items: flex-end;
+		min-height: 36rem;
+		padding: 7.5rem var(--space-3) var(--space-7);
+		background:
+			linear-gradient(90deg, rgb(42 49 64 / 0.88) 0%, rgb(42 49 64 / 0.55) 48%, rgb(42 49 64 / 0.18) 100%);
+	}
+
+	.hero-copy {
+		max-width: 72rem;
+		margin-inline: auto;
+		width: 100%;
+	}
+
+	.hero-badge {
+		display: inline-flex;
 		margin: 0;
-		font-size: 0.875rem;
+		padding: 0.4rem 0.9rem;
+		border-radius: var(--radius-full);
+		background: rgb(255 255 255 / 0.14);
+		color: #fff;
+		font-size: 0.8125rem;
 		font-weight: 600;
-		letter-spacing: 0.06em;
-		text-transform: uppercase;
-		color: var(--color-primary-dark);
 	}
 
 	.hero-copy h1 {
-		margin: var(--space-2) 0 0;
-		font-size: clamp(2rem, 4vw, 3.15rem);
+		margin: var(--space-3) 0 0;
+		max-width: 16ch;
+		color: #fff;
+	}
+
+	.hero-copy h1 span {
+		color: var(--ibe-sage);
 	}
 
 	.hero-lead {
 		margin: var(--space-3) 0 0;
-		max-width: 36rem;
-		font-size: 1.125rem;
-		color: var(--color-text-muted);
+		max-width: 34rem;
+		color: rgb(255 255 255 / 0.86);
 	}
 
 	.hero-actions {
 		display: flex;
 		flex-wrap: wrap;
-		gap: var(--space-2);
-		margin-top: var(--space-4);
+		align-items: center;
+		gap: var(--space-3);
+		margin-top: var(--space-5);
 	}
 
-	.hero-figure {
+	.hero-proof {
 		margin: 0;
-		overflow: hidden;
-		border-radius: var(--radius-xl);
-		background: var(--color-secondary);
-		box-shadow: var(--shadow-lg);
+		color: #fff;
+		font-size: 0.9375rem;
 	}
 
-	.hero-image {
+	.hero-proof strong {
 		display: block;
-		width: 100%;
-		height: auto;
-		object-fit: cover;
-		object-position: center 20%;
+		font-family: var(--font-serif);
+		font-size: 1.25rem;
 	}
 
-	@media (min-width: 48rem) {
-		.hero-grid {
-			grid-template-columns: 1fr 1fr;
-			padding-block: var(--space-8);
+	@media (min-width: 64rem) {
+		.hero,
+		.hero-overlay {
+			min-height: 42rem;
+		}
+
+		.hero-overlay {
+			align-items: center;
+			padding-block: 8rem var(--space-8);
+			padding-inline: var(--space-4);
 		}
 	}
 </style>

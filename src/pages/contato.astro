@@ -1,12 +1,15 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Container from '../components/ui/Container.astro';
 import Breadcrumb from '../components/ui/Breadcrumb.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import SectionHeading from '../components/ui/SectionHeading.astro';
 import ContactInfo from '../components/ui/ContactInfo.astro';
-import Button from '../components/ui/Button.astro';
+import AppointmentForm from '../components/sections/AppointmentForm.astro';
 import site from '../data/site.json';
 
-const whatsappHref = `https://wa.me/${site.whatsapp}`;
+const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
 const mapsQuery = encodeURIComponent(site.address);
 const mapsEmbed = `https://www.google.com/maps?q=${mapsQuery}&hl=pt-BR&z=16&output=embed`;
 const mapsLink = 'https://maps.app.goo.gl/za59ZjuYxn6vnBh39';
@@ -15,116 +18,102 @@ const mapsLink = 'https://maps.app.goo.gl/za59ZjuYxn6vnBh39';
 <BaseLayout
 	title="Contato - Instituto do Bem Estar"
 	description={`Fale com o Instituto do Bem Estar: ${site.phone}, ${site.address}.`}
-	canonical="/contato"
+	canonical="/contato/"
 >
-	<section class="page" aria-labelledby="contato-titulo">
+	<PageHero id="contato-titulo" title="Contato" tone="dark">
+		<Breadcrumb
+			slot="breadcrumb"
+			items={[
+				{ label: 'Home', href: '/' },
+				{ label: 'Contato', href: '/contato/' },
+			]}
+		/>
+	</PageHero>
+
+	<section class="contact" aria-labelledby="contato-info">
 		<Container>
-			<Breadcrumb
-				items={[
-					{ label: 'Home', href: '/' },
-					{ label: 'Contato', href: '/contato' },
-				]}
-			/>
-			<h1 id="contato-titulo">Contato</h1>
-			<p class="lead">Gostaríamos muito de ouvir você! Sinta-se à vontade para nos deixar uma mensagem.</p>
-
-			<div class="grid">
+			<div class="contact-grid">
 				<div>
-					<h2>Informações</h2>
+					<SectionHeading
+						id="contato-info"
+						eyebrow="Contato"
+						title="Fale com a nossa equipe"
+						description={`Use o WhatsApp, o telefone ou o formulário para agendar uma avaliação em ${site.city}.`}
+					/>
 					<ContactInfo />
-					<div class="cta">
-						<Button href={whatsappHref} variant="accent" size="lg">
-							Fale pelo WhatsApp
-						</Button>
-					</div>
 				</div>
-
-				<div>
-					<h2>Como chegar</h2>
-					<iframe
-						class="map"
-						title={`Mapa com a localização do ${site.name} em ${site.city}`}
-						src={mapsEmbed}
-						loading="lazy"
-						referrerpolicy="no-referrer-when-downgrade"
-						allowfullscreen
-					></iframe>
-					<p class="map-fallback">
-						<a href={mapsLink} target="_blank" rel="noopener noreferrer">Ver no Google Maps</a>
-					</p>
-				</div>
+				<AppointmentForm
+					services={services}
+					formId="contato-whatsapp"
+					variant="card"
+					title="Entre em contato"
+					description="Preencha os dados. Vamos abrir o WhatsApp da recepção com a sua mensagem pronta."
+				/>
 			</div>
+		</Container>
+	</section>
 
-			<section class="notes" aria-labelledby="acesso-titulo">
-				<h2 id="acesso-titulo">Acesso e ambiente</h2>
-				<ul>
-					<li>
-						<h3>Fácil acesso</h3>
-						<p>
-							Localizado em uma área central de fácil acesso, com estacionamento disponível para
-							nossos pacientes.
-						</p>
-					</li>
-					<li>
-						<h3>Ambiente acolhedor</h3>
-						<p>
-							Nosso prédio de 580m² foi planejado para proporcionar o máximo conforto e
-							acessibilidade aos nossos pacientes.
-						</p>
-					</li>
-				</ul>
-			</section>
+	<section class="location" aria-labelledby="local-titulo">
+		<Container>
+			<SectionHeading
+				id="local-titulo"
+				align="center"
+				eyebrow="Localização"
+				title="Onde estamos"
+				description={`${site.address}. Prédio de 580 m², com acessibilidade e estacionamento para pacientes.`}
+			/>
+			<iframe
+				class="map"
+				title={`Mapa com a localização do ${site.name} em ${site.city}`}
+				src={mapsEmbed}
+				loading="lazy"
+				referrerpolicy="no-referrer-when-downgrade"
+				allowfullscreen
+			></iframe>
+			<p class="map-fallback">
+				<a href={mapsLink} target="_blank" rel="noopener noreferrer">
+					Ver no Google Maps
+					<span aria-hidden="true">→</span>
+				</a>
+			</p>
 		</Container>
 	</section>
 </BaseLayout>
 
 <style>
-	.page {
-		padding-block: var(--space-7);
+	.contact,
+	.location {
+		padding-block: var(--space-8);
+		background: var(--ibe-surface);
 	}
 
-	.page h1 {
-		margin: 0;
-		font-size: clamp(2rem, 4vw, 2.75rem);
-	}
-
-	.lead {
-		margin: var(--space-3) 0 var(--space-6);
-		max-width: 40rem;
-		font-size: 1.125rem;
-		color: var(--color-text-muted);
-	}
-
-	.grid {
+	.contact-grid {
 		display: grid;
 		gap: var(--space-6);
+		align-items: start;
 	}
 
-	.grid h2,
-	.notes h2 {
-		margin: 0 0 var(--space-3);
-		font-size: 1.5rem;
-	}
-
-	.cta {
+	.contact-grid :global(.contact-info) {
 		margin-top: var(--space-5);
 	}
 
 	.map {
 		display: block;
 		width: 100%;
-		min-height: 20rem;
+		min-height: 22rem;
+		margin-top: var(--space-5);
 		border: 0;
 		border-radius: var(--radius-xl);
-		box-shadow: var(--shadow-md);
+		background: var(--ibe-bg-alt);
 	}
 
 	.map-fallback {
-		margin: var(--space-2) 0 0;
+		margin: var(--space-3) 0 0;
+		text-align: center;
 	}
 
 	.map-fallback a {
-		color: var(--color-primary-dark);
+		color: var(--ibe-sage-deep);
 		font-weight: 600;
 		text-decoration: none;
 	}
@@ -133,42 +122,14 @@ const mapsLink = 'https://maps.app.goo.gl/za59ZjuYxn6vnBh39';
 		text-decoration: underline;
 	}
 
-	.notes {
-		margin-top: var(--space-7);
-	}
-
-	.notes ul {
-		display: grid;
-		gap: var(--space-4);
-		margin: 0;
-		padding: 0;
-		list-style: none;
-	}
-
-	.notes li {
-		padding: var(--space-4);
-		border-radius: var(--radius-lg);
-		background: var(--color-bg-alt);
-	}
-
-	.notes h3 {
-		margin: 0 0 var(--space-2);
-		font-size: 1.15rem;
-	}
-
-	.notes p {
-		margin: 0;
-		color: var(--color-text-muted);
-	}
-
-	@media (min-width: 48rem) {
-		.grid {
-			grid-template-columns: 1fr 1.1fr;
-			align-items: start;
+	@media (min-width: 64rem) {
+		.contact-grid {
+			grid-template-columns: 1fr 1fr;
+			gap: var(--space-8);
 		}
 
-		.notes ul {
-			grid-template-columns: 1fr 1fr;
+		.map {
+			min-height: 28rem;
 		}
 	}
 </style>

@@ -1,0 +1,280 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import Button from '../ui/Button.astro';
+import Container from '../ui/Container.astro';
+import site from '../../data/site.json';
+import { cleanServiceTitle } from '../../lib/services';
+import bookingImage from '../../assets/pages/infraestrutura.jpg';
+
+interface Props {
+	services: CollectionEntry<'services'>[];
+	formId?: string;
+	variant?: 'split' | 'card';
+	title?: string;
+	description?: string;
+}
+
+const {
+	services,
+	formId = 'agendamento-whatsapp',
+	variant = 'split',
+	title = 'Agende uma avaliação',
+	description,
+} = Astro.props;
+const isCard = variant === 'card';
+const lead =
+	description ??
+	`Preencha os dados. Vamos abrir o WhatsApp da recepção com a sua mensagem pronta, em ${site.city}.`;
+---
+
+<section class:list={['booking', isCard && 'is-card']} aria-labelledby={isCard ? 'contato-form-titulo' : 'agendar-titulo'}>
+	{
+		!isCard && (
+			<div class="booking-media">
+				<Image
+					src={bookingImage}
+					alt="Espaço de reabilitação do Instituto do Bem Estar preparado para atendimento clínico"
+					width={bookingImage.width}
+					height={bookingImage.height}
+					format="webp"
+					quality="mid"
+					loading="lazy"
+					decoding="async"
+					class="booking-image"
+				/>
+			</div>
+		)
+	}
+	<div class="booking-panel">
+		{isCard ? (
+			<div class="booking-card">
+				<h2 id="contato-form-titulo">{title}</h2>
+				<p>{lead}</p>
+				<form id={formId} class="booking-form">
+					<div class="field-grid">
+						<label>
+							Nome completo
+							<input type="text" name="nome" autocomplete="name" required placeholder="Seu nome" />
+						</label>
+						<label>
+							Telefone
+							<input
+								type="tel"
+								name="telefone"
+								autocomplete="tel"
+								required
+								inputmode="tel"
+								placeholder="(11) 00000-0000"
+							/>
+						</label>
+						<label class="field-full">
+							Serviço
+							<select name="servico" required>
+								<option value="" disabled selected>
+									Selecione um serviço
+								</option>
+								{services.map((service) => (
+									<option value={cleanServiceTitle(service.data.title)}>
+										{cleanServiceTitle(service.data.title)}
+									</option>
+								))}
+							</select>
+						</label>
+						<label class="field-full">
+							Mensagem
+							<textarea name="mensagem" rows="4" placeholder="Conte em poucas linhas o que você busca." />
+						</label>
+					</div>
+					<Button type="submit" variant="primary" size="lg">
+						Enviar pelo WhatsApp
+						<span aria-hidden="true">→</span>
+					</Button>
+				</form>
+			</div>
+		) : (
+			<Container>
+				<div class="booking-card">
+					<h2 id="agendar-titulo">{title}</h2>
+					<p>{lead}</p>
+					<form id={formId} class="booking-form">
+						<div class="field-grid">
+							<label>
+								Nome completo
+								<input type="text" name="nome" autocomplete="name" required placeholder="Seu nome" />
+							</label>
+							<label>
+								Telefone
+								<input
+									type="tel"
+									name="telefone"
+									autocomplete="tel"
+									required
+									inputmode="tel"
+									placeholder="(11) 00000-0000"
+								/>
+							</label>
+							<label class="field-full">
+								Serviço
+								<select name="servico" required>
+									<option value="" disabled selected>
+										Selecione um serviço
+									</option>
+									{services.map((service) => (
+										<option value={cleanServiceTitle(service.data.title)}>
+											{cleanServiceTitle(service.data.title)}
+										</option>
+									))}
+								</select>
+							</label>
+							<label class="field-full">
+								Mensagem
+								<textarea name="mensagem" rows="4" placeholder="Conte em poucas linhas o que você busca." />
+							</label>
+						</div>
+						<Button type="submit" variant="primary" size="lg">
+							Enviar pelo WhatsApp
+							<span aria-hidden="true">→</span>
+						</Button>
+					</form>
+				</div>
+			</Container>
+		)}
+	</div>
+</section>
+
+<script define:vars={{ whatsapp: site.whatsapp, formId }}>
+	const form = document.getElementById(formId);
+	form?.addEventListener('submit', (event) => {
+		event.preventDefault();
+		if (!(form instanceof HTMLFormElement)) return;
+		const data = new FormData(form);
+		const nome = String(data.get('nome') ?? '').trim();
+		const telefone = String(data.get('telefone') ?? '').trim();
+		const servico = String(data.get('servico') ?? '').trim();
+		const mensagem = String(data.get('mensagem') ?? '').trim();
+		const linhas = [
+			`Olá, meu nome é ${nome}.`,
+			`Telefone: ${telefone}.`,
+			`Gostaria de agendar uma avaliação de ${servico} no Instituto do Bem Estar.`,
+		];
+		if (mensagem) linhas.push(mensagem);
+		const url = `https://wa.me/${whatsapp}?text=${encodeURIComponent(linhas.join(' '))}`;
+		window.location.assign(url);
+	});
+</script>
+
+<style>
+	.booking {
+		display: grid;
+	}
+
+	.booking:not(.is-card) {
+		background: var(--ibe-navy-deep);
+	}
+
+	.booking.is-card {
+		display: block;
+	}
+
+	.booking-media {
+		min-height: 16rem;
+		overflow: hidden;
+	}
+
+	.booking-image {
+		display: block;
+		width: 100%;
+		height: 100%;
+		min-height: 16rem;
+		object-fit: cover;
+	}
+
+	.booking-panel {
+		display: flex;
+		align-items: center;
+		padding-block: var(--space-6);
+	}
+
+	.is-card .booking-panel {
+		padding: 0;
+	}
+
+	.booking-card {
+		width: 100%;
+		padding: var(--space-5);
+		border-radius: var(--radius-xl);
+		background: var(--ibe-bg-alt);
+		box-shadow: none;
+	}
+
+	.booking:not(.is-card) .booking-card {
+		background: var(--ibe-surface);
+		box-shadow: var(--shadow-lg);
+	}
+
+	.booking-card h2 {
+		margin: 0;
+	}
+
+	.booking-card > p {
+		margin: var(--space-2) 0 var(--space-4);
+		color: var(--color-text-muted);
+	}
+
+	.field-grid {
+		display: grid;
+		gap: var(--space-3);
+		margin-bottom: var(--space-4);
+	}
+
+	label {
+		display: grid;
+		gap: 0.4rem;
+		font-size: 0.875rem;
+		font-weight: 600;
+		color: var(--ibe-navy);
+	}
+
+	input,
+	select,
+	textarea {
+		width: 100%;
+		padding: 0.8rem 0.9rem;
+		border: 1px solid var(--ibe-border);
+		border-radius: var(--radius-md);
+		background: var(--ibe-surface);
+		color: var(--ibe-navy);
+		font: inherit;
+		font-weight: 400;
+	}
+
+	.booking:not(.is-card) input,
+	.booking:not(.is-card) select,
+	.booking:not(.is-card) textarea {
+		background: var(--ibe-cream);
+	}
+
+	@media (min-width: 40rem) {
+		.field-grid {
+			grid-template-columns: 1fr 1fr;
+		}
+
+		.field-full {
+			grid-column: 1 / -1;
+		}
+	}
+
+	@media (min-width: 64rem) {
+		.booking:not(.is-card) {
+			grid-template-columns: 1fr 1fr;
+			min-height: 36rem;
+		}
+
+		.booking:not(.is-card) .booking-media,
+		.booking:not(.is-card) .booking-image {
+			min-height: 100%;
+			height: 100%;
+		}
+	}
+</style>

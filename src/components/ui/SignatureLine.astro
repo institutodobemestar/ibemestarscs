@@ -1,0 +1,35 @@
+---
+interface Props {
+	className?: string;
+}
+
+const { className } = Astro.props;
+---
+
+<svg
+	class:list={['signature-line', className]}
+	viewBox="0 0 1200 280"
+	fill="none"
+	xmlns="http://www.w3.org/2000/svg"
+	aria-hidden="true"
+	focusable="false"
+	preserveAspectRatio="none"
+>
+	<path
+		d="M-40 198 C 70 186, 128 28, 268 64 C 418 104, 456 248, 628 186 C 812 118, 868 22, 1048 92 C 1160 136, 1248 188, 1320 168"
+		stroke="var(--ibe-sage-deep)"
+		stroke-width="2.25"
+		stroke-linecap="round"
+		stroke-linejoin="round"
+		fill="none"
+	/>
+</svg>
+
+<style>
+	.signature-line {
+		display: block;
+		width: 100%;
+		height: auto;
+		pointer-events: none;
+	}
+</style>

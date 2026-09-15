@@ -1,0 +1,155 @@
+---
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import faqs from '../../data/faqs.json';
+import site from '../../data/site.json';
+
+interface Props {
+	variant?: 'split' | 'centered';
+	eyebrow?: string;
+	title?: string;
+}
+
+const {
+	variant = 'split',
+	eyebrow = 'Perguntas frequentes',
+	title = 'O que você precisa saber antes de vir',
+} = Astro.props;
+const whatsappHref = `https://wa.me/${site.whatsapp}`;
+const isCentered = variant === 'centered';
+---
+
+<section class:list={['faq', isCentered && 'is-centered']} aria-labelledby="faq-titulo">
+	<Container>
+		<div class="faq-grid">
+			<div>
+				<SectionHeading
+					id="faq-titulo"
+					align={isCentered ? 'center' : 'left'}
+					eyebrow={eyebrow}
+					title={title}
+				/>
+				{
+					!isCentered && (
+						<div class="faq-contacts">
+							<a href={`tel:+${site.phoneRaw}`}>
+								<span>Telefone</span>
+								{site.phone}
+							</a>
+							<a href={whatsappHref}>
+								<span>WhatsApp</span>
+								Fale com a recepção
+							</a>
+						</div>
+					)
+				}
+			</div>
+			<div class="faq-list">
+				{
+					faqs.map((item, index) => (
+						<details class="faq-item" open={index === 0}>
+							<summary>{item.question}</summary>
+							<p>{item.answer}</p>
+						</details>
+					))
+				}
+			</div>
+		</div>
+	</Container>
+</section>
+
+<style>
+	.faq {
+		padding-block: var(--space-8);
+		background: var(--ibe-bg-alt);
+	}
+
+	.faq-grid {
+		display: grid;
+		gap: var(--space-6);
+	}
+
+	.faq-contacts {
+		display: grid;
+		gap: var(--space-2);
+		margin-top: var(--space-5);
+	}
+
+	.faq-contacts a {
+		display: grid;
+		padding: var(--space-3);
+		border-radius: var(--radius-lg);
+		background: var(--ibe-surface);
+		text-decoration: none;
+		color: var(--ibe-navy);
+		font-weight: 600;
+	}
+
+	.faq-contacts span {
+		color: var(--ibe-sage-deep);
+		font-size: 0.8125rem;
+	}
+
+	.faq-item {
+		border-bottom: 1px solid var(--ibe-border);
+		padding-block: var(--space-3);
+	}
+
+	.faq-item summary {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-2);
+		cursor: pointer;
+		font-weight: 600;
+		color: var(--ibe-navy);
+		list-style: none;
+	}
+
+	.faq-item summary::after {
+		content: '+';
+		flex-shrink: 0;
+		color: var(--ibe-sage-deep);
+		font-size: 1.25rem;
+		font-weight: 500;
+		line-height: 1;
+	}
+
+	.faq-item[open] summary::after {
+		content: '–';
+	}
+
+	.faq-item summary::-webkit-details-marker {
+		display: none;
+	}
+
+	.faq-item p {
+		margin: var(--space-2) 0 0;
+		color: var(--color-text-muted);
+	}
+
+	.is-centered .faq-grid {
+		justify-items: center;
+	}
+
+	.is-centered .faq-list {
+		width: min(100%, 40rem);
+	}
+
+	@media (min-width: 64rem) {
+		.faq-grid {
+			grid-template-columns: 0.85fr 1.15fr;
+			align-items: start;
+			gap: var(--space-8);
+		}
+
+		.is-centered .faq-grid {
+			grid-template-columns: 1fr;
+			justify-items: center;
+		}
+
+		.is-centered .faq-list {
+			width: min(100%, 40rem);
+		}
+	}
+</style>

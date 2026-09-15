@@ -9,6 +9,7 @@ const whatsappHref = `https://wa.me/${site.whatsapp}`;
 <section class="cta" aria-labelledby="cta-titulo">
 	<Container>
 		<div class="cta-panel">
+			<p class="cta-eyebrow">Agende uma avaliação</p>
 			<h2 id="cta-titulo">Pronto para começar a sua reabilitação?</h2>
 			<p>
 				Fale com a recepção do {site.name} e agende uma avaliação em {site.city}.
@@ -27,8 +28,9 @@ const whatsappHref = `https://wa.me/${site.whatsapp}`;
 					<dd>{site.hours.domingo}</dd>
 				</div>
 			</dl>
-			<Button href={whatsappHref} variant="accent" size="lg">
+			<Button href={whatsappHref} variant="primary" size="lg">
 				Agende pelo WhatsApp
+				<span aria-hidden="true">→</span>
 			</Button>
 		</div>
 	</Container>
@@ -36,34 +38,34 @@ const whatsappHref = `https://wa.me/${site.whatsapp}`;
 
 <style>
 	.cta {
+		background: var(--ibe-navy-deep);
+		color: #e8ebf0;
 		padding-block: var(--space-8);
 	}
 
 	.cta-panel {
 		display: grid;
 		justify-items: center;
-		padding: var(--space-6) var(--space-4);
-		border-radius: var(--radius-xl);
-		background: var(--color-secondary);
-		color: var(--color-secondary-soft);
 		text-align: center;
-		box-shadow: var(--shadow-md);
+	}
+
+	.cta-eyebrow {
+		margin: 0;
+		color: var(--ibe-sage);
+		font-size: 0.875rem;
+		font-weight: 600;
 	}
 
 	.cta-panel h2 {
-		margin: 0;
+		margin: var(--space-2) 0 0;
 		max-width: 28rem;
-		font-size: clamp(1.75rem, 4vw, 2.25rem);
-		color: var(--color-surface);
+		color: #fff;
 	}
 
 	.cta-panel > p {
 		margin: var(--space-2) 0 0;
 		max-width: 32rem;
-	}
-
-	.cta-panel :global(a) {
-		color: var(--color-surface);
+		color: rgb(232 235 240 / 0.86);
 	}
 
 	.hours {
@@ -77,24 +79,24 @@ const whatsappHref = `https://wa.me/${site.whatsapp}`;
 	.hours dt {
 		font-size: 0.75rem;
 		font-weight: 600;
-		letter-spacing: 0.04em;
-		text-transform: uppercase;
-		color: var(--color-primary-soft);
+		color: var(--ibe-sage);
 	}
 
 	.hours dd {
 		margin: 0.2rem 0 0;
 		font-weight: 600;
-		color: var(--color-surface);
+		color: #fff;
 	}
 
 	@media (min-width: 40rem) {
-		.cta-panel {
-			padding: var(--space-7) var(--space-8);
-		}
-
 		.hours {
 			grid-template-columns: repeat(3, 1fr);
+			gap: 0;
+		}
+
+		.hours > div:not(:first-child) {
+			padding-left: var(--space-3);
+			border-left: 1px solid rgb(255 255 255 / 0.12);
 		}
 	}
 </style>

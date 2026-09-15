@@ -60,42 +60,44 @@ const blogPosting = {
 	<article>
 		<header class="hero">
 			<Container>
-				<Breadcrumb
-					items={[
-						{ label: 'Home', href: '/' },
-						{ label: 'Blog', href: '/blog' },
-						{ label: post.data.title, href: `/blog/${post.data.slug}` },
-					]}
-				/>
-				<p class="meta">
-					<time datetime={post.data.publishDate.toISOString()}>{published}</time>
-				</p>
-				<h1>{post.data.title}</h1>
-				<p class="lead">{post.data.description}</p>
-				{
-					post.data.tags.length > 0 && (
-						<ul class="tags" aria-label="Tags do artigo">
-							{post.data.tags.map((tag) => (
-								<li>{tag}</li>
-							))}
-						</ul>
-					)
-				}
-				<figure>
-					<Image
-						src={heroImage}
-						alt={`Imagem de capa do artigo: ${post.data.title}`}
-						width={1280}
-						height={720}
-						format="webp"
-						quality="mid"
-						priority
-						loading="eager"
-						fetchpriority="high"
-						decoding="async"
-						class="hero-image"
+				<div class="hero-inner">
+					<Breadcrumb
+						items={[
+							{ label: 'Home', href: '/' },
+							{ label: 'Blog', href: '/blog/' },
+							{ label: post.data.title, href: `/blog/${post.data.slug}/` },
+						]}
 					/>
-				</figure>
+					<p class="meta">
+						<time datetime={post.data.publishDate.toISOString()}>{published}</time>
+					</p>
+					<h1>{post.data.title}</h1>
+					<p class="lead">{post.data.description}</p>
+					{
+						post.data.tags.length > 0 && (
+							<ul class="tags" aria-label="Tags do artigo">
+								{post.data.tags.map((tag) => (
+									<li>{tag}</li>
+								))}
+							</ul>
+						)
+					}
+					<figure>
+						<Image
+							src={heroImage}
+							alt={`Imagem de capa do artigo: ${post.data.title}`}
+							width={1280}
+							height={720}
+							format="webp"
+							quality="mid"
+							priority
+							loading="eager"
+							fetchpriority="high"
+							decoding="async"
+							class="hero-image"
+						/>
+					</figure>
+				</div>
 			</Container>
 		</header>
 
@@ -122,7 +124,7 @@ const blogPosting = {
 					<ul>
 						{related.map((item) => (
 							<li>
-								<a href={`/blog/${item.data.slug}`}>
+								<a href={`/blog/${item.data.slug}/`}>
 									<Image
 										src={resolveContentImage(item.data.heroImage)}
 										alt={`Capa do artigo ${item.data.title}`}
@@ -152,8 +154,16 @@ const blogPosting = {
 
 <style>
 	.hero {
-		background: var(--color-bg-alt);
-		padding-block: var(--space-6);
+		background: var(--ibe-cream);
+		padding-top: 7.5rem;
+		padding-bottom: var(--space-6);
+	}
+
+	.hero-inner,
+	.article-body,
+	.cta {
+		max-width: 46rem;
+		margin-inline: auto;
 	}
 
 	.meta {
@@ -165,13 +175,11 @@ const blogPosting = {
 
 	.hero h1 {
 		margin: var(--space-2) 0 0;
-		max-width: 48rem;
 		font-size: clamp(2rem, 4vw, 3rem);
 	}
 
 	.lead {
 		margin: var(--space-3) 0 0;
-		max-width: 40rem;
 		font-size: 1.125rem;
 		color: var(--color-text-muted);
 	}
@@ -213,11 +221,20 @@ const blogPosting = {
 	}
 
 	.article-body {
-		max-width: 48rem;
+		max-width: 46rem;
+	}
+
+	.article-body :global(img) {
+		display: block;
+		width: 100%;
+		height: auto;
+		margin-block: var(--space-4);
+		border-radius: var(--radius-lg);
 	}
 
 	.cta {
-		max-width: 48rem;
+		max-width: 46rem;
+		margin-inline: auto;
 		margin-top: var(--space-8);
 		padding: var(--space-5);
 		border-radius: var(--radius-lg);
@@ -235,7 +252,7 @@ const blogPosting = {
 	}
 
 	.related {
-		padding-block: 0 var(--space-8);
+		padding-block: var(--space-8);
 	}
 
 	.related h2 {

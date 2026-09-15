@@ -1,8 +1,11 @@
 ---
+import { Image } from 'astro:assets';
 import type { CollectionEntry } from 'astro:content';
+import Button from '../ui/Button.astro';
 import Container from '../ui/Container.astro';
 import SectionHeading from '../ui/SectionHeading.astro';
-import ServiceCards from '../ui/ServiceCards.astro';
+import { resolveContentImage } from '../../lib/content-images';
+import { cleanServiceTitle, getServiceIcon } from '../../lib/services';
 
 interface Props {
 	services: CollectionEntry<'services'>[];
@@ -15,22 +18,150 @@ const { services } = Astro.props;
 	<Container>
 		<SectionHeading
 			id="servicos-titulo"
-			eyebrow="O que fazemos"
-			title="Serviços de fisioterapia e reabilitação"
+			eyebrow="Nossos serviços"
+			title="Fisioterapia e reabilitação para o seu bem-estar"
 			description="Atendimento personalizado em Fisioterapia, Acupuntura, Hidroterapia e terapias integrativas."
-		/>
-		<div class="services-cards">
-			<ServiceCards services={services} />
-		</div>
+		>
+			<Button slot="action" href="/servicos/" variant="primary">
+				Ver todos os serviços
+				<span aria-hidden="true">→</span>
+			</Button>
+		</SectionHeading>
+		<ul class="featured">
+			{
+				services.map((service) => {
+					const title = cleanServiceTitle(service.data.title);
+					return (
+						<li>
+							<a href={`/servicos/${service.data.slug}/`} class="featured-card">
+								<div class="featured-head">
+									<h3>{title}</h3>
+									<span class="featured-icon" aria-hidden="true" set:html={getServiceIcon(service.data.slug)} />
+								</div>
+								<p>{service.data.shortDescription}</p>
+								<Image
+									src={resolveContentImage(service.data.heroImage)}
+									alt={`Ilustração do serviço ${title}`}
+									width={640}
+									height={420}
+									format="webp"
+									quality="mid"
+									loading="lazy"
+									decoding="async"
+									class="featured-image"
+								/>
+							</a>
+						</li>
+					);
+				})
+			}
+		</ul>
+		<p class="services-note">
+			Seu projeto de reabilitação pode começar agora.
+			<a href="/contato/">Fale com a recepção</a>
+		</p>
 	</Container>
 </section>
 
 <style>
 	.services {
 		padding-block: var(--space-8);
+		background: var(--ibe-bg-alt);
 	}
 
-	.services-cards {
-		margin-top: var(--space-6);
+	.featured {
+		display: grid;
+		gap: var(--space-4);
+		margin: var(--space-6) 0 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.featured-card {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		padding: var(--space-4);
+		border-radius: var(--radius-xl);
+		background: var(--ibe-surface);
+		box-shadow: var(--shadow-md);
+		text-decoration: none;
+		color: inherit;
+	}
+
+	.featured-head {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		gap: var(--space-2);
+		margin-bottom: 0.75rem;
+	}
+
+	.featured-icon {
+		display: block;
+		flex-shrink: 0;
+		width: 2.5rem;
+		height: 2.5rem;
+		overflow: hidden;
+		color: var(--ibe-navy);
+	}
+
+	.featured-icon :global(svg) {
+		display: block;
+		width: 2.5rem;
+		height: 2.5rem;
+	}
+
+	.featured-card h3 {
+		margin: 0;
+		font-size: 1.35rem;
+	}
+
+	.featured-card p {
+		display: -webkit-box;
+		flex: 1;
+		margin: 0 0 var(--space-3);
+		overflow: hidden;
+		color: var(--color-text-muted);
+		-webkit-box-orient: vertical;
+		-webkit-line-clamp: 3;
+	}
+
+	.featured-image {
+		display: block;
+		width: 100%;
+		height: 12.5rem;
+		margin-top: auto;
+		border-radius: var(--radius-lg);
+		object-fit: cover;
+	}
+
+	.featured-card:hover {
+		box-shadow: var(--shadow-lg);
+	}
+
+	.featured-card:hover h3 {
+		color: var(--ibe-sage-deep);
+	}
+
+	.services-note {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 0.35rem;
+		margin: var(--space-5) 0 0;
+		text-align: center;
+		color: var(--color-text-muted);
+	}
+
+	.services-note a {
+		color: var(--ibe-sage-deep);
+		font-weight: 600;
+	}
+
+	@media (min-width: 48rem) {
+		.featured {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
 	}
 </style>

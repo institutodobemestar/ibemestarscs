@@ -3,113 +3,273 @@ import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Container from '../components/ui/Container.astro';
 import Breadcrumb from '../components/ui/Breadcrumb.astro';
-import CTASection from '../components/sections/CTASection.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import FaqSection from '../components/sections/FaqSection.astro';
+import site from '../data/site.json';
 import spaceImage from '../assets/pages/infraestrutura.jpg';
+
+const facts = [
+	{ label: 'Área', value: '580 m²' },
+	{ label: 'Piscina', value: '30 m²' },
+	{ label: 'Volume', value: '40.000 litros' },
+	{ label: 'Cidade', value: `${site.city} - ${site.state}` },
+	{ label: 'Endereço', value: 'Av. Senador Roberto Simonsen, 482 — Santo Antônio' },
+	{ label: 'Estacionamento', value: 'Para pacientes' },
+];
+
+const features = [
+	{
+		title: 'Piscina aquecida',
+		text: 'Piscina aquecida com 30 m² e 40.000 litros para hidroterapia e reabilitação.',
+	},
+	{
+		title: 'Studio Pilates',
+		text: 'Equipamentos de alta performance, com foco em ergonomia e atendimento individual.',
+	},
+];
+
+const reasons = [
+	'Acessibilidade em todo o prédio, pensada para reabilitação.',
+	'Elevador panorâmico para deslocamento com mais conforto.',
+	'Estacionamento disponível para pacientes.',
+	'Atendimento personalizado, adaptado a cada projeto clínico.',
+];
+
+const stats = [
+	{ value: '580 m²', label: 'Prédio planejado para reabilitação' },
+	{ value: '30 m²', label: 'Piscina aquecida de hidroterapia' },
+];
 ---
 
 <BaseLayout
 	title="Infraestrutura - Instituto do Bem Estar"
 	description="Conheça o prédio de 580m² do Instituto do Bem Estar em São Caetano do Sul, planejado para reabilitação, com acessibilidade, piscina aquecida e estacionamento."
-	canonical="/infraestrutura"
+	canonical="/infraestrutura/"
 >
-	<section class="page" aria-labelledby="infra-titulo">
+	<PageHero id="infra-titulo" title="Infraestrutura" tone="dark">
+		<Breadcrumb
+			slot="breadcrumb"
+			items={[
+				{ label: 'Home', href: '/' },
+				{ label: 'Infraestrutura', href: '/infraestrutura/' },
+			]}
+		/>
+	</PageHero>
+
+	<section class="page" aria-labelledby="infra-detalhes">
 		<Container>
-			<Breadcrumb
-				items={[
-					{ label: 'Home', href: '/' },
-					{ label: 'Infraestrutura', href: '/infraestrutura' },
-				]}
-			/>
 			<div class="layout">
-				<div>
-					<h1 id="infra-titulo">Infraestrutura</h1>
-					<p class="lead">
-						Nossos diferenciais consistem em um atendimento personalizado, uma infraestrutura
-						individualizada, corpo técnico com vasta experiência e formação, equipamentos e recursos
-						modernos e processos estruturados, possibilitando assim o alcance de resultados com
-						rapidez e um acompanhamento clínico personalizado.
-					</p>
-					<h2>Prédio planejado</h2>
-					<p>
-						Um prédio planejado para a reabilitação com acessibilidade, elevador panorâmico, piscina
-						aquecida e estacionamento. Tecnologia e conforto à sua disposição.
-					</p>
-					<h2>Acompanhamento individualizado</h2>
-					<p>
-						No Instituto do Bem Estar, oferecemos um atendimento personalizado, adaptado às
-						necessidades de cada pessoa. Nosso acompanhamento individualizado visa proporcionar
-						cuidados específicos e eficazes, com foco no seu bem-estar físico e emocional. Porque
-						cada pessoa é única, nosso compromisso é garantir que você receba o apoio necessário
-						para alcançar os melhores resultados.
-					</p>
-					<ul>
-						<li>
-							<strong>Piscina aquecida</strong>
-							<span>Piscina aquecida com 30 m² e 40.000 litros para hidroterapia.</span>
-						</li>
-						<li>
-							<strong>Studio Pilates</strong>
-							<span>Equipamentos de alta performance com foco em ergonomia.</span>
-						</li>
-					</ul>
+				<aside class="aside">
+					<div class="facts">
+						<p class="facts-title">Detalhes do espaço</p>
+						<dl>
+							{
+								facts.map((item) => (
+									<div>
+										<dt>{item.label}</dt>
+										<dd>{item.value}</dd>
+									</div>
+								))
+							}
+						</dl>
+					</div>
+				</aside>
+
+				<div class="content">
+					<figure class="photo">
+						<Image
+							src={spaceImage}
+							alt="Sala de reabilitação do Instituto do Bem Estar com aparelhos de fisioterapia, Pilates e espaço amplo para atendimento"
+							width={spaceImage.width}
+							height={spaceImage.height}
+							format="webp"
+							quality="mid"
+							priority
+							loading="eager"
+							fetchpriority="high"
+							decoding="async"
+							class="photo-image"
+						/>
+					</figure>
+
+					<section aria-labelledby="infra-detalhes">
+						<h2 id="infra-detalhes">Prédio planejado para a reabilitação</h2>
+						<p>
+							Um prédio planejado para a reabilitação, com acessibilidade, elevador panorâmico,
+							piscina aquecida e estacionamento. Tecnologia e conforto à sua disposição.
+						</p>
+					</section>
+
+					<section class="features" aria-labelledby="recursos-titulo">
+						<h2 id="recursos-titulo">O que você encontra</h2>
+						<p>
+							Nossos diferenciais passam por atendimento personalizado, infraestrutura
+							individualizada, equipamentos modernos e processos estruturados.
+						</p>
+						<ul>
+							{
+								features.map((item) => (
+									<li>
+										<span class="check" aria-hidden="true">
+											<svg viewBox="0 0 24 24" width="16" height="16">
+												<path d="M9.2 16.6 4.8 12.2l1.4-1.4 3 3 8.6-8.6 1.4 1.4-10 10Z" />
+											</svg>
+										</span>
+										<div>
+											<strong>{item.title}</strong>
+											<p>{item.text}</p>
+										</div>
+									</li>
+								))
+							}
+						</ul>
+					</section>
+
+					<section class="reasons" aria-labelledby="porque-espaco">
+						<h2 id="porque-espaco">Por que o espaço importa</h2>
+						<p>
+							No Instituto do Bem Estar, o acompanhamento é individualizado, com foco no bem-estar
+							físico e emocional. Cada pessoa é única, e o espaço foi pensado para apoiar esse
+							cuidado.
+						</p>
+						<ul>
+							{
+								reasons.map((item) => (
+									<li>
+										<span class="check" aria-hidden="true">
+											<svg viewBox="0 0 24 24" width="16" height="16">
+												<path d="M9.2 16.6 4.8 12.2l1.4-1.4 3 3 8.6-8.6 1.4 1.4-10 10Z" />
+											</svg>
+										</span>
+										<span>{item}</span>
+									</li>
+								))
+							}
+						</ul>
+					</section>
+
+					<section class="stats" aria-labelledby="numeros-espaco">
+						<h2 id="numeros-espaco">Números da estrutura</h2>
+						<ul>
+							{
+								stats.map((item) => (
+									<li>
+										<p class="stats-value">{item.value}</p>
+										<p class="stats-label">{item.label}</p>
+									</li>
+								))
+							}
+						</ul>
+					</section>
 				</div>
-				<figure>
-					<Image
-						src={spaceImage}
-						alt="Sala de reabilitação do Instituto do Bem Estar com aparelhos de fisioterapia, Pilates e espaço amplo para atendimento"
-						width={spaceImage.width}
-						height={spaceImage.height}
-						format="webp"
-						quality="mid"
-						priority
-						loading="eager"
-						fetchpriority="high"
-						decoding="async"
-						class="space-image"
-					/>
-				</figure>
 			</div>
 		</Container>
 	</section>
-	<CTASection />
+
+	<FaqSection
+		variant="centered"
+		eyebrow="Perguntas frequentes"
+		title="Tudo o que você precisa saber antes de vir"
+	/>
 </BaseLayout>
 
 <style>
 	.page {
-		padding-block: var(--space-7);
+		padding-block: var(--space-7) var(--space-8);
+		background: var(--ibe-surface);
 	}
 
 	.layout {
 		display: grid;
-		align-items: start;
 		gap: var(--space-5);
 	}
 
-	.page h1 {
-		margin: 0;
-		font-size: clamp(2rem, 4vw, 2.75rem);
+	.facts {
+		overflow: hidden;
+		border-radius: var(--radius-xl);
+		background: var(--ibe-surface);
+		box-shadow: var(--shadow-md);
 	}
 
-	.lead,
-	.layout p {
+	.facts-title {
+		margin: 0;
+		padding: 1.05rem 1.25rem;
+		background: var(--ibe-sage-deep);
+		color: #fff;
+		font-size: 1.05rem;
+		font-weight: 700;
+	}
+
+	.facts dl {
+		margin: 0;
+		padding: 0.2rem 0;
+	}
+
+	.facts div {
+		display: flex;
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 0.3rem;
+		padding: 0.95rem 1.2rem;
+		border-top: 1px solid var(--ibe-border);
+	}
+
+	.facts div:first-child {
+		border-top: 0;
+	}
+
+	.facts dt {
+		font-size: 0.75rem;
+		font-weight: 600;
+		letter-spacing: 0.03em;
+		text-transform: uppercase;
 		color: var(--color-text-muted);
 	}
 
-	.lead {
-		margin: var(--space-3) 0 0;
-		font-size: 1.125rem;
-	}
-
-	.layout h2 {
-		margin: var(--space-5) 0 var(--space-2);
-		font-size: 1.5rem;
-	}
-
-	.layout p {
+	.facts dd {
 		margin: 0;
+		font-size: 0.98rem;
+		font-weight: 600;
+		line-height: 1.45;
+		color: var(--ibe-navy);
+		overflow-wrap: break-word;
 	}
 
-	.layout ul {
+	.content {
+		display: grid;
+		gap: var(--space-6);
+		min-width: 0;
+	}
+
+	.photo {
+		margin: 0;
+		overflow: hidden;
+		border-radius: var(--radius-xl);
+	}
+
+	.photo-image {
+		display: block;
+		width: 100%;
+		height: auto;
+		max-height: 32rem;
+		object-fit: cover;
+	}
+
+	.content h2 {
+		margin: 0;
+		text-align: center;
+		font-size: clamp(1.75rem, 3vw, 2.25rem);
+	}
+
+	.content h2 + p {
+		margin: var(--space-2) auto 0;
+		max-width: 40rem;
+		text-align: center;
+		color: var(--color-text-muted);
+	}
+
+	.features ul,
+	.reasons ul {
 		display: grid;
 		gap: var(--space-3);
 		margin: var(--space-5) 0 0;
@@ -117,44 +277,90 @@ import spaceImage from '../assets/pages/infraestrutura.jpg';
 		list-style: none;
 	}
 
-	.layout li {
-		padding: var(--space-3);
-		border-radius: var(--radius-md);
-		background: var(--color-bg-alt);
+	.features li,
+	.reasons li {
+		display: flex;
+		align-items: flex-start;
+		gap: 0.85rem;
 	}
 
-	.layout strong {
+	.check {
+		display: grid;
+		flex-shrink: 0;
+		place-items: center;
+		width: 1.75rem;
+		height: 1.75rem;
+		overflow: hidden;
+		margin-top: 0.15rem;
+		border-radius: var(--radius-full);
+		background: var(--ibe-sage-deep);
+	}
+
+	.check :global(svg) {
 		display: block;
-		margin-bottom: 0.35rem;
-		color: var(--color-secondary);
+		width: 0.95rem;
+		height: 0.95rem;
+		max-width: none;
+		fill: #fff;
 	}
 
-	.layout span {
+	.features strong,
+	.reasons li {
+		color: var(--ibe-navy);
+		font-weight: 600;
+	}
+
+	.features p {
+		margin: 0.25rem 0 0;
+		font-weight: 400;
 		color: var(--color-text-muted);
 	}
 
-	.layout figure {
-		margin: 0;
-		overflow: hidden;
-		border-radius: var(--radius-xl);
-		box-shadow: var(--shadow-lg);
+	.stats ul {
+		display: grid;
+		gap: var(--space-3);
+		margin: var(--space-5) 0 0;
+		padding: 0;
+		list-style: none;
 	}
 
-	.space-image {
-		display: block;
-		width: 100%;
-		height: auto;
-		object-fit: cover;
+	.stats li {
+		padding: var(--space-5);
+		border-radius: var(--radius-xl);
+		background: var(--ibe-bg-alt);
+		text-align: center;
+	}
+
+	.stats-value {
+		margin: 0;
+		font-family: var(--font-serif);
+		font-size: clamp(2rem, 4vw, 2.75rem);
+		color: var(--ibe-sage-deep);
+	}
+
+	.stats-label {
+		margin: 0.35rem 0 0;
+		color: var(--color-text-muted);
 	}
 
 	@media (min-width: 48rem) {
+		.features ul,
+		.reasons ul,
+		.stats ul {
+			grid-template-columns: 1fr 1fr;
+		}
+	}
+
+	@media (min-width: 64rem) {
 		.layout {
-			grid-template-columns: 1.1fr 0.9fr;
+			grid-template-columns: 20.5rem minmax(0, 1fr);
+			align-items: start;
+			gap: var(--space-6);
 		}
 
-		.layout figure {
+		.aside {
 			position: sticky;
-			top: 6rem;
+			top: 7rem;
 		}
 	}
 </style>

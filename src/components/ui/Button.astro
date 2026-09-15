@@ -1,36 +1,58 @@
 ---
 interface Props {
-	href: string;
+	href?: string;
 	variant?: 'primary' | 'accent' | 'ghost';
 	size?: 'md' | 'lg';
 	ariaLabel?: string;
+	type?: 'button' | 'submit';
+	class?: string;
 }
 
-const { href, variant = 'primary', size = 'md', ariaLabel } = Astro.props;
+const {
+	href,
+	variant = 'primary',
+	size = 'md',
+	ariaLabel,
+	type = 'button',
+	class: className,
+} = Astro.props;
 
 const variants = {
-	primary:
-		'bg-primary text-surface hover:bg-primary-dark',
-	accent:
-		'bg-accent !text-surface hover:bg-accent-hover',
-	ghost:
-		'bg-transparent text-secondary ring-1 ring-border hover:bg-bg-alt',
+	primary: 'bg-primary hover:bg-primary-dark',
+	accent: 'bg-primary hover:bg-primary-dark',
+	ghost: 'bg-transparent ring-1 ring-[var(--ibe-mist)] hover:bg-bg-alt',
 };
 
 const sizes = {
-	md: 'px-[var(--space-3)] py-[var(--space-2)] text-sm',
-	lg: 'px-[var(--space-5)] py-[var(--space-3)] text-base',
+	md: 'gap-2 px-[var(--space-3)] py-[var(--space-2)] text-sm',
+	lg: 'gap-2 px-[var(--space-5)] py-[var(--space-3)] text-base',
 };
+
+const classes = [
+	'ibe-btn',
+	'inline-flex items-center justify-center rounded-[var(--radius-full)] font-semibold no-underline transition-colors',
+	variants[variant],
+	sizes[size],
+	className,
+];
 ---
 
-<a
-	href={href}
-	aria-label={ariaLabel}
-	class:list={[
-		'inline-flex items-center justify-center rounded-[var(--radius-full)] font-semibold no-underline transition-colors',
-		variants[variant],
-		sizes[size],
-	]}
->
-	<slot />
-</a>
+{
+	href ? (
+		<a href={href} aria-label={ariaLabel} class:list={classes}>
+			<slot />
+		</a>
+	) : (
+		<button type={type} aria-label={ariaLabel} class:list={classes}>
+			<slot />
+		</button>
+	)
+}
+
+<style>
+	.ibe-btn,
+	.ibe-btn:hover,
+	.ibe-btn:focus-visible {
+		color: #fff;
+	}
+</style>

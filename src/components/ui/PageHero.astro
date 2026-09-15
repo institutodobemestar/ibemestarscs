@@ -1,0 +1,95 @@
+---
+import Container from './Container.astro';
+
+interface Props {
+	id: string;
+	title: string;
+	lead?: string;
+	eyebrow?: string;
+	tone?: 'light' | 'dark';
+}
+
+const { id, title, lead, eyebrow, tone = 'light' } = Astro.props;
+---
+
+<section class:list={['page-hero', tone === 'dark' && 'is-dark']} aria-labelledby={id}>
+	<Container>
+		{
+			tone === 'dark' ? (
+				<>
+					<h1 id={id}>{title}</h1>
+					<slot name="breadcrumb" />
+				</>
+			) : (
+				<>
+					<slot name="breadcrumb" />
+					{eyebrow && <p class="page-chip">{eyebrow}</p>}
+					<h1 id={id}>{title}</h1>
+					{lead && <p class="page-lead">{lead}</p>}
+					<slot />
+				</>
+			)
+		}
+	</Container>
+</section>
+
+<style>
+	.page-hero {
+		padding-top: 7.5rem;
+		padding-bottom: var(--space-6);
+		background: var(--ibe-cream);
+	}
+
+	.page-chip {
+		display: inline-flex;
+		margin: 0 0 var(--space-2);
+		padding: 0.35rem 0.85rem;
+		border: 1px solid var(--ibe-border);
+		border-radius: var(--radius-full);
+		background: var(--ibe-surface);
+		font-size: 0.8125rem;
+		font-weight: 600;
+		color: var(--ibe-navy);
+	}
+
+	.page-hero h1 {
+		margin: 0;
+		max-width: 32rem;
+	}
+
+	.page-lead {
+		margin: var(--space-3) 0 0;
+		max-width: 40rem;
+		font-size: 1.125rem;
+		color: var(--color-text-muted);
+	}
+
+	.page-hero.is-dark {
+		background:
+			radial-gradient(ellipse at 80% 0%, rgb(205 224 160 / 0.16), transparent 46%),
+			linear-gradient(180deg, #1f2733 0%, var(--ibe-navy-deep) 100%);
+	}
+
+	.page-hero.is-dark h1 {
+		margin-bottom: var(--space-2);
+		color: #fff;
+	}
+
+	.page-hero.is-dark :global(.breadcrumb) {
+		margin-bottom: 0;
+		color: rgb(255 255 255 / 0.72);
+	}
+
+	.page-hero.is-dark :global(.breadcrumb a) {
+		color: rgb(255 255 255 / 0.78);
+	}
+
+	.page-hero.is-dark :global(.breadcrumb [aria-current='page']) {
+		color: var(--ibe-sage);
+	}
+
+	.page-hero.is-dark :global(.breadcrumb li:not(:last-child)::after) {
+		content: '/';
+		color: rgb(255 255 255 / 0.4);
+	}
+</style>

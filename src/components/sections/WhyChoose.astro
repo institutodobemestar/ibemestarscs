@@ -1,0 +1,204 @@
+---
+import { Image } from 'astro:assets';
+import type { CollectionEntry } from 'astro:content';
+import Button from '../ui/Button.astro';
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+
+interface Props {
+	team: CollectionEntry<'team'>[];
+}
+
+const { team } = Astro.props;
+---
+
+<section class="why" aria-labelledby="porque-titulo">
+	<Container>
+		<div class="why-grid">
+			<div class="why-copy">
+				<SectionHeading
+					id="porque-titulo"
+					eyebrow="Por que nos escolher"
+					title="Cuidado em que você pode confiar"
+					description="Reabilitação com equipe especializada, processos estruturados e infraestrutura pensada para o seu conforto."
+				/>
+				<ul>
+					<li>
+						<strong>Experiência comprovada</strong>
+						<p>Desde 2007 em reabilitação de alta qualidade, com mais de 10.000 pacientes atendidos.</p>
+					</li>
+					<li>
+						<strong>Equipe especializada</strong>
+						<p>Profissionais registrados no CREFITO, com formação em fisioterapia, hidroterapia e acupuntura.</p>
+					</li>
+				</ul>
+				<div class="why-action">
+					<Button href="/equipe/" variant="primary">
+						Conheça a equipe
+						<span aria-hidden="true">→</span>
+					</Button>
+				</div>
+			</div>
+			<ul class="why-team">
+				{
+					team.map((member) => (
+						<li class="why-member">
+							<div class="why-member-media">
+								<Image
+									src={member.data.photo}
+									alt={`Retrato de ${member.data.name}`}
+									width={480}
+									height={600}
+									format="webp"
+									quality="mid"
+									loading="lazy"
+									decoding="async"
+									class:list={[
+										'why-member-photo',
+										member.id.includes('daniele') && 'is-daniele-rossi',
+										member.id.includes('ricardo') && 'is-ricardo-rossi',
+									]}
+								/>
+							</div>
+							<div class="why-member-copy">
+								<h3>{member.data.name}</h3>
+								<p class="why-member-meta">CREFITO {member.data.crefito}</p>
+								<p class="why-member-meta">{member.data.specialties.join(' · ')}</p>
+							</div>
+						</li>
+					))
+				}
+			</ul>
+		</div>
+	</Container>
+</section>
+
+<style>
+	.why {
+		padding-block: var(--space-8);
+		background: var(--ibe-surface);
+	}
+
+	.why-grid {
+		display: grid;
+		gap: var(--space-6);
+		align-items: start;
+	}
+
+	.why-copy ul {
+		display: grid;
+		gap: var(--space-3);
+		margin: var(--space-4) 0 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.why-copy li {
+		padding: var(--space-3);
+		border: 1px solid var(--ibe-border);
+		border-radius: var(--radius-lg);
+		background: var(--ibe-bg-alt);
+	}
+
+	strong {
+		color: var(--ibe-navy);
+	}
+
+	.why-copy li p {
+		margin: 0.35rem 0 0;
+		color: var(--color-text-muted);
+	}
+
+	.why-action {
+		margin-top: var(--space-4);
+	}
+
+	.why-team {
+		display: grid;
+		gap: var(--space-3);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.why-member {
+		display: flex;
+		flex-direction: column;
+		overflow: hidden;
+		border-radius: var(--radius-xl);
+		background: var(--ibe-bg-alt);
+	}
+
+	.why-member-media {
+		position: relative;
+		overflow: hidden;
+		aspect-ratio: 4 / 5;
+		background: linear-gradient(160deg, var(--ibe-sage) 0%, var(--ibe-mist) 100%);
+	}
+
+	.why-member-photo {
+		position: absolute;
+		inset: 0;
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center 18%;
+	}
+
+	.why-member-photo.is-daniele-rossi {
+		object-position: center 8%;
+	}
+
+	.why-member-photo.is-ricardo-rossi {
+		object-position: center 32%;
+	}
+
+	.why-member-copy {
+		padding: var(--space-2) var(--space-3) var(--space-3);
+	}
+
+	.why-member h3 {
+		margin: 0;
+		font-size: 1.15rem;
+	}
+
+	.why-member-meta {
+		margin: 0.3rem 0 0;
+		font-size: 0.8125rem;
+		line-height: 1.45;
+		color: var(--color-text-muted);
+	}
+
+	@media (min-width: 64rem) {
+		.why-grid {
+			grid-template-columns: 1.05fr 0.95fr;
+			gap: var(--space-8);
+			align-items: stretch;
+		}
+
+		.why-team {
+			grid-template-rows: 1fr 1fr;
+			min-height: 0;
+		}
+
+		.why-member {
+			display: grid;
+			grid-template-columns: minmax(9.5rem, 0.42fr) minmax(0, 1fr);
+			min-height: 0;
+		}
+
+		.why-member-media {
+			aspect-ratio: auto;
+			min-height: 0;
+			height: 100%;
+		}
+
+		.why-member-copy {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			padding: var(--space-3);
+		}
+	}
+</style>

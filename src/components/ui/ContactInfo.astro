@@ -80,8 +80,7 @@ const whatsappHref = `https://wa.me/${site.whatsapp}`;
 	.hours dt {
 		font-size: 0.75rem;
 		font-weight: 600;
-		letter-spacing: 0.04em;
-		text-transform: uppercase;
+		letter-spacing: 0.01em;
 	}
 
 	.hours dd {
@@ -97,8 +96,19 @@ const whatsappHref = `https://wa.me/${site.whatsapp}`;
 	}
 
 	.is-page {
-		gap: var(--space-3);
+		gap: var(--space-4);
 		color: var(--color-text);
+	}
+
+	.is-page p svg {
+		flex: 0 0 2.5rem;
+		width: 2.5rem;
+		height: 2.5rem;
+		padding: 0.55rem;
+		margin-top: 0;
+		border-radius: var(--radius-full);
+		background: var(--ibe-primary-soft);
+		fill: var(--ibe-sage-deep);
 	}
 
 	.is-page a {

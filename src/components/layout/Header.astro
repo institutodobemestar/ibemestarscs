@@ -10,19 +10,20 @@ const whatsappHref = `https://wa.me/${site.whatsapp}`;
 
 const links = [
 	{ href: '/', label: 'Home' },
-	{ href: '/sobre-nos', label: 'Sobre Nós' },
-	{ href: '/infraestrutura', label: 'Infraestrutura' },
-	{ href: '/equipe', label: 'Equipe' },
-	{ href: '/blog', label: 'Blog' },
-	{ href: '/contato', label: 'Contato' },
+	{ href: '/sobre-nos/', label: 'Sobre Nós' },
+	{ href: '/infraestrutura/', label: 'Infraestrutura' },
+	{ href: '/equipe/', label: 'Equipe' },
+	{ href: '/blog/', label: 'Blog' },
+	{ href: '/contato/', label: 'Contato' },
 ];
 
 function isActive(href: string) {
-	if (href === '/') return pathname === '/';
-	return pathname === href || pathname.startsWith(`${href}/`);
+	if (href === '/') return pathname === '/' || pathname === '';
+	const base = href.replace(/\/$/, '');
+	return pathname === href || pathname === base || pathname.startsWith(`${base}/`);
 }
 
-const servicesActive = pathname === '/servicos' || pathname.startsWith('/servicos/');
+const servicesActive = pathname === '/servicos' || pathname === '/servicos/' || pathname.startsWith('/servicos/');
 ---
 
 <header class="site-header">
@@ -50,7 +51,7 @@ const servicesActive = pathname === '/servicos' || pathname.startsWith('/servico
 				}
 				<li class="nav-services">
 					<a
-						href="/servicos"
+						href="/servicos/"
 						class:list={['nav-link', servicesActive && 'is-active']}
 						aria-current={servicesActive ? 'page' : undefined}
 					>
@@ -60,7 +61,7 @@ const servicesActive = pathname === '/servicos' || pathname.startsWith('/servico
 						{
 							services.map((service) => (
 								<li>
-									<a href={`/servicos/${service.data.slug}`} class="nav-dropdown-link">
+									<a href={`/servicos/${service.data.slug}/`} class="nav-dropdown-link">
 										{cleanServiceTitle(service.data.title)}
 									</a>
 								</li>
@@ -85,7 +86,8 @@ const servicesActive = pathname === '/servicos' || pathname.startsWith('/servico
 		</nav>
 
 		<a href={whatsappHref} class="header-cta header-cta-desktop">
-			Agende Agora
+			Agende agora
+			<span aria-hidden="true">→</span>
 		</a>
 
 		<label for="nav-toggle" class="nav-toggle-btn">
@@ -115,12 +117,14 @@ const servicesActive = pathname === '/servicos' || pathname.startsWith('/servico
 						<summary>Serviços</summary>
 						<ul>
 							<li>
-								<a href="/servicos" class="nav-mobile-link">Todos os serviços</a>
+								<a href="/servicos/" class="nav-mobile-link">
+									Todos os serviços
+								</a>
 							</li>
 							{
 								services.map((service) => (
 									<li>
-										<a href={`/servicos/${service.data.slug}`} class="nav-mobile-link">
+										<a href={`/servicos/${service.data.slug}/`} class="nav-mobile-link">
 											{cleanServiceTitle(service.data.title)}
 										</a>
 									</li>
@@ -144,7 +148,8 @@ const servicesActive = pathname === '/servicos' || pathname.startsWith('/servico
 				}
 			</ul>
 			<a href={whatsappHref} class="header-cta">
-				Agende Agora
+				Agende agora
+				<span aria-hidden="true">→</span>
 			</a>
 		</div>
 	</nav>
@@ -153,11 +158,13 @@ const servicesActive = pathname === '/servicos' || pathname.startsWith('/servico
 <style>
 	.site-header {
 		position: sticky;
-		top: 0;
+		top: 0.75rem;
 		z-index: 50;
-		background: color-mix(in srgb, var(--color-surface) 92%, transparent);
-		border-bottom: 1px solid color-mix(in srgb, var(--color-border) 80%, transparent);
-		backdrop-filter: blur(12px);
+		margin-bottom: -5.25rem;
+		padding-inline: var(--space-2);
+		background: transparent;
+		border: 0;
+		box-shadow: none;
 	}
 
 	.nav-toggle {
@@ -179,19 +186,22 @@ const servicesActive = pathname === '/servicos' || pathname.startsWith('/servico
 		gap: var(--space-3);
 		max-width: 72rem;
 		margin-inline: auto;
-		padding: var(--space-2) var(--space-3);
+		padding: 0.65rem 0.85rem 0.65rem 1rem;
+		border-radius: var(--radius-full);
+		background: var(--ibe-surface);
+		box-shadow: var(--shadow-md);
 	}
 
 	.logo {
 		text-decoration: none;
-		color: var(--color-secondary);
+		color: var(--ibe-navy);
 		min-width: 0;
 	}
 
 	.logo :global(.logo-image) {
 		display: block;
 		width: auto;
-		height: 2.5rem;
+		height: 2.35rem;
 	}
 
 	.logo :global(.logo-text) {
@@ -217,31 +227,40 @@ const servicesActive = pathname === '/servicos' || pathname.startsWith('/servico
 	.nav-link,
 	.nav-mobile-link,
 	.nav-dropdown-link {
-		text-decoration: none;
-		color: var(--color-text-muted);
+		font-family: var(--font-sans);
 		font-weight: 500;
+		text-decoration: none;
+		color: var(--ibe-navy);
 	}
 
+	.nav-link:hover,
+	.nav-dropdown-link:hover,
+	.nav-mobile-link:hover,
 	.nav-link.is-active,
 	.nav-mobile-link.is-active {
-		color: var(--color-primary-dark);
+		color: var(--ibe-sage-deep);
+		text-decoration: none;
+		background: transparent;
 	}
 
 	.header-cta {
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
+		gap: 0.4rem;
 		border-radius: var(--radius-full);
-		background: var(--color-accent);
-		color: var(--color-surface);
-		text-decoration: none;
+		background: var(--ibe-sage-deep);
+		color: #fff;
+		font-family: var(--font-sans);
 		font-size: 0.875rem;
 		font-weight: 600;
-		padding: var(--space-1) var(--space-3);
+		text-decoration: none;
+		padding: 0.7rem 1.15rem;
 	}
 
 	.header-cta:hover {
-		background: var(--color-accent-hover);
+		background: var(--ibe-sage-hover);
+		color: #fff;
 	}
 
 	.header-cta-desktop {
@@ -254,9 +273,9 @@ const servicesActive = pathname === '/servicos' || pathname.startsWith('/servico
 		justify-content: center;
 		width: 2.5rem;
 		height: 2.5rem;
-		border: 1px solid var(--color-border);
-		border-radius: var(--radius-md);
-		background: var(--color-surface);
+		border: 1px solid var(--ibe-border);
+		border-radius: var(--radius-full);
+		background: transparent;
 		cursor: pointer;
 	}
 
@@ -266,7 +285,7 @@ const servicesActive = pathname === '/servicos' || pathname.startsWith('/servico
 		display: block;
 		width: 1.1rem;
 		height: 2px;
-		background: var(--color-secondary);
+		background: var(--ibe-navy);
 		border-radius: 99px;
 		transition: transform 0.25s ease, opacity 0.25s ease;
 	}
@@ -305,8 +324,12 @@ const servicesActive = pathname === '/servicos' || pathname.startsWith('/servico
 	.nav-mobile {
 		display: grid;
 		grid-template-rows: 0fr;
-		transition: grid-template-rows 0.35s ease;
-		border-top: 1px solid transparent;
+		max-width: 72rem;
+		margin: 0.5rem auto 0;
+		border-radius: var(--radius-xl);
+		background: var(--ibe-surface);
+		box-shadow: none;
+		transition: grid-template-rows 0.35s ease, box-shadow 0.35s ease;
 	}
 
 	.nav-mobile-inner {
@@ -316,7 +339,7 @@ const servicesActive = pathname === '/servicos' || pathname.startsWith('/servico
 
 	.nav-toggle:checked ~ .nav-mobile {
 		grid-template-rows: 1fr;
-		border-top-color: var(--color-border);
+		box-shadow: var(--shadow-md);
 	}
 
 	.nav-mobile-list {
@@ -330,7 +353,8 @@ const servicesActive = pathname === '/servicos' || pathname.startsWith('/servico
 	.nav-mobile-details summary {
 		display: block;
 		padding-block: var(--space-1);
-		color: var(--color-secondary);
+		color: var(--ibe-navy);
+		font-family: var(--font-sans);
 		font-weight: 500;
 	}
 
@@ -353,17 +377,21 @@ const servicesActive = pathname === '/servicos' || pathname.startsWith('/servico
 		margin-bottom: var(--space-3);
 	}
 
+	.nav-toggle:checked ~ .nav-mobile {
+		margin-bottom: var(--space-3);
+	}
+
 	@media (min-width: 64rem) {
-		.header-bar {
+		.site-header {
 			padding-inline: var(--space-4);
 		}
 
-		.logo :global(.logo-text) {
-			font-size: 1.25rem;
+		.header-bar {
+			padding-inline: 1.15rem 0.55rem;
 		}
 
 		.logo :global(.logo-image) {
-			height: 2.75rem;
+			height: 2.6rem;
 		}
 
 		.nav-desktop {
@@ -380,22 +408,19 @@ const servicesActive = pathname === '/servicos' || pathname.startsWith('/servico
 			font-size: 0.875rem;
 		}
 
-		.nav-link:hover {
-			color: var(--color-secondary);
-		}
-
 		.nav-services {
 			position: relative;
 		}
 
 		.nav-dropdown {
 			position: absolute;
-			top: calc(100% + 0.4rem);
+			top: calc(100% + 0.7rem);
 			left: 0;
 			min-width: 16rem;
 			padding: var(--space-1);
-			border-radius: var(--radius-md);
-			background: var(--color-surface);
+			border: 1px solid var(--ibe-border);
+			border-radius: var(--radius-lg);
+			background: var(--ibe-surface);
 			box-shadow: var(--shadow-md);
 			opacity: 0;
 			visibility: hidden;
@@ -416,14 +441,14 @@ const servicesActive = pathname === '/servicos' || pathname.startsWith('/servico
 		.nav-dropdown-link {
 			display: block;
 			padding: 0.55rem 0.75rem;
-			border-radius: var(--radius-sm);
+			border-radius: var(--radius-md);
 			font-size: 0.875rem;
 		}
 
 		.nav-dropdown-link:hover,
 		.nav-dropdown-link:focus-visible {
-			background: var(--color-bg-alt);
-			color: var(--color-secondary);
+			background: var(--ibe-primary-soft);
+			color: var(--ibe-sage-deep);
 		}
 
 		.header-cta-desktop {

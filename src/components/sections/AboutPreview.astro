@@ -1,0 +1,220 @@
+---
+import { Image } from 'astro:assets';
+import Button from '../ui/Button.astro';
+import Container from '../ui/Container.astro';
+import SectionHeading from '../ui/SectionHeading.astro';
+import videoPoster from '../../assets/pages/video-institucional.jpg';
+
+const videoId = '9qqhLwahRsA';
+const videoTitle = 'Vídeo institucional do Instituto do Bem Estar';
+---
+
+<section class="about" aria-labelledby="sobre-titulo">
+	<Container>
+		<SectionHeading
+			id="sobre-titulo"
+			align="center"
+			eyebrow="Sobre nós"
+			title="Cuidado clínico com expertise e acolhimento"
+			description="Desde 2007, o Instituto do Bem Estar oferece reabilitação de alta qualidade em São Caetano do Sul, com atendimento personalizado e mais de 10.000 pacientes acompanhados."
+		/>
+		<div class="about-stack">
+			<figure class="about-figure" data-about-video data-video-id={videoId} data-video-title={videoTitle}>
+				<button type="button" class="about-play" aria-label={`Reproduzir ${videoTitle}`}>
+					<Image
+						src={videoPoster}
+						alt={videoTitle}
+						width={videoPoster.width}
+						height={videoPoster.height}
+						format="webp"
+						quality="mid"
+						loading="lazy"
+						decoding="async"
+						class="about-poster"
+					/>
+					<span class="about-play-icon" aria-hidden="true">▶</span>
+				</button>
+			</figure>
+			<div class="about-body">
+				<blockquote>
+					<p>
+						“Quem tem dor tem pressa: promover o melhor resultado possível no menor espaço de
+						tempo.”
+					</p>
+				</blockquote>
+				<ul>
+					<li>
+						<strong>Atendimento personalizado</strong>
+						Cada paciente recebe um tratamento adaptado às suas necessidades específicas.
+					</li>
+					<li>
+						<strong>Infraestrutura de ponta</strong>
+						Prédio de 580 m² planejado para conforto, acessibilidade e eficácia clínica.
+					</li>
+				</ul>
+				<div class="about-action">
+					<Button href="/sobre-nos/" variant="primary">
+						Conheça o Instituto
+						<span aria-hidden="true">→</span>
+					</Button>
+				</div>
+			</div>
+		</div>
+	</Container>
+</section>
+
+<style>
+	.about {
+		padding-block: var(--space-8);
+		background: var(--ibe-surface);
+	}
+
+	.about :global(.section-heading) {
+		margin-bottom: var(--space-5);
+	}
+
+	.about :global(.section-heading-copy) {
+		max-width: 46rem;
+	}
+
+	.about-stack {
+		display: grid;
+		gap: var(--space-5);
+	}
+
+	.about-figure {
+		position: relative;
+		width: 100%;
+		max-width: 56rem;
+		margin: 0 auto;
+		overflow: hidden;
+		border-radius: var(--radius-xl);
+		background: var(--ibe-bg-alt);
+		aspect-ratio: 16 / 9;
+	}
+
+	.about-play {
+		position: absolute;
+		inset: 0;
+		display: grid;
+		place-items: center;
+		width: 100%;
+		height: 100%;
+		padding: 0;
+		border: 0;
+		background: transparent;
+		cursor: pointer;
+	}
+
+	.about-poster {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transform: scale(1.35);
+	}
+
+	.about-play-icon {
+		position: relative;
+		z-index: 1;
+		display: grid;
+		place-items: center;
+		width: 4.5rem;
+		height: 4.5rem;
+		border-radius: 50%;
+		background: var(--ibe-sage-deep);
+		color: #fff;
+		font-size: 1.25rem;
+	}
+
+	.about-play:hover .about-play-icon,
+	.about-play:focus-visible .about-play-icon {
+		background: var(--ibe-sage-hover);
+	}
+
+	.about-figure :global(.about-video) {
+		position: absolute;
+		inset: 0;
+		display: block;
+		width: 100%;
+		height: 100%;
+		border: 0;
+	}
+
+	.about-body {
+		display: grid;
+		gap: var(--space-4);
+		max-width: 46rem;
+		margin-inline: auto;
+	}
+
+	blockquote {
+		margin: 0;
+		padding: var(--space-3);
+		border-left: 3px solid var(--ibe-sage-deep);
+		border-radius: 0 var(--radius-md) var(--radius-md) 0;
+		background: var(--ibe-bg-alt);
+	}
+
+	blockquote p {
+		margin: 0;
+		font-family: var(--font-serif);
+		font-size: 1.125rem;
+		color: var(--ibe-navy);
+	}
+
+	ul {
+		display: grid;
+		gap: var(--space-3);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	li {
+		color: var(--color-text-muted);
+	}
+
+	strong {
+		display: block;
+		margin-bottom: 0.25rem;
+		color: var(--ibe-navy);
+	}
+
+	.about-action {
+		margin: 0;
+	}
+
+	@media (min-width: 48rem) {
+		ul {
+			grid-template-columns: 1fr 1fr;
+			gap: var(--space-4);
+		}
+	}
+</style>
+
+<script>
+	const figure = document.querySelector('[data-about-video]');
+	const playButton = figure?.querySelector('.about-play');
+
+	playButton?.addEventListener('click', () => {
+		if (!(figure instanceof HTMLElement) || figure.classList.contains('is-playing')) return;
+
+		const videoId = figure.dataset.videoId;
+		const videoTitle = figure.dataset.videoTitle ?? 'Vídeo institucional';
+		if (!videoId) return;
+
+		const iframe = document.createElement('iframe');
+		iframe.className = 'about-video';
+		iframe.title = videoTitle;
+		iframe.allow =
+			'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+		iframe.allowFullscreen = true;
+		iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+		iframe.src = `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1&playsinline=1`;
+
+		figure.classList.add('is-playing');
+		playButton.replaceWith(iframe);
+	});
+</script>

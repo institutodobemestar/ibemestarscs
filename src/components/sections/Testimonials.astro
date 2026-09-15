@@ -10,120 +10,145 @@ interface Props {
 const { testimonials } = Astro.props;
 const starPath =
 	'M12 2.2 14.7 8l6.4.9-4.6 4.5 1.1 6.4L12 16.8 6.4 19.8 7.5 13.4 2.9 8.9 9.3 8 12 2.2Z';
+
+function initials(name: string) {
+	return name
+		.split(' ')
+		.filter(Boolean)
+		.slice(0, 2)
+		.map((part) => part[0])
+		.join('')
+		.toUpperCase();
+}
 ---
 
 <section class="testimonials" aria-labelledby="depoimentos-titulo">
 	<Container>
 		<SectionHeading
 			id="depoimentos-titulo"
-			eyebrow="Histórias reais"
+			align="center"
+			eyebrow="Depoimentos"
 			title="O que nossos pacientes dizem"
 			description="Relatos de quem passou pela reabilitação no Instituto do Bem Estar."
 		/>
-		<div class="carousel" role="region" aria-label="Carrossel de depoimentos">
-			<ul class="carousel-track">
-				{
-					testimonials.map((item) => (
-						<li class="carousel-slide">
-							<figure class="testimonial-card">
-								<div class="stars" role="img" aria-label={`Avaliação ${item.data.rating} de 5`}>
-									{Array.from({ length: 5 }, (_, index) => (
-										<svg
-											viewBox="0 0 24 24"
-											class:list={['star', index < item.data.rating && 'is-filled']}
-											aria-hidden="true"
-										>
-											<path d={starPath} />
-										</svg>
-									))}
+		<ul class="testimonial-list">
+			{
+				testimonials.map((item) => (
+					<li>
+						<figure class="testimonial">
+							<figcaption>
+								<span class="avatar" aria-hidden="true">
+									{initials(item.data.name)}
+								</span>
+								<div>
+									<span class="name">{item.data.name}</span>
+									<div class="stars" role="img" aria-label={`Avaliação ${item.data.rating} de 5`}>
+										{Array.from({ length: 5 }, (_, index) => (
+											<svg
+												viewBox="0 0 24 24"
+												class:list={['star', index < item.data.rating && 'is-filled']}
+												aria-hidden="true"
+											>
+												<path d={starPath} />
+											</svg>
+										))}
+									</div>
 								</div>
-								<blockquote>
-									<p>“{item.data.quote}”</p>
-								</blockquote>
-								<figcaption>{item.data.name}</figcaption>
-							</figure>
-						</li>
-					))
-				}
-			</ul>
-		</div>
+							</figcaption>
+							<blockquote>
+								<p>{item.data.quote}</p>
+							</blockquote>
+						</figure>
+					</li>
+				))
+			}
+		</ul>
 	</Container>
 </section>
 
 <style>
 	.testimonials {
-		background: var(--color-bg-alt);
 		padding-block: var(--space-8);
+		background: var(--ibe-surface);
+		overflow-x: hidden;
 	}
 
-	.carousel {
-		margin-top: var(--space-6);
-	}
-
-	.carousel-track {
-		display: flex;
+	.testimonial-list {
+		display: grid;
+		grid-template-columns: 1fr;
 		gap: var(--space-4);
-		margin: 0;
-		padding: 0 var(--space-1) var(--space-2);
+		margin: var(--space-6) 0 0;
+		padding: 0;
 		list-style: none;
-		overflow-x: auto;
-		scroll-snap-type: x mandatory;
-		scroll-padding-inline: var(--space-1);
-		-webkit-overflow-scrolling: touch;
 	}
 
-	.carousel-slide {
-		flex: 0 0 min(100%, 22rem);
-		scroll-snap-align: start;
-	}
-
-	.testimonial-card {
+	.testimonial {
 		height: 100%;
 		margin: 0;
 		padding: var(--space-4);
-		border-radius: var(--radius-lg);
-		background: var(--color-surface);
-		box-shadow: var(--shadow-sm);
+		border-radius: var(--radius-xl);
+		background: var(--ibe-bg-alt);
 	}
 
-	.stars {
+	figcaption {
 		display: flex;
-		gap: 0.2rem;
+		align-items: center;
+		gap: var(--space-2);
+		margin-bottom: var(--space-3);
+		padding-bottom: var(--space-3);
+		border-bottom: 1px solid var(--ibe-border);
 	}
 
-	.star {
-		width: 1.1rem;
-		height: 1.1rem;
-		fill: transparent;
-		stroke: var(--color-accent);
-		stroke-width: 1.4;
+	.avatar {
+		display: grid;
+		place-items: center;
+		width: 2.75rem;
+		height: 2.75rem;
+		border-radius: 50%;
+		background: var(--ibe-sage);
+		color: var(--ibe-navy);
+		font-size: 0.8125rem;
+		font-weight: 700;
 	}
 
-	.star.is-filled {
-		fill: var(--color-accent);
-		stroke: var(--color-accent);
+	.name {
+		display: block;
+		font-size: 0.95rem;
+		font-weight: 600;
+		color: var(--ibe-navy);
 	}
 
 	blockquote {
-		margin: var(--space-3) 0 0;
+		margin: 0;
 	}
 
 	blockquote p {
 		margin: 0;
-		font-family: var(--font-serif);
-		font-size: 1.05rem;
-		color: var(--color-secondary);
+		color: var(--color-text-muted);
 	}
 
-	figcaption {
-		margin-top: var(--space-3);
-		font-weight: 600;
-		color: var(--color-text);
+	.stars {
+		display: flex;
+		gap: 0.12rem;
+		margin-top: 0.25rem;
 	}
 
-	@media (min-width: 64rem) {
-		.carousel-slide {
-			flex-basis: min(100%, 26rem);
+	.star {
+		width: 0.85rem;
+		height: 0.85rem;
+		fill: transparent;
+		stroke: var(--ibe-sage-deep);
+		stroke-width: 1.6;
+	}
+
+	.star.is-filled {
+		fill: var(--ibe-sage-deep);
+		stroke: var(--ibe-sage-deep);
+	}
+
+	@media (min-width: 40rem) {
+		.testimonial-list {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
 		}
 	}
 </style>

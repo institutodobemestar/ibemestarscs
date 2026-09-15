@@ -1,14 +1,14 @@
 ---
 import { Image } from 'astro:assets';
-import { getCollection, render } from 'astro:content';
+import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Container from '../../components/ui/Container.astro';
 import Breadcrumb from '../../components/ui/Breadcrumb.astro';
-import Button from '../../components/ui/Button.astro';
-import ServiceCards from '../../components/ui/ServiceCards.astro';
+import PageHero from '../../components/ui/PageHero.astro';
 import site from '../../data/site.json';
+import faqs from '../../data/faqs.json';
 import { resolveContentImage } from '../../lib/content-images';
-import { cleanServiceTitle } from '../../lib/services';
+import { cleanServiceTitle, getServiceDetails } from '../../lib/services';
 
 export async function getStaticPaths() {
 	const services = (await getCollection('services')).sort((a, b) => a.data.order - b.data.order);
@@ -19,20 +19,24 @@ export async function getStaticPaths() {
 }
 
 const { service, services } = Astro.props;
-const { Content } = await render(service);
 const title = cleanServiceTitle(service.data.title);
-const otherServices = services.filter((item) => item.data.slug !== service.data.slug);
-const hasIndications = service.data.indications.length > 0;
-const whatsappHref = `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(
-	`Olá, gostaria de agendar uma consulta de ${title} no Instituto do Bem Estar.`,
-)}`;
+const details = getServiceDetails(service.data.slug);
+const heroImage = resolveContentImage(service.data.heroImage);
+const benefits = details?.benefits?.length ? details.benefits : service.data.indications;
+const highlights = details?.highlights ?? [];
+
+const highlightIcons = [
+	'<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+	'<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="8" r="3"/><path d="M5 19c.8-3.2 3.4-5 7-5s6.2 1.8 7 5"/></svg>',
+	'<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M7 4h10v16H7z"/><path d="M10 8h4M10 12h4M10 16h2"/></svg>',
+];
 
 const medicalTherapy = {
 	'@context': 'https://schema.org',
 	'@type': 'MedicalTherapy',
 	name: title,
 	description: service.data.shortDescription,
-	url: new URL(`/servicos/${service.data.slug}`, Astro.site).href,
+	url: new URL(`/servicos/${service.data.slug}/`, Astro.site).href,
 	provider: {
 		'@type': 'Organization',
 		name: site.name,
@@ -45,199 +49,373 @@ const medicalTherapy = {
 	title={`${title} - Instituto do Bem Estar`}
 	description={service.data.shortDescription}
 	ogImage={service.data.heroImage}
-	canonical={`/servicos/${service.data.slug}`}
+	canonical={`/servicos/${service.data.slug}/`}
 >
 	<Fragment slot="head">
 		<script type="application/ld+json" set:html={JSON.stringify(medicalTherapy)} />
 	</Fragment>
 
 	<article>
-		<header class="service-hero">
+		<PageHero id="servico-titulo" title={title} tone="dark">
+			<Breadcrumb
+				slot="breadcrumb"
+				items={[
+					{ label: 'Home', href: '/' },
+					{ label: 'Serviços', href: '/servicos/' },
+					{ label: title, href: `/servicos/${service.data.slug}/` },
+				]}
+			/>
+		</PageHero>
+
+		<section class="service-page" aria-labelledby="servico-titulo">
 			<Container>
-				<Breadcrumb
-					items={[
-						{ label: 'Home', href: '/' },
-						{ label: 'Serviços', href: '/servicos' },
-						{ label: title, href: `/servicos/${service.data.slug}` },
-					]}
-				/>
-				<div class="hero-grid">
-					<div>
-						<p class="eyebrow">Serviço</p>
-						<h1>{title}</h1>
-						<p class="lead">{service.data.shortDescription}</p>
+				<div class="service-layout">
+					<aside class="service-aside">
+						<nav class="explore" aria-label="Lista de serviços">
+							<p class="explore-title">Explore nossos serviços</p>
+							<ul>
+								{
+									services.map((item) => {
+										const itemTitle = cleanServiceTitle(item.data.title);
+										const current = item.data.slug === service.data.slug;
+										return (
+											<li class:list={[current && 'is-current']}>
+												<a
+													href={`/servicos/${item.data.slug}/`}
+													aria-current={current ? 'page' : undefined}
+												>
+													<span>{itemTitle}</span>
+													<svg viewBox="0 0 24 24" aria-hidden="true">
+														<path d="m9 6 6 6-6 6" />
+													</svg>
+												</a>
+											</li>
+										);
+									})
+								}
+							</ul>
+						</nav>
+					</aside>
+
+					<div class="service-content">
+						<figure class="service-photo">
+							<Image
+								src={heroImage}
+								alt={`Imagem do serviço ${title} no Instituto do Bem Estar`}
+								width={1200}
+								height={800}
+								format="webp"
+								quality="mid"
+								priority
+								loading="eager"
+								fetchpriority="high"
+								decoding="async"
+								class="service-image"
+							/>
+						</figure>
+
+						{
+							benefits.length > 0 && (
+								<section class="benefits" aria-labelledby="beneficios-titulo">
+									<h2 id="beneficios-titulo">{details?.benefitsTitle ?? `Benefícios da ${title}`}</h2>
+									<p>{details?.benefitsLead ?? service.data.shortDescription}</p>
+									<ul>
+										{benefits.map((item) => (
+											<li>
+												<span class="check" aria-hidden="true">
+													<svg viewBox="0 0 24 24">
+														<path d="M9.2 16.6 4.8 12.2l1.4-1.4 3 3 8.6-8.6 1.4 1.4-10 10Z" />
+													</svg>
+												</span>
+												<span>{item}</span>
+											</li>
+										))}
+									</ul>
+								</section>
+							)
+						}
+
+						{
+							highlights.length > 0 && (
+								<section class="highlights" aria-labelledby="sessao-titulo">
+									<h2 id="sessao-titulo">{details?.highlightsTitle ?? 'Como é a sessão'}</h2>
+									{details?.highlightsLead && <p>{details.highlightsLead}</p>}
+									<ul>
+										{highlights.map((item, index) => (
+											<li>
+												<span
+													class="highlight-icon"
+													aria-hidden="true"
+													set:html={highlightIcons[index] ?? highlightIcons[0]}
+												/>
+												<h3>{item.title}</h3>
+												<p>{item.text}</p>
+											</li>
+										))}
+									</ul>
+								</section>
+							)
+						}
+
+						<section class="faq" aria-labelledby="faq-servico-titulo">
+							<h2 id="faq-servico-titulo">Perguntas frequentes</h2>
+							<div class="faq-list">
+								{
+									faqs.map((item, index) => (
+										<details class="faq-item" open={index === 0}>
+											<summary>{item.question}</summary>
+											<p>{item.answer}</p>
+										</details>
+									))
+								}
+							</div>
+						</section>
 					</div>
-					<figure>
-						<Image
-							src={resolveContentImage(service.data.heroImage)}
-							alt={`Imagem do serviço ${title} no Instituto do Bem Estar`}
-							width={1200}
-							height={800}
-							format="webp"
-							quality="mid"
-							priority
-							loading="eager"
-							fetchpriority="high"
-							decoding="async"
-							class="hero-image"
-						/>
-					</figure>
 				</div>
 			</Container>
-		</header>
-
-		<Container class="service-body">
-			<div class="article-body">
-				<Content />
-			</div>
-
-			{
-				hasIndications && (
-					<section class="indications" aria-labelledby="indicacoes-titulo">
-						<h2 id="indicacoes-titulo">Indicações</h2>
-						<ul>
-							{service.data.indications.map((item) => (
-								<li>
-									<svg viewBox="0 0 24 24" aria-hidden="true">
-										<path d="M9.2 16.6 4.8 12.2l1.4-1.4 3 3 8.6-8.6 1.4 1.4-10 10Z" />
-									</svg>
-									<span>{item}</span>
-								</li>
-							))}
-						</ul>
-					</section>
-				)
-			}
-
-			<div class="cta">
-				<Button href={whatsappHref} variant="accent" size="lg">
-					Agende uma consulta de {title}
-				</Button>
-			</div>
-		</Container>
+		</section>
 	</article>
-
-	{
-		otherServices.length > 0 && (
-			<section class="others" aria-labelledby="outros-servicos">
-				<Container>
-					<h2 id="outros-servicos">Outros serviços</h2>
-					<ServiceCards services={otherServices} variant="compact" />
-				</Container>
-			</section>
-		)
-	}
 </BaseLayout>
 
 <style>
-	.service-hero {
-		background: var(--color-bg-alt);
-		padding-block: var(--space-6);
+	.service-page {
+		padding-block: var(--space-7) var(--space-8);
+		background: var(--ibe-surface);
 	}
 
-	.hero-grid {
+	.service-layout {
 		display: grid;
-		align-items: center;
 		gap: var(--space-5);
 	}
 
-	.eyebrow {
-		margin: 0;
-		font-size: 0.875rem;
-		font-weight: 600;
-		letter-spacing: 0.06em;
-		text-transform: uppercase;
-		color: var(--color-primary-dark);
-	}
-
-	.service-hero h1 {
-		margin: var(--space-2) 0 0;
-		font-size: clamp(2rem, 4vw, 3rem);
-	}
-
-	.lead {
-		margin: var(--space-3) 0 0;
-		font-size: 1.125rem;
-		color: var(--color-text-muted);
-	}
-
-	.service-hero figure {
-		margin: 0;
+	.explore {
 		overflow: hidden;
 		border-radius: var(--radius-xl);
+		background: var(--ibe-surface);
 		box-shadow: var(--shadow-md);
 	}
 
-	.hero-image {
+	.explore-title {
+		margin: 0;
+		padding: 1.05rem 1.25rem;
+		background: var(--ibe-sage-deep);
+		color: #fff;
+		font-size: 1.05rem;
+		font-weight: 700;
+	}
+
+	.explore ul {
+		margin: 0;
+		padding: 0.35rem 0;
+		list-style: none;
+	}
+
+	.explore a {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-2);
+		padding: 0.95rem 1.15rem;
+		color: var(--ibe-navy);
+		font-weight: 600;
+		text-decoration: none;
+		border-top: 1px solid var(--ibe-border);
+	}
+
+	.explore li:first-child a {
+		border-top: 0;
+	}
+
+	.explore svg {
+		flex-shrink: 0;
+		width: 1rem;
+		height: 1rem;
+		stroke: currentColor;
+		stroke-width: 2;
+		fill: none;
+	}
+
+	.explore a:hover {
+		background: var(--ibe-primary-soft);
+		color: var(--ibe-sage-deep);
+	}
+
+	.explore .is-current a {
+		background: var(--ibe-sage);
+		color: var(--ibe-navy);
+	}
+
+	.service-content {
+		display: grid;
+		gap: var(--space-6);
+		min-width: 0;
+	}
+
+	.service-photo {
+		margin: 0;
+		overflow: hidden;
+		border-radius: var(--radius-xl);
+	}
+
+	.service-image {
 		display: block;
 		width: 100%;
 		height: auto;
+		max-height: 32rem;
 		object-fit: cover;
 	}
 
-	.service-body {
-		padding-block: var(--space-7);
-	}
-
-	.article-body {
-		max-width: 48rem;
-	}
-
-	.indications {
-		margin-top: var(--space-6);
-	}
-
-	.indications h2 {
-		margin: 0 0 var(--space-3);
-		font-size: 1.5rem;
-	}
-
-	.indications ul {
-		display: grid;
-		gap: var(--space-2);
+	.benefits h2,
+	.highlights h2,
+	.faq h2 {
 		margin: 0;
+		text-align: center;
+		font-size: clamp(1.75rem, 3vw, 2.25rem);
+	}
+
+	.benefits > p,
+	.highlights > p {
+		margin: var(--space-2) auto 0;
+		max-width: 40rem;
+		text-align: center;
+		color: var(--color-text-muted);
+	}
+
+	.benefits ul {
+		display: grid;
+		gap: var(--space-3);
+		margin: var(--space-5) 0 0;
 		padding: 0;
 		list-style: none;
 	}
 
-	.indications li {
+	.benefits li {
 		display: flex;
 		align-items: flex-start;
-		gap: var(--space-2);
-		padding: var(--space-2) var(--space-3);
-		border-radius: var(--radius-md);
-		background: var(--color-primary-soft);
-		color: var(--color-primary-dark);
+		gap: 0.85rem;
+		color: var(--ibe-navy);
+		font-weight: 600;
 	}
 
-	.indications svg {
+	.check {
+		display: grid;
 		flex-shrink: 0;
-		width: 1.25rem;
-		height: 1.25rem;
-		margin-top: 0.15rem;
-		fill: var(--color-primary-dark);
+		place-items: center;
+		width: 1.75rem;
+		height: 1.75rem;
+		border-radius: var(--radius-full);
+		background: var(--ibe-sage-deep);
 	}
 
-	.cta {
-		margin-top: var(--space-6);
+	.check svg {
+		width: 0.95rem;
+		height: 0.95rem;
+		fill: #fff;
 	}
 
-	.others {
-		padding-block: 0 var(--space-8);
+	.highlights ul {
+		display: grid;
+		gap: var(--space-4);
+		margin: var(--space-5) 0 0;
+		padding: 0;
+		list-style: none;
 	}
 
-	.others h2 {
-		margin: 0 0 var(--space-4);
-		font-size: 1.75rem;
+	.highlights li {
+		text-align: center;
+	}
+
+	.highlight-icon {
+		display: grid;
+		place-items: center;
+		width: 4.25rem;
+		height: 4.25rem;
+		margin: 0 auto var(--space-2);
+		border: 1px dashed var(--ibe-sage-deep);
+		border-radius: var(--radius-full);
+		color: var(--ibe-sage-deep);
+	}
+
+	.highlight-icon :global(svg) {
+		display: block;
+		width: 2rem;
+		height: 2rem;
+	}
+
+	.highlights h3 {
+		margin: 0;
+		font-size: 1.15rem;
+	}
+
+	.highlights li p {
+		margin: 0.45rem 0 0;
+		color: var(--color-text-muted);
+	}
+
+	.faq-list {
+		max-width: 40rem;
+		margin: var(--space-5) auto 0;
+	}
+
+	.faq-item {
+		border-bottom: 1px solid var(--ibe-border);
+		padding-block: var(--space-3);
+	}
+
+	.faq-item summary {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--space-2);
+		cursor: pointer;
+		font-weight: 700;
+		color: var(--ibe-navy);
+		list-style: none;
+	}
+
+	.faq-item summary::-webkit-details-marker {
+		display: none;
+	}
+
+	.faq-item summary::after {
+		content: '+';
+		flex-shrink: 0;
+		color: var(--ibe-sage-deep);
+		font-size: 1.35rem;
+		font-weight: 500;
+		line-height: 1;
+	}
+
+	.faq-item[open] summary::after {
+		content: '–';
+	}
+
+	.faq-item p {
+		margin: var(--space-2) 0 0;
+		color: var(--color-text-muted);
 	}
 
 	@media (min-width: 48rem) {
-		.hero-grid {
+		.benefits ul {
 			grid-template-columns: 1fr 1fr;
+			column-gap: var(--space-5);
 		}
 
-		.indications ul {
-			grid-template-columns: 1fr 1fr;
+		.highlights ul {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
+	}
+
+	@media (min-width: 64rem) {
+		.service-layout {
+			grid-template-columns: 18.5rem minmax(0, 1fr);
+			align-items: start;
+			gap: var(--space-6);
+		}
+
+		.service-aside {
+			position: sticky;
+			top: 7rem;
 		}
 	}
 </style>
